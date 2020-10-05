@@ -61,21 +61,21 @@
           <?php if(in_array('createBrand', $user_permission) || in_array('updateBrand', $user_permission) || in_array('viewBrand', $user_permission) || in_array('deleteBrand', $user_permission)): ?>
             
             <!-- Brands -->
-            <!-- <li id="brandNav">
+            <li id="brandNav">
               <a href="<?php echo base_url('brands/') ?>">
-                <i class="glyphicon glyphicon-tags"></i> <span>Brands</span>
+                <i class="glyphicon glyphicon-tags"></i> <span>Group</span>
               </a>
-            </li> -->
+            </li>
           <?php endif; ?>
 
           <?php if(in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
             <!-- Category -->
             
-            <!-- <li id="categoryNav">
+            <li id="categoryNav">
               <a href="<?php echo base_url('category/') ?>">
                 <i class="fa fa-files-o"></i> <span>Category</span>
               </a>
-            </li> -->
+            </li>
           <?php endif; ?>
 
           <?php if(in_array('createStore', $user_permission) || in_array('updateStore', $user_permission) || in_array('viewStore', $user_permission) || in_array('deleteStore', $user_permission)): ?>
