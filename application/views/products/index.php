@@ -12,6 +12,8 @@
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
       <li class="active">Products</li>
     </ol>
+
+    
   </section>
 
   <!-- Main content -->
@@ -21,6 +23,7 @@
       <div class="col-md-12 col-xs-12">
 
         <div id="messages"></div>
+        
 
         <?php if($this->session->flashdata('success')): ?>
           <div class="alert alert-success alert-dismissible" role="alert">
@@ -36,8 +39,20 @@
 
         <?php if(in_array('createProduct', $user_permission)): ?>
           <a href="<?php echo base_url('products/create') ?>" class="btn btn-primary">Add Product</a>
+          
+
           <br /> <br />
         <?php endif; ?>
+        <form enctype="multipart/form-data" method="post" action="<?php echo base_url('crud/import') ?>" role="form">
+<div class="form-group">
+<label for="exampleInputFile">File Upload</label>
+<input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" id="file" size="150">
+<p class="help-block">Only Excel/CSV File Import.</p>
+</div>
+<button type="submit" id="excelsubmit" class="btn btn-default" name="submit" value="submit">Upload</button>
+</form>
+
+        
 
         <div class="box">
           <div class="box-header">
@@ -164,6 +179,27 @@ function removeFunc(id)
     });
   }
 }
+
+$(document).ready(function(){
+$('#excelsubmit').on('submit', function(event){
+  event.preventDefault();
+  console.log("kuch toh hora h");
+  $.ajax({
+
+   url:form.attr('action'),
+   method:form.attr('method'),
+   data:new FormData(this),
+   contentType:false,
+   cache:false,
+   processData:false,
+   success:function(data){
+    $('#file').val('');
+    load_data();
+    alert(data);
+   }
+  })
+ });
+})
 
 
 </script>

@@ -55,23 +55,70 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="product_name">Product name</label>
-                  <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" autocomplete="off"/>
+                  <label for="item_id">Item ID</label>
+                  <input type="text" class="form-control" id="item_id" name="item_id" placeholder="" autocomplete="off" disabled/>
                 </div>
 
                 <div class="form-group">
-                  <label for="sku">SKU</label>
-                  <input type="text" class="form-control" id="sku" name="sku" placeholder="Enter sku" autocomplete="off" />
+                  <label for="category">Category</label>
+                  <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
+                    <?php foreach ($category as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
                 </div>
 
                 <div class="form-group">
-                  <label for="price">Price</label>
-                  <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" autocomplete="off" />
+                  <label for="product_name">Item name</label>
+                  <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter Item Name" autocomplete="off"/>
                 </div>
 
                 <div class="form-group">
-                  <label for="qty">Qty</label>
-                  <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" autocomplete="off" />
+                  <label for="unit">Unit</label>
+                  <select class="form-control select_group" id="unit" name="unit[]" multiple="multiple">
+                    <?php foreach ($category as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="item_code">Item Code</label>
+                  <input type="text" class="form-control" id="item_code" name="item_code" placeholder="Enter Item Code" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="pack_size">Pack Size</label>
+                  <input type="text" class="form-control" id="pack_size" name="pack_size" placeholder="Enter Pack Size" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="list_price">List Price</label>
+                  <input type="text" class="form-control" id="list_price" name="list_price" placeholder="Enter List Price" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="make">Make</label>
+                  <input type="text" class="form-control" id="make" name="make" placeholder="Enter Maker" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="purchase_rate">Purchase Rate</label>
+                  <input type="text" class="form-control" id="purchase_rate" name="purchase_rate" placeholder="Enter Purchase Rate" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="opening_balance">Opening Balance</label>
+                  <input type="text" class="form-control" id="opening_balance" name="opening_balance" placeholder="Enter Opening Balance" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="tax">Tax %</label>
+                  <select class="form-control select_group" id="tax" name="tax[]" multiple="multiple">
+                    <?php foreach ($category as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
                 </div>
 
                 <div class="form-group">
@@ -79,6 +126,16 @@
                   <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter 
                   description" autocomplete="off">
                   </textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="reorder_level">Reorder Level</label>
+                  <input type="text" class="form-control" id="reorder_level" name="reorder_level" placeholder="Enter Reorder Level" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="qty">Qty</label>
+                  <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" autocomplete="off" />
                 </div>
 
                 <?php if($attributes): ?>
@@ -94,7 +151,7 @@
                   <?php endforeach ?>
                 <?php endif; ?>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="brands">Group</label>
                   <select class="form-control select_group" id="brands" name="brands[]" multiple="multiple">
                     <?php foreach ($brands as $k => $v): ?>
@@ -103,14 +160,7 @@
                   </select>
                 </div>
 
-                <div class="form-group">
-                  <label for="category">Category</label>
-                  <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
-                    <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
-                </div>
+                
 
                 <div class="form-group">
                   <label for="store">Store</label>
@@ -127,7 +177,7 @@
                     <option value="1">Yes</option>
                     <option value="2">No</option>
                   </select>
-                </div>
+                </div> -->
 
               </div>
               <!-- /.box-body -->
