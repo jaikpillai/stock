@@ -43,14 +43,7 @@
 
           <br /> <br />
         <?php endif; ?>
-        <form enctype="multipart/form-data" method="post" action="<?php echo base_url('crud/import') ?>" role="form">
-<div class="form-group">
-<label for="exampleInputFile">File Upload</label>
-<input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" name="file" id="file" size="150">
-<p class="help-block">Only Excel/CSV File Import.</p>
-</div>
-<button type="submit" id="excelsubmit" class="btn btn-default" name="submit" value="submit">Upload</button>
-</form>
+        
 
         
 
@@ -63,13 +56,16 @@
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
-                <th>Image</th>
-                <th>SKU</th>
-                <th>Product Name</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Store</th>
-                <th>Availability</th>
+                <th>Item_ID</th>
+                <th>Item_Name</th>
+                <th>Item_Make</th>
+                <th>sUnit</th>
+                <th>Item_Code</th>
+                <th>Pack_Size</th>
+                <th>Tax</th>
+                <th>Category</th>
+                <th>Max_Suggested_Qty</th>
+               
                 <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                   <th>Action</th>
                 <?php endif; ?>

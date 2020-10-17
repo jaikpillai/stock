@@ -37,48 +37,72 @@ class Products extends Admin_Controller
     */
 	public function fetchProductData()
 	{
-		$result = array('data' => array());
+        $result = array('data' => array());
+        
+        
 
 		$data = $this->model_products->getProductData();
 
 		foreach ($data as $key => $value) {
 
-            $store_data = $this->model_stores->getStoresData($value['store_id']);
+           
+           
+
+            
+            
+            if($value['Category_ID']){
+                $category = $this->model_category->getCategoryFromID($value['Category_ID']);
+                $category_name=$category['name'];
+            }else{
+                $category_name="";
+            }
+        
+            $store_data = $this->model_stores->getStoresData(3);
+
 			// button
             $buttons = '';
             if(in_array('updateProduct', $this->permission)) {
-    			$buttons .= '<a href="'.base_url('products/update/'.$value['id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+    			$buttons .= '<a href="'.base_url('products/update/'.$value['Item_ID']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
             }
 
             if(in_array('deleteProduct', $this->permission)) { 
-    			$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+    			$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['Item_ID'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
             }
 			
 
-			$img = '<img src="'.base_url($value['image']).'" alt="'.$value['name'].'" class="img-circle" width="50" height="50" />';
+			// $img = '<img src="'.base_url($value['image']).'" alt="'.$value['name'].'" class="img-circle" width="50" height="50" />';
 
-            $availability = ($value['availability'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-warning">Inactive</span>';
+            // $availability = ($value['availability'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-warning">Inactive</span>';
 
-            $qty_status = '';
-            if($value['qty'] <= 10) {
-                $qty_status = '<span class="label label-warning">Low !</span>';
-            } else if($value['qty'] <= 0) {
-                $qty_status = '<span class="label label-danger">Out of stock !</span>';
-            }
+            // $qty_status = '';
+            // if($value['qty'] <= 10) {
+            //     $qty_status = '<span class="label label-warning">Low !</span>';
+            // } else if($value['qty'] <= 0) {
+            //     $qty_status = '<span class="label label-danger">Out of stock !</span>';
+            // }
 
+            // print($value['name']);
 
+            // if($category['id']==NULL){
+            //     $category['name'] = "";
+            // }
 			$result['data'][$key] = array(
-				$img,
-				$value['sku'],
-				$value['name'],
-				$value['price'],
-                $value['qty'] . ' ' . $qty_status,
-                $store_data['name'],
-				$availability,
+				// $img,
+				$value['Item_ID'],
+				$value['Item_Name'],
+				$value['Item_Make'],
+                $value['sUnit'],
+                $value['Item_Code'],
+                $value['Pack_Size'],
+                $value['Tax'],
+                $category_name,
+                $value['Max_Suggested_Qty'],
+                // $store_data['name'],
+				// $availability,
 				$buttons
 			);
 		} // /foreach
-
+      
 		echo json_encode($result);
 	}	
 
@@ -93,12 +117,16 @@ class Products extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$this->form_validation->set_rules('product_name', 'Product name', 'trim|required');
-		$this->form_validation->set_rules('sku', 'SKU', 'trim|required');
-		$this->form_validation->set_rules('price', 'Price', 'trim|required');
+		$this->form_validation->set_rules('product_name', 'Item name', 'trim|required');
+		$this->form_validation->set_rules('unit', 'Unit', 'trim|required');
+		$this->form_validation->set_rules('purchase_rate', 'Purchase Rate', 'trim|required');
 		$this->form_validation->set_rules('qty', 'Qty', 'trim|required');
+        $this->form_validation->set_rules('category', 'Category', 'trim|required');
+        $this->form_validation->set_rules('tax', 'Tax %', 'trim|required');
         $this->form_validation->set_rules('store', 'Store', 'trim|required');
-		$this->form_validation->set_rules('availability', 'Availability', 'trim|required');
+
+        $this->form_validation->set_rules('opening_balance', 'Opening Balance', 'trim|required');
+        $this->form_validation->set_rules('list_price', 'List Price', 'trim|required');
 		
 	
         if ($this->form_validation->run() == TRUE) {
@@ -106,17 +134,33 @@ class Products extends Admin_Controller
         	$upload_image = $this->upload_image();
 
         	$data = array(
-        		'name' => $this->input->post('product_name'),
-        		'sku' => $this->input->post('sku'),
-        		'price' => $this->input->post('price'),
-        		'qty' => $this->input->post('qty'),
-        		'image' => $upload_image,
-        		'description' => $this->input->post('description'),
-        		'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
-        		'brand_id' => json_encode($this->input->post('brands')),
-        		'category_id' => json_encode($this->input->post('category')),
-                'store_id' => $this->input->post('store'),
-        		'availability' => $this->input->post('availability'),
+                'Item_ID' => $this->input->post('item_id'),
+                'Category_ID' => $this->input->post('category'),
+                'Company_ID' => $this->input->post('store'),
+                'Item_Name' => $this->input->post('product_name'),
+        		'Item_Make' => $this->input->post('make'),
+                'sUnit' => $this->input->post('unit'),
+        		'Price' => $this->input->post('list_price'),
+                'Item_Code' => $this->input->post('item_code'),
+                'Pack_Size' => $this->input->post('pack_size'),
+                'Tax' => $this->input->post('tax'),
+                'Purchase_Price' => $this->input->post('purchase_rate'),
+                'Opening_Balance' => $this->input->post('opening_balance'),
+                'Opening_Balance' => $this->input->post('opening_balance'),
+                'Current_Balance' => $this->input->post('qty'),
+                'Item_Description' => $this->input->post('description'),
+                'ReOrder_Level' => $this->input->post('reorder_level'),
+                'Max_Suggested_Qty' => $this->input->post('qty'),
+
+                
+        		// 'price' => $this->input->post('price'),
+        		// 'qty' => $this->input->post('qty'),
+        		// 'image' => $upload_image,
+        		// 'description' => $this->input->post('description'),
+        		// // 'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
+        		// // 'brand_id' => json_encode($this->input->post('brands')),
+        		// // 'category_id' => json_encode($this->input->post('category')),
+        		// 'availability' => $this->input->post('availability'),
         	);
 
         	$create = $this->model_products->create($data);
@@ -147,8 +191,12 @@ class Products extends Admin_Controller
         	$this->data['attributes'] = $attributes_final_data;
 			$this->data['brands'] = $this->model_brands->getActiveBrands();        	
 			$this->data['category'] = $this->model_category->getActiveCategroy();        	
-			$this->data['stores'] = $this->model_stores->getActiveStore();        	
+            $this->data['stores'] = $this->model_stores->getActiveStore(); 
+            // $lastid =  $this->model_products->getLastID();
 
+
+            
+            $this->data['getid'] = $this->model_products->getLastID();
             $this->render_template('products/create', $this->data);
         }	
 	}
@@ -157,6 +205,13 @@ class Products extends Admin_Controller
     * This function is invoked from another function to upload the image into the assets folder
     * and returns the image path
     */
+
+    public function getId()
+    {
+        $id = $this->model_products->getLastID();
+        return $id;
+    }
+
 	public function upload_image()
     {
     	// assets/images/product_image
@@ -200,28 +255,67 @@ class Products extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-        $this->form_validation->set_rules('product_name', 'Product name', 'trim|required');
-        $this->form_validation->set_rules('sku', 'SKU', 'trim|required');
-        $this->form_validation->set_rules('price', 'Price', 'trim|required');
-        $this->form_validation->set_rules('qty', 'Qty', 'trim|required');
-        $this->form_validation->set_rules('store', 'Store', 'trim|required');
-        $this->form_validation->set_rules('availability', 'Availability', 'trim|required');
+        $this->form_validation->set_rules('product_name', 'Item name', 'trim|required');
+		$this->form_validation->set_rules('unit', 'Unit', 'trim|required');
+		$this->form_validation->set_rules('purchase_rate', 'Purchase Rate', 'trim|required');
+		$this->form_validation->set_rules('qty', 'Qty', 'trim|required');
+        $this->form_validation->set_rules('category', 'Category', 'trim|required');
+        $this->form_validation->set_rules('tax', 'Tax %', 'trim|required');
+        $this->form_validation->set_rules('opening_balance', 'Opening Balance', 'trim|required');
+        $this->form_validation->set_rules('list_price', 'List Price', 'trim|required');
+
+        // $this->form_validation->set_rules('product_name', 'Product name', 'trim|required');
+        // $this->form_validation->set_rules('sku', 'SKU', 'trim|required');
+        // $this->form_validation->set_rules('price', 'Price', 'trim|required');
+        // $this->form_validation->set_rules('qty', 'Qty', 'trim|required');
+        // $this->form_validation->set_rules('store', 'Store', 'trim|required');
+        // $this->form_validation->set_rules('availability', 'Availability', 'trim|required');
 
         if ($this->form_validation->run() == TRUE) {
             // true case
             
+            // $data = array(
+            //     'name' => $this->input->post('product_name'),
+            //     'sku' => $this->input->post('sku'),
+            //     'price' => $this->input->post('price'),
+            //     'qty' => $this->input->post('qty'),
+            //     'description' => $this->input->post('description'),
+            //     'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
+            //     'brand_id' => json_encode($this->input->post('brands')),
+            //     'category_id' => json_encode($this->input->post('category')),
+            //     'store_id' => $this->input->post('store'),
+            //     'availability' => $this->input->post('availability'),
+            // );
+
             $data = array(
-                'name' => $this->input->post('product_name'),
-                'sku' => $this->input->post('sku'),
-                'price' => $this->input->post('price'),
-                'qty' => $this->input->post('qty'),
-                'description' => $this->input->post('description'),
-                'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
-                'brand_id' => json_encode($this->input->post('brands')),
-                'category_id' => json_encode($this->input->post('category')),
-                'store_id' => $this->input->post('store'),
-                'availability' => $this->input->post('availability'),
-            );
+                'Item_ID' => $this->input->post('item_id'),
+                'Category_ID' => $this->input->post('category'),
+                'Company_ID' => $this->input->post('store'),
+                'Item_Name' => $this->input->post('product_name'),
+        		'Item_Make' => $this->input->post('make'),
+                'sUnit' => $this->input->post('unit'),
+        		'Price' => $this->input->post('list_price'),
+                'Item_Code' => $this->input->post('item_code'),
+                'Pack_Size' => $this->input->post('pack_size'),
+                'Tax' => $this->input->post('tax'),
+                'Purchase_Price' => $this->input->post('purchase_rate'),
+                'Opening_Balance' => $this->input->post('opening_balance'),
+                'Opening_Balance' => $this->input->post('opening_balance'),
+                'Current_Balance' => $this->input->post('qty'),
+                'Item_Description' => $this->input->post('description'),
+                'ReOrder_Level' => $this->input->post('reorder_level'),
+                'Max_Suggested_Qty' => $this->input->post('qty'),
+
+                
+        		// 'price' => $this->input->post('price'),
+        		// 'qty' => $this->input->post('qty'),
+        		// 'image' => $upload_image,
+        		// 'description' => $this->input->post('description'),
+        		// // 'attribute_value_id' => json_encode($this->input->post('attributes_value_id')),
+        		// // 'brand_id' => json_encode($this->input->post('brands')),
+        		// // 'category_id' => json_encode($this->input->post('category')),
+        		// 'availability' => $this->input->post('availability'),
+        	);
 
             
             if($_FILES['product_image']['size'] > 0) {

@@ -61,7 +61,7 @@
 
                 <div class="form-group">
                   <label for="product_name">Product name</label>
-                  <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" value="<?php echo $product_data['name']; ?>"  autocomplete="off"/>
+                  <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" value="<?php echo $product_data['Item_Name']; ?>"  autocomplete="off"/>
                 </div>
 
                 <div class="form-group">
