@@ -16,7 +16,8 @@ class Products extends Admin_Controller
 		$this->load->model('model_brands');
 		$this->load->model('model_category');
 		$this->load->model('model_stores');
-		$this->load->model('model_attributes');
+        $this->load->model('model_attributes');
+        $this->load->model('model_tax');
 	}
 
     /* 
@@ -46,7 +47,6 @@ class Products extends Admin_Controller
 		foreach ($data as $key => $value) {
 
            
-           
 
             
             
@@ -57,7 +57,8 @@ class Products extends Admin_Controller
                 $category_name="";
             }
         
-            $store_data = $this->model_stores->getStoresData(3);
+            $store_data = $this->model_stores->getStoresData();
+
 
 			// button
             $buttons = '';
@@ -132,6 +133,7 @@ class Products extends Admin_Controller
         if ($this->form_validation->run() == TRUE) {
             // true case
         	$upload_image = $this->upload_image();
+            $tax_data = $this->model_tax->getTaxFromID($this->input->post('tax'));
 
         	$data = array(
                 'Item_ID' => $this->input->post('item_id'),
@@ -143,11 +145,12 @@ class Products extends Admin_Controller
         		'Price' => $this->input->post('list_price'),
                 'Item_Code' => $this->input->post('item_code'),
                 'Pack_Size' => $this->input->post('pack_size'),
-                'Tax' => $this->input->post('tax'),
+                'Tax' => $tax_data['sValue'],
                 'Purchase_Price' => $this->input->post('purchase_rate'),
                 'Opening_Balance' => $this->input->post('opening_balance'),
                 'Opening_Balance' => $this->input->post('opening_balance'),
                 'Current_Balance' => $this->input->post('qty'),
+                'iTax_ID' => $tax_data['iTax_ID'],
                 'Item_Description' => $this->input->post('description'),
                 'ReOrder_Level' => $this->input->post('reorder_level'),
                 'Max_Suggested_Qty' => $this->input->post('qty'),
@@ -192,6 +195,8 @@ class Products extends Admin_Controller
 			$this->data['brands'] = $this->model_brands->getActiveBrands();        	
 			$this->data['category'] = $this->model_category->getActiveCategroy();        	
             $this->data['stores'] = $this->model_stores->getActiveStore(); 
+            $this->data['tax_data']= $this->model_tax->getTaxData();
+
             // $lastid =  $this->model_products->getLastID();
 
 

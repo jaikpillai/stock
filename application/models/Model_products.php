@@ -21,6 +21,8 @@ class Model_products extends CI_Model
 		return $query->result_array();
 	}
 
+	
+
 	public function getActiveProductData()
 	{
 		// $sql = "SELECT * FROM item_master WHERE availability = ? ORDER BY Item_ID DESC";
@@ -52,7 +54,7 @@ class Model_products extends CI_Model
 	public function update($data, $id)
 	{
 		if($data && $id) {
-			$this->db->where('id', $id);
+			$this->db->where('Item_ID', $id);
 			$update = $this->db->update('item_master', $data);
 			return ($update == true) ? true : false;
 		}

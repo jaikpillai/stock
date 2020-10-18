@@ -120,18 +120,18 @@
                   <input type="number" class="form-control" id="opening_balance" name="opening_balance" placeholder="Enter Opening Balance" autocomplete="off" />
                 </div>
 
-                <!-- <div class="form-group">
+                 <div class="form-group">
                   <label for="tax">Tax %</label>
-                  <select class="form-control select_group" id="tax" name="tax[]" multiple="multiple">
-                    <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                  <select class="form-control select_group" id="tax" name="tax">
+                    <?php foreach ($tax_data as $k => $v): ?>
+                      <option value="<?php echo $v['iTax_ID'] ?>"><?php echo $v['sTax_Description'] ?></option>
                     <?php endforeach ?>
                   </select>
-                </div> -->
-                <div class="form-group">
+                </div> 
+                <!-- <div class="form-group">
                   <label for="tax">Tax %</label>
                   <input type="number" step="0.01" class="form-control" id="tax" name="tax" placeholder="Enter Item Tax" autocomplete="off" />
-                </div>
+                </div> -->
 
 
                 <div class="form-group">

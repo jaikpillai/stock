@@ -95,7 +95,7 @@
                         <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
                             <option value=""></option>
                             <?php foreach ($products as $k => $v): ?>
-                              <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                              <option value="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Name'] ?></option>
                             <?php endforeach ?>
                           </select>
                         </td>
