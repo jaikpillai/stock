@@ -11,12 +11,12 @@ class Model_products extends CI_Model
 	public function getProductData($id = null)
 	{
 		if($id) {
-			$sql = "SELECT * FROM item_master where Item_ID = ?";
+			$sql = "SELECT * FROM item_master where Item_ID = ? and where active = 1";
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM item_master ORDER BY Item_ID DESC";
+		$sql = "SELECT * FROM item_master where active = 1 ORDER BY Item_ID DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -60,11 +60,12 @@ class Model_products extends CI_Model
 		}
 	}
 
-	public function remove($id)
+	public function remove($data, $id)
 	{
 		if($id) {
+			//TODO: change data object
 			$this->db->where('Item_ID', $id);
-			$delete = $this->db->delete('item_master');
+			$delete = $this->db->update('item_master', $data);
 			return ($delete == true) ? true : false;
 		}
 	}

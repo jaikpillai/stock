@@ -378,12 +378,17 @@ class Products extends Admin_Controller
         if(!in_array('deleteProduct', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
+
+        $data = array(
+            'active' => 0,);
+        
+
         
         $product_id = $this->input->post('product_id');
 
         $response = array();
         if($product_id) {
-            $delete = $this->model_products->remove($product_id);
+            $delete = $this->model_products->remove($data, $product_id);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 
