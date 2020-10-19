@@ -104,7 +104,7 @@ class Products extends Admin_Controller
                 $value['Item_Code'],
                 $value['Tax'],
                 $category_name,
-                $value['Purchase_Price'],
+                $value['Item_Make'],
                 // $store_data['name'],
 				// $availability,
 				$buttons
@@ -182,7 +182,7 @@ class Products extends Admin_Controller
                 $value['Item_Code'],
                 $value['Tax'],
                 $category_name,
-                $value['Purchase_Price'],
+                $value['Item_Make'],
                 // $store_data['name'],
 				// $availability,
 				$buttons

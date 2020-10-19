@@ -55,8 +55,10 @@
           
           <!-- /.box-header -->
           <div class="box-body">
-          <input type="checkbox" id="showDeleted" name="showDeleted" value="showDeleted">
+        
+            <input type="checkbox" id="showDeleted" name="showDeleted" value="showDeleted">
           <label for="showDeleted">Show Deleted</label><br>
+          <br>
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
@@ -67,7 +69,7 @@
                 <th>Item Code</th>
                 <th>Tax</th>
                 <th>Category</th>
-                <th>Purchase Price</th>
+                <th>Item Make</th>
                
                 <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                   <th>Action</th>
