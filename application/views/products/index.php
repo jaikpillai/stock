@@ -6,11 +6,11 @@
   <section class="content-header">
     <h1>
       Manage
-      <small>Products</small>
+      <small>Items</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Products</li>
+      <li class="active">Items</li>
     </ol>
 
     
@@ -49,10 +49,14 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Manage Products</h3>
+            <h3 class="box-title">Manage Items</h3>
+            
           </div>
+          
           <!-- /.box-header -->
           <div class="box-body">
+          <input type="checkbox" id="showDeleted" name="showDeleted" value="showDeleted">
+          <label for="showDeleted">Show Deleted</label><br>
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
@@ -125,7 +129,7 @@ $(document).ready(function() {
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({
-    'ajax': base_url + 'products/fetchProductData',
+    'ajax': base_url + 'products/fetchActiveProductData',
     'order': []
   });
 
@@ -176,24 +180,26 @@ function removeFunc(id)
 }
 
 $(document).ready(function(){
-$('#excelsubmit').on('submit', function(event){
-  event.preventDefault();
-  console.log("kuch toh hora h");
-  $.ajax({
+var checkbox = document.querySelector("input[name=showDeleted]");
 
-   url:form.attr('action'),
-   method:form.attr('method'),
-   data:new FormData(this),
-   contentType:false,
-   cache:false,
-   processData:false,
-   success:function(data){
-    $('#file').val('');
-    load_data();
-    alert(data);
-   }
-  })
- });
+checkbox.addEventListener( 'change', function() {
+    if(this.checked) {
+      manageTable = $('#manageTable').DataTable({
+    'ajax': base_url + 'products/fetchProductData',
+    'destroy':true,
+    'order': []
+  });
+        // Checkbox is checked..
+    } else {
+      manageTable = $('#manageTable').DataTable({
+    'ajax': base_url + 'products/fetchActiveProductData',
+    'destroy':true,
+    'order': []
+  });
+
+        // Checkbox is not checked..
+    }
+});
 })
 
 

@@ -37,7 +37,85 @@ class Products extends Admin_Controller
     * It Fetches the products data from the product table 
     * this function is called from the datatable ajax function
     */
-	public function fetchProductData()
+	public function fetchActiveProductData()
+	{
+        $result = array('data' => array());
+        
+        
+
+		$data = $this->model_products->getActiveProductData();
+
+		foreach ($data as $key => $value) {
+
+           
+
+            
+            
+            if($value['Category_ID']){
+                $category = $this->model_category->getCategoryFromID($value['Category_ID']);
+                $category_name=$category['name'];
+            }else{
+                $category_name="";
+            }
+        
+            $store_data = $this->model_stores->getStoresData();
+
+
+			// button
+            $buttons = '';
+            if(in_array('updateProduct', $this->permission)) {
+    			$buttons .= '<a href="'.base_url('products/update/'.$value['Item_ID']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+            }
+
+            if(in_array('deleteProduct', $this->permission)) { 
+    			$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['Item_ID'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+            }
+			
+
+			// $img = '<img src="'.base_url($value['image']).'" alt="'.$value['name'].'" class="img-circle" width="50" height="50" />';
+
+            // $availability = ($value['availability'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-warning">Inactive</span>';
+
+            // $qty_status = '';
+            // if($value['qty'] <= 10) {
+            //     $qty_status = '<span class="label label-warning">Low !</span>';
+            // } else if($value['qty'] <= 0) {
+            //     $qty_status = '<span class="label label-danger">Out of stock !</span>';
+            // }
+
+            // print($value['name']);
+
+            // if($category['id']==NULL){
+            //     $category['name'] = "";
+            // }
+
+			$status = ($value['active'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Deleted</span>';
+            
+            if($value['active'] == 0){
+                $buttons = '';
+            }
+
+			$result['data'][$key] = array(
+				// $img,
+				$value['Item_ID'],
+				$value['Item_Name'],
+				$status,
+                $value['sUnit'],
+                $value['Item_Code'],
+                $value['Tax'],
+                $category_name,
+                $value['Purchase_Price'],
+                // $store_data['name'],
+				// $availability,
+				$buttons
+			);
+		} // /foreach
+      
+		echo json_encode($result);
+    }	
+    
+
+    public function fetchProductData()
 	{
         $result = array('data' => array());
         
@@ -112,7 +190,7 @@ class Products extends Admin_Controller
 		} // /foreach
       
 		echo json_encode($result);
-	}	
+	}
 
     /*
     * If the validation is not valid, then it redirects to the create page.
