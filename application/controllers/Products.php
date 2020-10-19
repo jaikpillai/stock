@@ -19,6 +19,8 @@ class Products extends Admin_Controller
         $this->load->model('model_attributes');
         $this->load->model('model_tax');
         $this->load->model('model_unit');
+        
+
 	}
 
     /* 
@@ -37,6 +39,8 @@ class Products extends Admin_Controller
     * It Fetches the products data from the product table 
     * this function is called from the datatable ajax function
     */
+
+    
 	public function fetchActiveProductData()
 	{
         $result = array('data' => array());
@@ -48,8 +52,11 @@ class Products extends Admin_Controller
 		foreach ($data as $key => $value) {
 
            
-
-            
+            $amount = $value['Price'];
+            // moneyFormatIndia($amount);
+            // setlocale(LC_MONETARY, 'en_IN');
+            // $price = money_format('%!i', $amount);
+            // print $amount;
             
             if($value['Category_ID']){
                 $category = $this->model_category->getCategoryFromID($value['Category_ID']);
@@ -70,7 +77,6 @@ class Products extends Admin_Controller
             if(in_array('deleteProduct', $this->permission)) { 
     			$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['Item_ID'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
             }
-			
 
 			// $img = '<img src="'.base_url($value['image']).'" alt="'.$value['name'].'" class="img-circle" width="50" height="50" />';
 
@@ -95,6 +101,9 @@ class Products extends Admin_Controller
                 $buttons = '';
             }
 
+            
+        
+
 			$result['data'][$key] = array(
 				// $img,
 				$value['Item_ID'],
@@ -102,7 +111,7 @@ class Products extends Admin_Controller
 				$status,
                 $value['sUnit'],
                 $value['Item_Code'],
-                $value['Tax'],
+                $value['Price'],
                 $category_name,
                 $value['Item_Make'],
                 // $store_data['name'],
@@ -111,9 +120,13 @@ class Products extends Admin_Controller
 			);
 		} // /foreach
       
-		echo json_encode($result);
+        echo json_encode($result);
+     
     }	
     
+
+
+   
 
     public function fetchProductData()
 	{
@@ -173,6 +186,7 @@ class Products extends Admin_Controller
                 $buttons = '';
             }
 
+           
 			$result['data'][$key] = array(
 				// $img,
 				$value['Item_ID'],
@@ -180,7 +194,7 @@ class Products extends Admin_Controller
 				$status,
                 $value['sUnit'],
                 $value['Item_Code'],
-                $value['Tax'],
+                $value['Price'],
                 $category_name,
                 $value['Item_Make'],
                 // $store_data['name'],
@@ -191,6 +205,11 @@ class Products extends Admin_Controller
       
 		echo json_encode($result);
 	}
+
+
+
+    
+
 
     /*
     * If the validation is not valid, then it redirects to the create page.

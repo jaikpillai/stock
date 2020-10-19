@@ -67,7 +67,7 @@
                 <th>Status</th>
                 <th>sUnit</th>
                 <th>Item Code</th>
-                <th>Tax</th>
+                <th>Price</th>
                 <th>Category</th>
                 <th>Item Make</th>
                
