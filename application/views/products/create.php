@@ -44,7 +44,7 @@
 
                 <?php echo validation_errors(); ?>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
 
                   <label for="product_image">Image</label>
                   <div class="kv-avatar">
@@ -52,7 +52,7 @@
                           <input id="product_image" name="product_image" type="file">
                       </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="form-group">
                   <label for="item_id">Item ID</label>

@@ -88,17 +88,23 @@ class Products extends Admin_Controller
             // if($category['id']==NULL){
             //     $category['name'] = "";
             // }
+
+			$status = ($value['active'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Deleted</span>';
+            
+            if($value['active'] == 0){
+                $buttons = '';
+            }
+
 			$result['data'][$key] = array(
 				// $img,
 				$value['Item_ID'],
 				$value['Item_Name'],
-				$value['Item_Make'],
+				$status,
                 $value['sUnit'],
                 $value['Item_Code'],
-                $value['Pack_Size'],
                 $value['Tax'],
                 $category_name,
-                $value['Max_Suggested_Qty'],
+                $value['Purchase_Price'],
                 // $store_data['name'],
 				// $availability,
 				$buttons
@@ -157,6 +163,7 @@ class Products extends Admin_Controller
                 'Item_Description' => $this->input->post('description'),
                 'ReOrder_Level' => $this->input->post('reorder_level'),
                 'Max_Suggested_Qty' => $this->input->post('qty'),
+                'active' => 1
 
                 
         		// 'price' => $this->input->post('price'),
@@ -314,6 +321,7 @@ class Products extends Admin_Controller
                 'Item_Description' => $this->input->post('description'),
                 'ReOrder_Level' => $this->input->post('reorder_level'),
                 'Max_Suggested_Qty' => $this->input->post('qty'),
+                'active' => 1
 
                 
         		// 'price' => $this->input->post('price'),

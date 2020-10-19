@@ -56,15 +56,14 @@
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
-                <th>Item_ID</th>
-                <th>Item_Name</th>
-                <th>Item_Make</th>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Status</th>
                 <th>sUnit</th>
-                <th>Item_Code</th>
-                <th>Pack_Size</th>
+                <th>Item Code</th>
                 <th>Tax</th>
                 <th>Category</th>
-                <th>Max_Suggested_Qty</th>
+                <th>Purchase Price</th>
                
                 <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                   <th>Action</th>
