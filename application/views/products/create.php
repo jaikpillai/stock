@@ -76,19 +76,19 @@
                   <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter Item Name" autocomplete="off"/>
                 </div>
 
-                <!-- <div class="form-group">
+                 <div class="form-group">
                   <label for="unit">Unit</label>
-                  <select class="form-control select_group" id="unit" name="unit[]" multiple="multiple">
-                    <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                  <select class="form-control select_group" id="unit" name="unit">
+                    <?php foreach ($unit_data as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['sUnit'] ?></option>
                     <?php endforeach ?>
                   </select>
-                </div> -->
+                </div> 
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="unit">Unit</label>
                   <input type="text" class="form-control" id="unit" name="unit" placeholder="Enter Item Unit" autocomplete="off"/>
-                </div>
+                </div> -->
 
                 <div class="form-group">
                   <label for="item_code">Item Code</label>

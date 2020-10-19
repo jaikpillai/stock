@@ -18,6 +18,7 @@ class Products extends Admin_Controller
 		$this->load->model('model_stores');
         $this->load->model('model_attributes');
         $this->load->model('model_tax');
+        $this->load->model('model_unit');
 	}
 
     /* 
@@ -134,6 +135,8 @@ class Products extends Admin_Controller
             // true case
         	$upload_image = $this->upload_image();
             $tax_data = $this->model_tax->getTaxFromID($this->input->post('tax'));
+            $unit_data = $this->model_unit->getUnitFromID($this->input->post('unit'));
+
 
         	$data = array(
                 'Item_ID' => $this->input->post('item_id'),
@@ -141,7 +144,7 @@ class Products extends Admin_Controller
                 'Company_ID' => $this->input->post('store'),
                 'Item_Name' => $this->input->post('product_name'),
         		'Item_Make' => $this->input->post('make'),
-                'sUnit' => $this->input->post('unit'),
+                'sUnit' => $unit_data['sUnit'],
         		'Price' => $this->input->post('list_price'),
                 'Item_Code' => $this->input->post('item_code'),
                 'Pack_Size' => $this->input->post('pack_size'),
@@ -196,6 +199,7 @@ class Products extends Admin_Controller
 			$this->data['category'] = $this->model_category->getActiveCategroy();        	
             $this->data['stores'] = $this->model_stores->getActiveStore(); 
             $this->data['tax_data']= $this->model_tax->getTaxData();
+            $this->data['unit_data']= $this->model_unit->getUnitData();
 
             // $lastid =  $this->model_products->getLastID();
 
