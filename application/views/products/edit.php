@@ -151,7 +151,7 @@
                   <label for="store">Store</label>
                   <select class="form-control select_group" id="store" name="store">
                     <?php foreach ($stores as $k => $v): ?>
-                      <option value="<?php echo $product_data['Company_ID'] ?>" <?php if(in_array($product_data['Company_ID'], $v)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($product_data['Company_ID'], $v)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
                       
                     <?php endforeach ?>
                   </select>
