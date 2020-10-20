@@ -132,9 +132,7 @@
 
                 <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea type="text" class="form-control" id="description" value="<?php echo $product_data['Item_Description']; ?>" name="description" placeholder="Enter 
-                  description" autocomplete="off">
-                  </textarea>
+                  <textarea type="text" class="form-control" id="description" value="<?php echo $product_data['Item_Description']; ?>" name="description" placeholder="Enter description" autocomplete="off"><?php echo $product_data['Item_Description'] ?></textarea>
                 </div>
 
                 <div class="form-group">
