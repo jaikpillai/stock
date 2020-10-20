@@ -400,8 +400,11 @@ class Products extends Admin_Controller
             //     'availability' => $this->input->post('availability'),
             // );
 
+            $tax_data = $this->model_tax->getTaxFromID($this->input->post('tax'));
+            $unit_data = $this->model_unit->getUnitFromID($this->input->post('unit'));
+
             $data = array(
-                'Item_ID' => $this->input->post('item_id'),
+                // 'Item_ID' => $this->input->post('item_code'),
                 'Category_ID' => $this->input->post('category'),
                 'Company_ID' => $this->input->post('store'),
                 'Item_Name' => $this->input->post('product_name'),
@@ -410,7 +413,8 @@ class Products extends Admin_Controller
         		'Price' => $this->input->post('list_price'),
                 'Item_Code' => $this->input->post('item_code'),
                 'Pack_Size' => $this->input->post('pack_size'),
-                'Tax' => $this->input->post('tax'),
+                'Tax' => $tax_data['sValue'],
+                'iTax_ID' => $tax_data['iTax_ID'],
                 'Purchase_Price' => $this->input->post('purchase_rate'),
                 'Opening_Balance' => $this->input->post('opening_balance'),
                 'Opening_Balance' => $this->input->post('opening_balance'),
@@ -432,12 +436,12 @@ class Products extends Admin_Controller
         	);
 
             
-            if($_FILES['product_image']['size'] > 0) {
-                $upload_image = $this->upload_image();
-                $upload_image = array('image' => $upload_image);
+            // if($_FILES['product_image']['size'] > 0) {
+            //     $upload_image = $this->upload_image();
+            //     $upload_image = array('image' => $upload_image);
                 
-                $this->model_products->update($upload_image, $product_id);
-            }
+            //     $this->model_products->update($upload_image, $product_id);
+            // }
 
             $update = $this->model_products->update($data, $product_id);
             if($update == true) {
@@ -473,7 +477,8 @@ class Products extends Admin_Controller
             
             $this->data['unit_data']= $this->model_unit->getUnitData();
             $this->data['tax_data']= $this->model_tax->getTaxData();
-
+            $this->data['tax_data_id']= $this->model_tax->getTaxFromID($product_data['iTax_ID']);
+           
             $this->data['unit_data_sUnit']= $this->model_unit->getUnitDataFromsUnit($product_data['sUnit']);
 
             $this->render_template('products/edit', $this->data); 
