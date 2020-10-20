@@ -477,6 +477,8 @@ class Products extends Admin_Controller
             $this->data['product_data'] = $product_data;
             
             $this->data['unit_data']= $this->model_unit->getUnitData();
+            $this->data['tax_data']= $this->model_tax->getTaxData();
+
             $this->data['unit_data_sUnit']= $this->model_unit->getUnitDataFromsUnit($product_data['sUnit']);
 
             $this->render_template('products/edit', $this->data); 

@@ -151,9 +151,10 @@
 
                 <div class="form-group">
                   <label for="tax">Tax %</label>
-                  <select class="form-control select_group" id="tax" name="tax[]" multiple="multiple">
-                    <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
+                  <select class="form-control select_group" id="tax" name="tax" >
+                    <?php foreach ($tax_data as $k => $v): ?>
+                      <option value="<?php echo $product_data['iTax_ID'] ?>" <?php if(in_array($product_data['iTax_ID'] , $v)) { echo 'selected="selected"'; } ?>><?php echo $v['sTax_Description'] ?></option>
+
                     <?php endforeach ?>
                   </select>
                 </div>
