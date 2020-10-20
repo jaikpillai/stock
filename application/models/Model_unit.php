@@ -29,6 +29,19 @@ class Model_unit extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getUnitDataFromsUnit($sUnit = null)
+	{
+		if($sUnit) {
+			$sql = "SELECT * FROM unit_master WHERE sUnit  = ? ";
+			$query = $this->db->query($sql, array($sUnit));
+			return $query->row_array();
+		}
+
+		$sql = "SELECT * FROM unit_master";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
 	public function getUnitFromID($id)
 	{
 		
