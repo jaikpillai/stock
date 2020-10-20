@@ -57,6 +57,8 @@
             </li>
           <?php endif; ?>
 
+          
+
 
           <?php if(in_array('createBrand', $user_permission) || in_array('updateBrand', $user_permission) || in_array('viewBrand', $user_permission) || in_array('deleteBrand', $user_permission)): ?>
             
@@ -77,6 +79,17 @@
               </a>
             </li>
           <?php endif; ?>
+
+        
+            <!-- Category -->
+            
+            <li id="taxNav">
+              <a href="<?php echo base_url('tax/') ?>">
+                <i class="fa fa-sticky-note-o"></i> <span>Tax master</span>
+              </a>
+            </li>
+ 
+
 
           <?php if(in_array('createStore', $user_permission) || in_array('updateStore', $user_permission) || in_array('viewStore', $user_permission) || in_array('deleteStore', $user_permission)): ?>
            <!-- Stores -->
@@ -122,7 +135,7 @@
           <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
             <li class="treeview" id="mainOrdersNav">
               <a href="#">
-                <i class="fa fa-dollar"></i>
+                <i class="fa fa-inr"></i>
                 <span>Invoice Transaction</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
