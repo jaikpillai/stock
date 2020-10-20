@@ -45,97 +45,104 @@
 
                 <?php echo validation_errors(); ?>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label>Image Preview: </label>
                   <img src="<?php echo base_url() . $product_data['image'] ?>" width="150" height="150" class="img-circle">
-                </div>
+                </div> -->
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label for="product_image">Update Image</label>
                   <div class="kv-avatar">
                       <div class="file-loading">
                           <input id="product_image" name="product_image" type="file">
                       </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="form-group">
-                  <label for="product_name">Product name</label>
-                  <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter product name" value="<?php echo $product_data['Item_Name']; ?>"  autocomplete="off"/>
-                </div>
-
-                <div class="form-group">
-                  <label for="sku">SKU</label>
-                  <input type="text" class="form-control" id="sku" name="sku" placeholder="Enter sku" value="<?php echo $product_data['sku']; ?>" autocomplete="off" />
-                </div>
-
-                <div class="form-group">
-                  <label for="price">Price</label>
-                  <input type="text" class="form-control" id="price" name="price" placeholder="Enter price" value="<?php echo $product_data['price']; ?>" autocomplete="off" />
-                </div>
-
-                <div class="form-group">
-                  <label for="qty">Qty</label>
-                  <input type="text" class="form-control" id="qty" name="qty" placeholder="Enter Qty" value="<?php echo $product_data['qty']; ?>" autocomplete="off" />
-                </div>
-
-                <div class="form-group">
-                  <label for="description">Description</label>
-                  <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter 
-                  description" autocomplete="off">
-                    <?php echo $product_data['description']; ?>
-                  </textarea>
-                </div>
-
-                <?php $attribute_id = json_decode($product_data['attribute_value_id']); ?>
-                <?php if($attributes): ?>
-                  <?php foreach ($attributes as $k => $v): ?>
-                    <div class="form-group">
-                      <label for="groups"><?php echo $v['attribute_data']['name'] ?></label>
-                      <select class="form-control select_group" id="attributes_value_id" name="attributes_value_id[]" multiple="multiple">
-                        <?php foreach ($v['attribute_value'] as $k2 => $v2): ?>
-                          <option value="<?php echo $v2['id'] ?>" <?php if(in_array($v2['id'], $attribute_id)) { echo "selected"; } ?>><?php echo $v2['value'] ?></option>
-                        <?php endforeach ?>
-                      </select>
-                    </div>    
-                  <?php endforeach ?>
-                <?php endif; ?>
-
-                <div class="form-group">
-                  <label for="brands">Brands</label>
-                  <?php $brand_data = json_decode($product_data['brand_id']); ?>
-                  <select class="form-control select_group" id="brands" name="brands[]" multiple="multiple">
-                    <?php foreach ($brands as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($v['id'], $brand_data)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
+                  <label for="item_id">Item ID</label>
+                  <input type="text" class="form-control" id="item_id" name="item_id" value="<?php echo $product_data['Item_ID']; ?>" placeholder="" autocomplete="off" disabled/>
                 </div>
 
                 <div class="form-group">
                   <label for="category">Category</label>
-                  <?php $category_data = json_decode($product_data['category_id']); ?>
-                  <select class="form-control select_group" id="category" name="category[]" multiple="multiple">
+                  <select class="form-control select_group" id="category" name="category">
                     <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($v['id'], $category_data)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      <option value="<?php echo $product_data['Category_ID'] ?>" <?php if(in_array($product_data['Category_ID'], $v)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+                </div>
+
+
+                <div class="form-group">
+                  <label for="product_name">Item name</label>
+                  <input type="text" class="form-control" id="product_name" value="<?php echo $product_data['Item_Name']; ?>" name="product_name" placeholder="Enter Item Name" autocomplete="off"/>
+                </div>
+
+                <div class="form-group">
+                  <label for="unit">Unit</label>
+                  <select class="form-control select_group" id="unit" name="unit" >
+                    <?php foreach ($unit_data as $k => $v): ?>
+                      <option value="<?php echo $v['sUnit'] ?>" <?php if(in_array($product_data['sUnit'], $v)) { echo 'selected="selected"'; } ?>>
+                      <?php echo $v['sUnit'] ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>
 
                 <div class="form-group">
-                  <label for="store">Store</label>
-                  <select class="form-control select_group" id="store" name="store">
-                    <?php foreach ($stores as $k => $v): ?>
-                      <option value="<?php echo $v['id'] ?>" <?php if($product_data['store_id'] == $v['id']) { echo "selected='selected'"; } ?> ><?php echo $v['name'] ?></option>
+                  <label for="item_code">Item Code</label>
+                  <input type="text" class="form-control" id="item_code" name="item_code" value="<?php echo $product_data['Item_Code']; ?>" placeholder="Enter Item Code" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="pack_size">Pack Size</label>
+                  <input type="text" class="form-control" id="pack_size" name="pack_size" value="<?php echo $product_data['Pack_Size']; ?>" placeholder="Enter Pack Size" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="list_price">List Price</label>
+                  <input type="text" class="form-control" id="list_price" name="list_price" value="<?php echo $product_data['Price']; ?>" placeholder="Enter List Price" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="make">Make</label>
+                  <input type="text" class="form-control" id="make" name="make" value="<?php echo $product_data['Item_Make']; ?>" placeholder="Enter Maker" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="purchase_rate">Purchase Rate</label>
+                  <input type="text" class="form-control" id="purchase_rate" value="<?php echo $product_data['Purchase_Price']; ?>" name="purchase_rate" placeholder="Enter Purchase Rate" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="opening_balance">Opening Balance</label>
+                  <input type="text" class="form-control" id="opening_balance" value="<?php echo $product_data['Opening_Balance']; ?>" name="opening_balance" placeholder="Enter Opening Balance" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="tax">Tax %</label>
+                  <select class="form-control select_group" id="tax" name="tax[]" multiple="multiple">
+                    <?php foreach ($category as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>"><?php echo $v['name'] ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>
 
                 <div class="form-group">
-                  <label for="store">Availability</label>
-                  <select class="form-control" id="availability" name="availability">
-                    <option value="1" <?php if($product_data['availability'] == 1) { echo "selected='selected'"; } ?>>Yes</option>
-                    <option value="2" <?php if($product_data['availability'] != 1) { echo "selected='selected'"; } ?>>No</option>
-                  </select>
+                  <label for="description">Description</label>
+                  <textarea type="text" class="form-control" id="description" value="<?php echo $product_data['Item_Description']; ?>" name="description" placeholder="Enter 
+                  description" autocomplete="off">
+                  </textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="reorder_level">Reorder Level</label>
+                  <input type="text" class="form-control" id="reorder_level" value="<?php echo $product_data['ReOrder_Level']; ?>" name="reorder_level" placeholder="Enter Reorder Level" autocomplete="off" />
+                </div>
+
+                <div class="form-group">
+                  <label for="qty">Qty</label>
+                  <input type="text" class="form-control" id="qty" name="qty" value="<?php echo $product_data['Max_Suggested_Qty']; ?>" placeholder="Enter Qty" autocomplete="off" />
                 </div>
 
 

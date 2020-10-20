@@ -16,7 +16,7 @@ class Model_products extends CI_Model
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM item_master ORDER BY Item_ID DESC";
+		$sql = "SELECT * FROM item_master ORDER BY Item_ID";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
@@ -25,7 +25,7 @@ class Model_products extends CI_Model
 
 	public function getActiveProductData()
 	{
-		$sql = "SELECT * FROM item_master WHERE active = 1 ORDER BY Item_ID DESC";
+		$sql = "SELECT * FROM item_master WHERE active = 1 ORDER BY Item_ID";
 		// $sql = "SELECT * FROM item_master ORDER BY Item_ID DESC";
 
 		$query = $this->db->query($sql, array(1));

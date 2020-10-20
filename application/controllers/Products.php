@@ -386,7 +386,9 @@ class Products extends Admin_Controller
 
         if ($this->form_validation->run() == TRUE) {
             // true case
-            
+            $tax_data = $this->model_tax->getTaxFromID($this->input->post('tax'));
+
+
             // $data = array(
             //     'name' => $this->input->post('product_name'),
             //     'sku' => $this->input->post('sku'),
@@ -402,7 +404,7 @@ class Products extends Admin_Controller
 
             $data = array(
                 'Item_ID' => $this->input->post('item_id'),
-                'Category_ID' => $this->input->post('category'),
+                'Category_ID' => json_encode($this->input->post('category')) ,
                 'Company_ID' => $this->input->post('store'),
                 'Item_Name' => $this->input->post('product_name'),
         		'Item_Make' => $this->input->post('make'),
@@ -415,6 +417,7 @@ class Products extends Admin_Controller
                 'Opening_Balance' => $this->input->post('opening_balance'),
                 'Opening_Balance' => $this->input->post('opening_balance'),
                 'Current_Balance' => $this->input->post('qty'),
+                'iTax_ID' => json_encode($this->input->post('iTax_ID')) ,
                 'Item_Description' => $this->input->post('description'),
                 'ReOrder_Level' => $this->input->post('reorder_level'),
                 'Max_Suggested_Qty' => $this->input->post('qty'),
@@ -466,7 +469,9 @@ class Products extends Admin_Controller
             $this->data['attributes'] = $attributes_final_data;
             $this->data['brands'] = $this->model_brands->getActiveBrands();         
             $this->data['category'] = $this->model_category->getActiveCategroy();           
-            $this->data['stores'] = $this->model_stores->getActiveStore();          
+            $this->data['stores'] = $this->model_stores->getActiveStore();  
+            $this->data['unit_data']= $this->model_unit->getUnitData();
+
 
             $product_data = $this->model_products->getProductData($product_id);
             $this->data['product_data'] = $product_data;
