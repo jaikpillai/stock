@@ -403,7 +403,7 @@ class Products extends Admin_Controller
             // );
 
             $data = array(
-                'Item_ID' => $this->input->post('item_id'),
+                // 'Item_ID' => $this->input->post('item_id'),
                 'Category_ID' => json_encode($this->input->post('category')) ,
                 'Company_ID' => $this->input->post('store'),
                 'Item_Name' => $this->input->post('product_name'),

@@ -66,10 +66,6 @@
 
                 <div class="form-group">
                   <label for="category">Category</label>
-<<<<<<< HEAD
-=======
-                  <?php $category_data = json_decode($product_data['Category_ID']); ?>
->>>>>>> 15784317e6bc784a34575c1cfe11c9bc791f0b5b
                   <select class="form-control select_group" id="category" name="category">
                     <?php foreach ($category as $k => $v): ?>
                       <option value="<?php echo $product_data['Category_ID'] ?>" <?php if(in_array($product_data['Category_ID'], $v)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
@@ -87,13 +83,8 @@
                   <label for="unit">Unit</label>
                   <select class="form-control select_group" id="unit" name="unit" >
                     <?php foreach ($unit_data as $k => $v): ?>
-<<<<<<< HEAD
-                      <option value="<?php echo $v['sUnit'] ?>" <?php if(in_array($product_data['sUnit'], $v)) { echo 'selected="selected"'; } ?>>
-                      <?php echo $v['sUnit'] ?></option>
-=======
                       <option value="<?php echo $product_data['sUnit'] ?>" <?php if(in_array($unit_data_sUnit['sUnit'] , $v)) { echo 'selected="selected"'; } ?>><?php echo $v['sUnit'] ?></option>
 
->>>>>>> 15784317e6bc784a34575c1cfe11c9bc791f0b5b
                     <?php endforeach ?>
                   </select>
                 </div>
@@ -106,7 +97,6 @@
                 <div class="form-group">
                   <label for="pack_size">Pack Size</label>
                   <input type="text" class="form-control" id="pack_size" name="pack_size" value="<?php echo $product_data['Pack_Size']; ?>" placeholder="Enter Pack Size" autocomplete="off" />
-<<<<<<< HEAD
                 </div>
 
                 <div class="form-group">
@@ -125,26 +115,6 @@
                 </div>
 
                 <div class="form-group">
-=======
-                </div>
-
-                <div class="form-group">
-                  <label for="list_price">List Price</label>
-                  <input type="text" class="form-control" id="list_price" name="list_price" value="<?php echo $product_data['Price']; ?>" placeholder="Enter List Price" autocomplete="off" />
-                </div>
-
-                <div class="form-group">
-                  <label for="make">Make</label>
-                  <input type="text" class="form-control" id="make" name="make" value="<?php echo $product_data['Item_Make']; ?>" placeholder="Enter Maker" autocomplete="off" />
-                </div>
-
-                <div class="form-group">
-                  <label for="purchase_rate">Purchase Rate</label>
-                  <input type="text" class="form-control" id="purchase_rate" value="<?php echo $product_data['Purchase_Price']; ?>" name="purchase_rate" placeholder="Enter Purchase Rate" autocomplete="off" />
-                </div>
-
-                <div class="form-group">
->>>>>>> 15784317e6bc784a34575c1cfe11c9bc791f0b5b
                   <label for="opening_balance">Opening Balance</label>
                   <input type="text" class="form-control" id="opening_balance" value="<?php echo $product_data['Opening_Balance']; ?>" name="opening_balance" placeholder="Enter Opening Balance" autocomplete="off" />
                 </div>
