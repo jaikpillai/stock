@@ -68,7 +68,7 @@
                   <label for="category">Category</label>
                   <select class="form-control select_group" id="category" name="category">
                     <?php foreach ($category as $k => $v): ?>
-                      <option value="<?php echo $product_data['Category_ID'] ?>" <?php if(in_array($product_data['Category_ID'], $v)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($product_data['Category_ID'], $v)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
                     <?php endforeach ?>
                   </select>
                 </div>
@@ -83,7 +83,7 @@
                   <label for="unit">Unit</label>
                   <select class="form-control select_group" id="unit" name="unit" >
                     <?php foreach ($unit_data as $k => $v): ?>
-                      <option value="<?php echo $product_data['sUnit'] ?>" <?php if(in_array($unit_data_sUnit['sUnit'] , $v)) { echo 'selected="selected"'; } ?>><?php echo $v['sUnit'] ?></option>
+                      <option value="<?php echo $v['sUnit'] ?>" <?php if(($unit_data_sUnit['sUnit'] == $v['sUnit'])) { echo 'selected="selected"'; } ?>><?php echo $v['sUnit'] ?></option>
 
                     <?php endforeach ?>
                   </select>
@@ -94,7 +94,7 @@
                   <input type="text" class="form-control" id="item_code" name="item_code" value="<?php echo $product_data['Item_Code']; ?>" placeholder="Enter Item Code" autocomplete="off" />
                 </div>
 
-                <div class="form-group">
+                <div class="form-group">  
                   <label for="pack_size">Pack Size</label>
                   <input type="text" class="form-control" id="pack_size" name="pack_size" value="<?php echo $product_data['Pack_Size']; ?>" placeholder="Enter Pack Size" autocomplete="off" />
                 </div>
@@ -123,7 +123,7 @@
                   <label for="tax">Tax %</label>
                   <select class="form-control select_group" id="tax" name="tax" >
                     <?php foreach ($tax_data as $k => $v): ?>
-                      <option value="<?php echo $product_data['iTax_ID'] ?>" <?php if(in_array($product_data['iTax_ID'] , $v)) { echo 'selected="selected"'; } ?>><?php echo $v['sTax_Description'] ?></option>
+                      <option value="<?php echo $v['iTax_ID'] ?>" <?php if(($product_data['iTax_ID'] == $v['iTax_ID'])) { echo 'selected="selected"'; } ?>><?php echo $v['sTax_Description'] ?></option>
 
                     <?php endforeach ?>
                   </select>
@@ -131,9 +131,7 @@
 
                 <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea type="text" class="form-control" id="description" value="<?php echo $product_data['Item_Description']; ?>" name="description" placeholder="Enter 
-                  description" autocomplete="off">
-                  </textarea>
+                  <textarea type="text" class="form-control" id="description" value="<?php echo $product_data['Item_Description']; ?>" name="description" placeholder="Enter description" autocomplete="off"><?php echo $product_data['Item_Description'] ?></textarea>
                 </div>
 
                 <div class="form-group">
@@ -146,7 +144,16 @@
                   <input type="text" class="form-control" id="qty" name="qty" value="<?php echo $product_data['Max_Suggested_Qty']; ?>" placeholder="Enter Qty" autocomplete="off" />
                 </div>
 
-
+                <div class="form-group">
+                  <label for="store">Store</label>
+                  <select class="form-control select_group" id="store" name="store">
+                    <?php foreach ($stores as $k => $v): ?>
+                      <option value="<?php echo $v['id'] ?>" <?php if(in_array($product_data['Company_ID'], $v)) { echo 'selected="selected"'; } ?>><?php echo $v['name'] ?></option>
+                      
+                    <?php endforeach ?>
+                  </select>
+                </div>
+              </div>
 
               </div>
               <!-- /.box-body -->
