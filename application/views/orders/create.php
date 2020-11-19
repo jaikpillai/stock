@@ -445,7 +445,7 @@
     // $("#totalAmountValue").val(totalAmount);
 
     var round_total_amount = Math.round(totalAmount);
-    var round_off = totalAmount - round_total_amount;
+    var round_off =  round_total_amount - totalAmount;
 
     $("#roundoff").val(round_off.toFixed(2));
     var discount = $("#discount").val();
