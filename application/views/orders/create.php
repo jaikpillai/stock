@@ -63,6 +63,28 @@
                   </div>
 
                   <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">GR/RR Number</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="challan_no" name="challan_no"  autocomplete="off" />
+                      
+                    </div>
+                  </div>
+
+                  
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party Name</label>
+                    <div class="col-sm-7">
+                    <select class="form-control select_group product" id="party" name="party[]" style="width:100%;" required>
+                            <option value=""></option>
+                            <?php foreach ($party_data as $k => $v): ?>
+                              <option value="<?php echo $v['party_id'] ?>"><?php echo $v['party_name'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                      
+                    </div>
+                  </div>
+
+                  <!-- <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Name</label>
                     <div class="col-sm-7">
                       <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" autocomplete="off" />
@@ -81,7 +103,7 @@
                     <div class="col-sm-7">
                       <input type="text" class="form-control" id="customer_phone" name="customer_phone" placeholder="Enter Customer Phone" autocomplete="off">
                     </div>
-                  </div>
+                  </div> -->
                 </div>
                 
                 

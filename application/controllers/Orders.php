@@ -15,6 +15,7 @@ class Orders extends Admin_Controller
 		$this->load->model('model_orders');
 		$this->load->model('model_products');
 		$this->load->model('model_company');
+		$this->load->model('model_party');
 	}
 
 	/* 
@@ -27,7 +28,8 @@ class Orders extends Admin_Controller
         }
 
 		$this->data['page_title'] = 'Manage Orders';
-		$this->render_template('orders/index', $this->data);		
+		$this->render_template('orders/index', $this->data);	
+			
 	}
 
 	/*
@@ -39,7 +41,7 @@ class Orders extends Admin_Controller
 		$result = array('data' => array());
 
 		$data = $this->model_orders->getOrdersData();
-
+		
 		foreach ($data as $key => $value) {
 
 			$count_total_item = $this->model_orders->countOrderItem($value['id']);
@@ -121,7 +123,8 @@ class Orders extends Admin_Controller
         	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
         	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
-        	$this->data['products'] = $this->model_products->getActiveProductData();      	
+			$this->data['products'] = $this->model_products->getActiveProductData(); 
+			$this->data['party_data'] =$this->model_party->getPartyData(); 
 
             $this->render_template('orders/create', $this->data);
         }	
@@ -149,6 +152,7 @@ class Orders extends Admin_Controller
 	public function getTableProductRow()
 	{
 		$products = $this->model_products->getActiveProductData();
+
 		echo json_encode($products);
 	}
 

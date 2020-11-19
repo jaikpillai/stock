@@ -154,7 +154,7 @@ class Tax extends Admin_Controller
 	        		'active' => $this->input->post('edit_active'),	
 	        	);
 
-	        	$update = $this->model_category->update($data, $id);
+	        	$update = $this->model_tax->update($data, $id);
 	        	if($update == true) {
 	        		$response['success'] = true;
 	        		$response['messages'] = 'Succesfully updated';
