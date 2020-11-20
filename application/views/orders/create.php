@@ -57,25 +57,21 @@
                 <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Invoice Number</label>
                     <div class="col-sm-7">
-                      <input type="text" class="form-control" id="invoice_no" name="invoice_no" disabled autocomplete="off" />
-                      
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">GR/RR Number</label>
-                    <div class="col-sm-7">
-                      <input type="text" class="form-control" id="challan_no" name="challan_no"  autocomplete="off" />
-                      
-                    </div>
-                  </div>
-
+                    <?php foreach ($getlastinvoiceid as  $key => $value): 
+                     $new_id =$value['MAX(invoice_no)']+1?>
+                    <input value = "<?php echo $new_id;?>" type="text"  class="form-control" id="invoice_no" name="invoice_no" placeholder="" autocomplete="off" readonly/>
+                  <?php endforeach ?>
                   
+                      <!-- <input type="text" class="form-control" id="invoice_no" name="invoice_no" disabled autocomplete="off" /> -->
+                      
+                    </div>
+                  </div>
+
                   <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party Name</label>
                     <div class="col-sm-7">
-                    <select class="form-control select_group product" id="party" name="party[]" style="width:100%;" required>
-                            <option value=""></option>
+                    <select class="form-control select_group product" id="party" name="party" style="width:100%;" required>
+                            <option value="" disabled selected>--Select--</option>
                             <?php foreach ($party_data as $k => $v): ?>
                               <option value="<?php echo $v['party_id'] ?>"><?php echo $v['party_name'] ?></option>
                             <?php endforeach ?>
@@ -84,27 +80,100 @@
                     </div>
                   </div>
 
-                  <!-- <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Name</label>
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">GR/RR Number</label>
                     <div class="col-sm-7">
-                      <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" autocomplete="off" />
+                      <input type="text" class="form-control" id="gr_rr_no" name="gr_rr_no"  autocomplete="off" />
+                      
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Address</label>
+                  
+                  
+
+                   <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Dispatch Through</label>
                     <div class="col-sm-7">
-                      <input type="text" class="form-control" id="customer_address" name="customer_address" placeholder="Enter Customer Address" autocomplete="off">
+                      <input type="text" class="form-control" id="dispatch_through" name="dispatch_through" placeholder="Enter Dispatch Through" autocomplete="off" />
                     </div>
                   </div>
 
+                 
+
+             
+
                   <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Customer Phone</label>
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
                     <div class="col-sm-7">
-                      <input type="text" class="form-control" id="customer_phone" name="customer_phone" placeholder="Enter Customer Phone" autocomplete="off">
+                    <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
+                    <option value="" disabled selected>--Select--</option>
+                   
+                    <option value="cash"  >Cash</option>
+                    <option value="credit"  >Credit</option>
+                    <option value="personally"  >Personally</option>
+                    <option value="cheque"  >Cheque</option>
+                    <option value="upi"  >UPI</option>
+                    <option value="cheque"  >Cheque</option>
+  
+                        </select>
+                      
                     </div>
-                  </div> -->
                 </div>
+
+                </div>
+
+               
+
+               
+
+                <div class="col-md-4 col-xs-12 pull pull-left">
+
+                <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Date</label>
+                    <div class="col-sm-7">
+                      <input type="date" class="form-control" id="date" name="date"  autocomplete="off" />
+                      
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Order/Challan Number</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="challan_number" name="challan_number" placeholder="Enter Order/Challan Number" autocomplete="off">
+                      <input type="date" class="form-control" id="challan_date" name="challan_date" placeholder="Enter Order/Challan Number" autocomplete="off">
+                    
+                    </div>
+                  </div>
+                  
+                  
+                   <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Document Through</label>
+                    <div class="col-sm-7">
+                     
+                      <input type="text" class="form-control" id="document" name="document" placeholder="Document" autocomplete="off" />
+                      <input type="text" class="form-control" id="declaration" name="declaration" placeholder="Declaration" autocomplete="off">
+
+                    </div>
+                  </div>
+
+                
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Form Received</label>
+                    <div class="col-sm-7">
+                    <select class="form-control select_group product" id="form_received" name="form_received" style="width:100%;" required>
+                            <option value="" disabled selected>--Select--</option>
+                            <option value="1"  >Yes</option>
+                            <option value="0"  >No</option>
+
+                        
+                          </select>
+                    </div>
+                  </div> 
+                </div>
+                
+                
                 
                 
                 <br /> <br/>
@@ -113,13 +182,13 @@
                     <tr>                   
                       
                       <th style="width:20%">Description</th>
-                      <th style="width:5%">Code</th>
+                      <th style="width:10%">Code</th>
                       <th style="width:10%">Make</th>
                       <th style="width:5%">Qty</th>
                       <th style="width:5%">Unit</th>
                       <th style="width:10%">Rate</th>
-                      <th style="width:10%">Disc. %</th>
-                      <th style="width:10%">Tax %</th>
+                      <th style="width:5%">Disc. %</th>
+                      <th style="width:5%">Tax %</th>
                       <th style="width:20%">Amount</th>      
 
 
@@ -165,11 +234,11 @@
                           <input type="hidden" name="unit_value[]" id="unit_value_1" class="form-control" autocomplete="off">
                         </td>
                         <td>
-                          <input type="number" name="rate[]" id="rate_1" class="form-control" disabled autocomplete="off">
+                          <input type="number" name="rate[]" id="rate_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
                           <input type="hidden" name="rate_value[]" id="rate_value_1" class="form-control" autocomplete="off">
                         </td>
                         <td>
-                          <input type="number" name="discount[]" id="discount_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
+                          <input type="number" name="discount[]"  id="discount_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
                          
                         </td>
                         <td>
@@ -203,6 +272,10 @@
                     <div class="col-sm-7">
                       <input type="text" class="form-control" id="total" name="total" disabled autocomplete="off">
                       <input type="hidden" class="form-control" id="total_value" name="total_value" autocomplete="off">
+                      <input type="hidden" class="form-control" id="total_discount" name="total_discount" autocomplete="off">
+                      <input type="hidden" class="form-control" id="total_gst" name="total_gst" autocomplete="off">
+
+
                     </div>
                   </div>
 
@@ -305,8 +378,8 @@
                     '<td><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></td>'+
                     '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
-                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" disabled><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="text" name="discount[]" id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
                     '<td><button type="button" class="btn btn-default" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
@@ -331,25 +404,27 @@
 
   function getTotal(row = null) {
     if(row) {
-      console.log(row)
-      var total = Number($("#rate_value_"+row).val()) * Number($("#qty_"+row).val());
+      // console.log(row)
+      var total = Number($("#rate_"+row).val()) * Number($("#qty_"+row).val());
         // if(!$("#discount_"+row).val()){
       //   temp_total=total;
        
       // }
-      console.log(Number($("#rate_value_"+row).val()),  Number($("#qty_"+row).val()), total)
-      total = total.toFixed(2);
+      // console.log(Number($("#rate_value_"+row).val()),  Number($("#qty_"+row).val()), total)
+       total = Math.round((total + Number.EPSILON) * 100) / 100
+      
 
 
-      var temp_total = total - ((total/100)* Number($("#discount_"+row).val()));
-      // temp_total = temp_total.toFixed(2)
-      console.log(temp_total)
-    
-      temp_total = temp_total + ((total/100)* Number($("#gst_"+row).val()));
+      var temp_total = total + ((total/100)* Number($("#gst_"+row).val()));
+      temp_total = Math.round((temp_total + Number.EPSILON) * 100) / 100
+      // console.log(temp_total)
+     
+      var final_total = temp_total - ((temp_total/100)* Number($("#discount_"+row).val()));
+      final_total = Math.round((final_total + Number.EPSILON) * 100) / 100
 
-      temp_total = temp_total.toFixed(2)
-      $("#amount_"+row).val(temp_total);
-      $("#amount_value_"+row).val(temp_total);
+      // final_total = final_total.toFixed(2);
+      $("#amount_"+row).val(final_total);
+      $("#amount_value_"+row).val(final_total);
 
       
       
@@ -434,13 +509,34 @@
 
     var tableProductLength = $("#product_info_table tbody tr").length;
     var totalSubAmount = 0;
-    for(x = 0; x < tableProductLength; x++) {
-      var tr = $("#product_info_table tbody tr")[x];
+    var total_discount=0;
+    var total_gst =0;
+    var x,y,z;
+
+
+    for(i = 0; i < tableProductLength; i++) {
+      var tr = $("#product_info_table tbody tr")[i];
       var count = $(tr).attr('id');
       count = count.substring(4);
 
+      x = Number($("#rate_"+count).val()) * Number($("#qty_"+count).val());
+      x  = x.toFixed(2);
+      y = Number(x) * Number($("#gst_"+count).val())/100;
+      y = y.toFixed(2);
+      z = (Number(y)+Number(x)) * Number($("#discount_"+count).val())/100;
+      z= z.toFixed(2);
+      console.log(x,y,z);
+
+      total_gst = Number(total_gst) + Number(y);
+      total_discount = Number(total_discount) + Number(z);
       totalSubAmount = Number(totalSubAmount) + Number($("#amount_"+count).val());
-    } // /for
+      
+    }
+    console.log("tgst",total_gst.toFixed(2),"tdsic", total_discount.toFixed(2))
+    
+    $("#total_discount").val(total_discount.toFixed(2));
+    $("#total_gst").val(total_gst.toFixed(2));
+     // /for
 
     totalSubAmount = totalSubAmount.toFixed(2);
 

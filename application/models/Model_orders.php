@@ -33,28 +33,76 @@ class Model_orders extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getFinancialYearID()
+	{
+		
+
+		$sql = "SELECT * FROM financial_year WHERE status = ?";
+		$query = $this->db->query($sql, 1);
+		return $query->result_array();
+	}
+
 	public function create()
 	{
 		$user_id = $this->session->userdata('id');
-		$bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
+		$sql = "SELECT * FROM financial_year WHERE status = ?";
+		$financial_id = $this->getFinancialYearID();
+		foreach ($financial_id as  $key => $value): 
+			// $new_id =$value['MAX(Item_ID)']+1
+			$financial_year_id = $value['key_value'];
+		endforeach;
+
+		$is_received = $this->input->post('total_gst');
+		$invoice_no = $this->input->post('invoice_no');
+
+		// $total_discount
+
+		
+
+		// $bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
     	$data = array(
-    		'bill_no' => $bill_no,
-    		'customer_name' => $this->input->post('customer_name'),
-    		'customer_address' => $this->input->post('customer_address'),
-    		'customer_phone' => $this->input->post('customer_phone'),
-    		'date_time' => strtotime(date('Y-m-d h:i:s a')),
-    		'gross_amount' => $this->input->post('gross_amount_value'),
-    		'service_charge_rate' => $this->input->post('service_charge_rate'),
-    		'service_charge' => ($this->input->post('service_charge_value') > 0) ?$this->input->post('service_charge_value'):0,
-    		'vat_charge_rate' => $this->input->post('vat_charge_rate'),
-    		'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
-    		'net_amount' => $this->input->post('net_amount_value'),
-    		'discount' => $this->input->post('discount'),
-    		'paid_status' => 2,
-    		'user_id' => $user_id
+			'invoice_no' => $this->input->post('invoice_no'),
+    		'invoice_date' => $this->input->post('date'),
+    		'party_id' => $this->input->post('party'),
+    		'total_discount' => $this->input->post('total_discount'),
+			'total_gst' => $this->input->post('total_gst'),
+			'financial_year_id' => $financial_year_id,
+			'order_no' => $this->input->post('challan_number'),
+			'order_date' => $this->input->post('challan_date'),
+			'gr_rr_no' => $this->input->post('gr_rr_no'),
+			'other_charges' => $this->input->post('other_charge'),
+			'dispatched_through' => $this->input->post('dispatch_through'),
+			'mode_of_payment' => $this->input->post('paymode'),
+			'document_through' => $this->input->post('document'),
+			'form_received' => $this->input->post('form_received'),
+			'form_declaration' => $this->input->post('declaration'),
+			'total_amount' => $this->input->post('total_amount_value'),
+			'status' => 1
+
+			
+			
+			
+			
+			
+
+
+    		// 'bill_no' => $bill_no,
+    		// 'customer_name' => $this->input->post('customer_name'),
+    		// 'customer_address' => $this->input->post('customer_address'),
+    		// 'customer_phone' => $this->input->post('customer_phone'),
+    		// 'date_time' => strtotime(date('Y-m-d h:i:s a')),
+    		// 'gross_amount' => $this->input->post('gross_amount_value'),
+    		// 'service_charge_rate' => $this->input->post('service_charge_rate'),
+    		// 'service_charge' => ($this->input->post('service_charge_value') > 0) ?$this->input->post('service_charge_value'):0,
+    		// 'vat_charge_rate' => $this->input->post('vat_charge_rate'),
+    		// 'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
+    		// 'net_amount' => $this->input->post('net_amount_value'),
+    		// 'discount' => $this->input->post('discount'),
+    		// 'paid_status' => 2,
+    		// 'user_id' => $user_id
     	);
 
-		$insert = $this->db->insert('orders', $data);
+		$insert = $this->db->insert('invoice_master', $data);
 		$order_id = $this->db->insert_id();
 
 		$this->load->model('model_products');
@@ -62,26 +110,44 @@ class Model_orders extends CI_Model
 		$count_product = count($this->input->post('product'));
     	for($x = 0; $x < $count_product; $x++) {
     		$items = array(
-    			'order_id' => $order_id,
-    			'product_id' => $this->input->post('product')[$x],
-    			'qty' => $this->input->post('qty')[$x],
-    			'rate' => $this->input->post('rate_value')[$x],
-    			'amount' => $this->input->post('amount_value')[$x],
+				
+    			'invoice_no' => $invoice_no,
+				'item_id' => $this->input->post('product')[$x],
+				'item_code' => $this->input->post('code_value')[$x],
+				'item_make' => $this->input->post('make_value')[$x],
+				'qty' => $this->input->post('qty')[$x],
+				'unit' => $this->input->post('unit_value')[$x],
+				'rate' => $this->input->post('rate')[$x],
+				'discount' => $this->input->post('discount')[$x],
+				'tax' => $this->input->post('gst_value')[$x],
+    			'financial_year_id' => $financial_year_id,
+				
+				
     		);
 
-    		$this->db->insert('orders_item', $items);
+    		$this->db->insert('invoice_item', $items);
 
     		// now decrease the stock from the product
     		$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
-    		$qty = (int) $product_data['qty'] - (int) $this->input->post('qty')[$x];
+    		$qty = (int) $product_data['Max_Suggested_Qty'] - (int) $this->input->post('qty')[$x];
 
-    		$update_product = array('qty' => $qty);
+    		$update_product = array('Max_Suggested_Qty' => $qty);
 
 
     		$this->model_products->update($update_product, $this->input->post('product')[$x]);
     	}
 
 		return ($order_id) ? $order_id : false;
+	}
+
+	public function getLastInvoiceID()
+	{
+		$sql = "SELECT  MAX(invoice_no) FROM invoice_master";
+		$query = $this->db->query($sql);
+		// $row = mysql_fetch_array($query);
+		// echo $row['id'];
+		return $query->result_array();
+
 	}
 
 	public function countOrderItem($order_id)

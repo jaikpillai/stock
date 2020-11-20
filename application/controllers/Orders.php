@@ -123,10 +123,14 @@ class Orders extends Admin_Controller
         	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
         	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
+
+		
 			$this->data['products'] = $this->model_products->getActiveProductData(); 
 			$this->data['party_data'] =$this->model_party->getPartyData(); 
+            $this->data['getlastinvoiceid'] = $this->model_orders->getLastInvoiceID();
 
-            $this->render_template('orders/create', $this->data);
+			$this->render_template('orders/create', $this->data);
+			
         }	
 	}
 
