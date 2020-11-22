@@ -114,7 +114,7 @@
                     <option value="personally"  >Personally</option>
                     <option value="cheque"  >Cheque</option>
                     <option value="upi"  >UPI</option>
-                    <option value="cheque"  >Cheque</option>
+                   
   
                         </select>
                       

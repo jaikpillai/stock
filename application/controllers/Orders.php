@@ -285,7 +285,7 @@ class Orders extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>AdminLTE 2 | Invoice</title>
+			  <title>GST INVOICE NO. '. $order_data['invoice_no'].'</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -314,8 +314,8 @@ class Orders extends Admin_Controller
 			      <div class="col-sm-4 invoice-col">
 			        
 			        <b>Invoice No:</b> '.$order_data['invoice_no'].'<br>
-			        <b>Party Name:</b> '.$party_data ['party_name'].'<br>
-			        <b>Address:</b> '.$party_data['address'].' <br />
+			        <b>Sold To:</b> '.$party_data ['party_name'].'<br>
+			        <b>Address:</b> '.$party_data['address'].' <br>
 			    
 			      </div>
 			      <!-- /.col -->
