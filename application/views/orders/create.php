@@ -190,8 +190,6 @@
                       <th style="width:5%">Disc. %</th>
                       <th style="width:5%">Tax %</th>
                       <th style="width:20%">Amount</th>      
-
-
                       <th style="width:10%"><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                     </tr>
                   </thead>

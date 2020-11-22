@@ -203,11 +203,11 @@ class Orders extends Admin_Controller
         	$result = array();
         	$orders_data = $this->model_orders->getOrdersData($id);
 
-    		$result['order'] = $orders_data;
-    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['id']);
-
+    		$result['invoice_master'] = $orders_data;
+    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['invoice_no']);
+			$this->data['party_data'] = $this->model_party->getPartyData();
     		foreach($orders_item as $k => $v) {
-    			$result['order_item'][] = $v;
+    			$result['invoice_item'][] = $v;
     		}
 
     		$this->data['order_data'] = $result;
@@ -264,9 +264,10 @@ class Orders extends Admin_Controller
 			$order_data = $this->model_orders->getOrdersData($id);
 			$orders_items = $this->model_orders->getOrdersItemData($id);
 			$company_info = $this->model_company->getCompanyData(1);
+			$party_data = $this->model_party->getPartyData($order_data['party_id']);
 
-			$order_date = date('d/m/Y', $order_data['date_time']);
-			$paid_status = ($order_data['paid_status'] == 1) ? "Paid" : "Unpaid";
+			$order_date = date('d/m/Y', $order_data['invoice_date']);
+			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 
 			$html = '<!-- Main content -->
 			<!DOCTYPE html>
@@ -302,8 +303,8 @@ class Orders extends Admin_Controller
 			      
 			      <div class="col-sm-4 invoice-col">
 			        
-			        <b>Bill ID:</b> '.$order_data['bill_no'].'<br>
-			        <b>Name:</b> '.$order_data['customer_name'].'<br>
+			        <b>Invoice No:</b> '.$order_data['invoice_no'].'<br>
+			        <b>Party Name:</b> '.$party_data ['party_name'].'<br>
 			        <b>Address:</b> '.$order_data['customer_address'].' <br />
 			        <b>Phone:</b> '.$order_data['customer_phone'].'
 			      </div>
