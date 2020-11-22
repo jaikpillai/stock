@@ -275,7 +275,8 @@ class Orders extends Admin_Controller
 			$company_info = $this->model_company->getCompanyData(1);
 			$party_data = $this->model_party->getPartyData($order_data['party_id']);
 
-			$order_date = date('d/m/Y', $order_data['invoice_date']);
+			$order_date = strtotime($order_data['invoice_date']);
+			$order_date = date( 'd/m/Y', $order_date );
 			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 
 			$html = '<!-- Main content -->
@@ -314,8 +315,8 @@ class Orders extends Admin_Controller
 			        
 			        <b>Invoice No:</b> '.$order_data['invoice_no'].'<br>
 			        <b>Party Name:</b> '.$party_data ['party_name'].'<br>
-			        <b>Address:</b> '.$order_data['customer_address'].' <br />
-			        <b>Phone:</b> '.$order_data['customer_phone'].'
+			        <b>Address:</b> '.$party_data['address'].' <br />
+			    
 			      </div>
 			      <!-- /.col -->
 			    </div>
@@ -324,12 +325,17 @@ class Orders extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-striped">
+			        <table class="table table-bordered" >
 			          <thead>
 			          <tr>
-			            <th>Product name</th>
-			            <th>Price</th>
+			            <th>Item name</th>
+			            <th>Item Code</th>
+						<th>Item Make</th>
 			            <th>Qty</th>
+						<th>Unit</th>
+						<th>Rate</th>
+			            <th>Discount</th>
+			            <th>Tax</th>
 			            <th>Amount</th>
 			          </tr>
 			          </thead>
@@ -337,13 +343,19 @@ class Orders extends Admin_Controller
 
 			          foreach ($orders_items as $k => $v) {
 
-			          	$product_data = $this->model_products->getProductData($v['product_id']); 
+						  $product_data = $this->model_products->getProductData($v['item_id']); 
+						  $amount = $v['qty']*$v['rate'];
 			          	
 			          	$html .= '<tr>
-				            <td>'.$product_data['name'].'</td>
-				            <td>'.$v['rate'].'</td>
-				            <td>'.$v['qty'].'</td>
-				            <td>'.$v['amount'].'</td>
+							<td>'.$product_data['Item_Name'].'</td>
+							<td>'.$product_data['Item_Code'].'</td>
+							<td>'.$product_data['Item_Make'].'</td>
+							<td>'.$v['qty'].'</td>
+							<td>'.$v['unit'].'</td>
+							<td>'.$v['rate'].'</td>
+							<td>'.$v['discount'].'</td>
+							<td>'.$v['tax'].'</td>
+				            <td>'.$amount.'</td>
 			          	</tr>';
 			          }
 			          
@@ -381,12 +393,12 @@ class Orders extends Admin_Controller
 			            
 			            
 			            $html .=' <tr>
-			              <th>Discount:</th>
-			              <td>'.$order_data['discount'].'</td>
+			              <th>Tax</th>
+			              <td>'.$order_data['total_tax'].'</td>
 			            </tr>
 			            <tr>
-			              <th>Net Amount:</th>
-			              <td>'.$order_data['net_amount'].'</td>
+			              <th>Total Amount:</th>
+			              <td>'.$order_data['total_amount'].'</td>
 			            </tr>
 			            <tr>
 			              <th>Paid Status:</th>
