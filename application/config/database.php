@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
+	'hostname' => '35.244.48.207',
 	'username' => 'root',
 	'password' => 'bharatinventory',
 	'database' => 'stock',
