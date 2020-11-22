@@ -93,5 +93,5 @@ $db['default'] = array(
 	'stricton' => FALSE,
 	'failover' => array(),
 	'save_queries' => TRUE,
-	'socket' => '/fographcommunity:asia-south1:stock'
+	'socket' => 'fographcommunity:asia-south1:stock'
 );
