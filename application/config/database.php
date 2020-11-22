@@ -72,14 +72,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '35.244.48.207',
+	'hostname' => 'localhost',
 	'username' => 'root',
-	'password' => 'bharatinventory',
-	'database' => '35.244.48.207/stock',
+	'password' => '',
+	'database' => 'stock',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
@@ -93,6 +92,5 @@ $db['default'] = array(
 	'compress' => FALSE,
 	'stricton' => FALSE,
 	'failover' => array(),
-	'save_queries' => TRUE,
-	'socket' => 'fographcommunity:asia-south1:stock'
+	'save_queries' => TRUE
 );
