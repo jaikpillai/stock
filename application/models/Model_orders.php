@@ -48,10 +48,13 @@ class Model_orders extends CI_Model
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
 		$financial_id = $this->getFinancialYearID();
+		// $tax = $this->model_tax->getTaxData($this->input->post('tax'));
+
 		foreach ($financial_id as  $key => $value): 
 			// $new_id =$value['MAX(Item_ID)']+1
 			$financial_year_id = $value['key_value'];
 		endforeach;
+
 
 		// $is_received = $this->input->post('total_gst');
 		$invoice_no = $this->input->post('invoice_no');
@@ -79,7 +82,8 @@ class Model_orders extends CI_Model
 			'form_declaration' => $this->input->post('declaration'),
 			'total_amount' => $this->input->post('total_amount_value'),
 			'is_payment_received' => 1,
-			'status' => 1
+			'status' => 1,
+			'tax_id' =>  $this->input->post('tax')
 
 			
 			
@@ -121,7 +125,7 @@ class Model_orders extends CI_Model
 				'unit' => $this->input->post('unit_value')[$x],
 				'rate' => $this->input->post('rate')[$x],
 				'discount' => $this->input->post('discount')[$x],
-				'tax' => $this->input->post('gst_value')[$x],
+				// 'tax' => $this->input->post('gst_value')[$x],
 				'financial_year_id' => $financial_year_id,
 				'status' => 1
 				
@@ -167,10 +171,14 @@ class Model_orders extends CI_Model
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
 		$financial_id = $this->getFinancialYearID();
+		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
+
 		foreach ($financial_id as  $key => $value): 
 			// $new_id =$value['MAX(Item_ID)']+1
 			$financial_year_id = $value['key_value'];
 		endforeach;
+
+	
 
 		// $is_received = $this->input->post('total_gst');
 		$invoice_no = $this->input->post('invoice_no');
@@ -197,8 +205,9 @@ class Model_orders extends CI_Model
 			'form_received' => $this->input->post('form_received'),
 			'form_declaration' => $this->input->post('declaration'),
 			'total_amount' => $this->input->post('total_amount_value'),
-			'status' => 1,
 			'is_payment_received' => $this->input->post('paid_status'),
+			'status' => 1,
+			'tax_id' => $this->input->post('tax'),
 
 
 
@@ -253,7 +262,7 @@ class Model_orders extends CI_Model
 					'unit' => $this->input->post('unit_value')[$x],
 					'rate' => $this->input->post('rate')[$x],
 					'discount' => $this->input->post('discount')[$x],
-					'tax' => $this->input->post('gst_value')[$x],
+					// 'tax' => $this->input->post('tax')[$x],
 					'financial_year_id' => $financial_year_id,
 					'status' => 1
 

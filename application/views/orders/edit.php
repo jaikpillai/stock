@@ -170,10 +170,10 @@
                       <th style="width:10%">Code</th>
                       <th style="width:10%">Make</th>
                       <th style="width:5%">Qty</th>
-                      <th style="width:5%">Unit</th>
+                      <th style="width:10%">Unit</th>
                       <th style="width:10%">Rate</th>
-                      <th style="width:5%">Disc. %</th>
-                      <th style="width:5%">Tax %</th>
+                      <th style="width:10%">Disc. %</th>
+                      <!-- <th style="width:5%">Tax %</th> -->
                       <th style="width:20%">Amount</th>      
                       <th style="width:10%"><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                     </tr>
@@ -217,10 +217,10 @@
                           <input type="number" name="discount[]"  id="discount_<?php echo $x; ?>" class="form-control" value = "<?php echo $val['discount'] ?>" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
                          
                         </td>
-                        <td>
+                        <!-- <td>
                           <input type="number" name="gst[]" id="gst_<?php echo $x; ?>" class="form-control"value = "<?php echo $val['tax'] ?>"  disabled autocomplete="off">
                           <input type="hidden" name="gst_value[]" id="gst_value_<?php echo $x; ?>" class="form-control" value = "<?php echo $val['tax'] ?>" autocomplete="off">
-                        </td>
+                        </td> -->
                           <td>
                             <input type="text" name="amount[]" id="amount_<?php echo $x; ?>" class="form-control" disabled value="<?php  ?>" autocomplete="off">
                             <input type="hidden" name="amount_value[]" id="amount_value_<?php echo $x; ?>" class="form-control" value="<?php  ?>" autocomplete="off">
@@ -245,6 +245,24 @@
                     </div>
                   </div>
                 
+                  <div class="form-group">
+                    <label for="other_charge" class="col-sm-5 control-label">Tax</label>
+                    <div class="col-sm-7">
+                    <select class="form-control select_group product" data-row-id="row_1" id="tax" name = "tax" style="width:100%;" onchange="subAmount()" required>
+                            <!-- <option value=""></option> -->
+                          
+                          <?php   echo $order_data['invoice_master']['tax_id'] ?>
+                            <option value="" selected disabled>--Select--</option>
+
+                            <?php foreach ($tax_data as $k => $v): ?>
+                              <option value="<?php echo $v['iTax_ID'] ?>" <?php if($order_data['invoice_master']['tax_id'] == $v['iTax_ID']) { echo "selected='selected'"; } ?>><?php echo $v['sTax_Description'] ?></option>
+
+                              <!-- <option value="<?php echo $v['iTax_ID'] ?>"><?php echo $v['sTax_Description'] ?></option> -->
+                            <?php endforeach ?>
+                          </select>
+                    </div>
+                  </div>
+
                   <div class="form-group">
                     <label for="other_charge" class="col-sm-5 control-label">Freight/Others</label>
                     <div class="col-sm-7">
@@ -384,7 +402,7 @@
                     '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
                     '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"  class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
+                    // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
                     '<td><button type="button" class="btn btn-default" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
@@ -447,15 +465,15 @@
       
 
 
-      var temp_total = total + ((total/100)* Number($("#gst_"+row).val()));
+      // var temp_total = total + ((total/100)* Number($("#gst_"+row).val()));
    
 
-      temp_total = Math.round((temp_total + Number.EPSILON) * 100) / 100
+      // temp_total = Math.round((temp_total + Number.EPSILON) * 100) / 100
       // console.log(temp_total)
 
      
      
-      var final_total = temp_total - ((temp_total/100)* Number($("#discount_"+row).val()));
+      var final_total = total - ((total/100)* Number($("#discount_"+row).val()));
       final_total = Math.round((final_total + Number.EPSILON) * 100) / 100
 
       // final_total = final_total.toFixed(2);

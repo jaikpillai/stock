@@ -10,7 +10,7 @@ class Model_tax extends CI_Model
 	/* get active brand infromation */
 	public function getActiveTax()
 	{
-		$sql = "SELECT * FROM tax_master WHERE active = ?";
+		$sql = "SELECT * FROM tax_master WHERE active = 1";
 		$query = $this->db->query($sql, array(1));
 		return $query->result_array();
 	}

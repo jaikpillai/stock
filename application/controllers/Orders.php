@@ -14,6 +14,7 @@ class Orders extends Admin_Controller
 
 		$this->load->model('model_orders');
 		$this->load->model('model_products');
+		$this->load->model('model_tax');
 		$this->load->model('model_company');
 		$this->load->model('model_party');
 	}
@@ -135,6 +136,8 @@ class Orders extends Admin_Controller
 
 		
 			$this->data['products'] = $this->model_products->getActiveProductData(); 
+			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
+			
 			$this->data['party_data'] =$this->model_party->getPartyData(); 
             $this->data['getlastinvoiceid'] = $this->model_orders->getLastInvoiceID();
 
@@ -219,7 +222,9 @@ class Orders extends Admin_Controller
     			$result['invoice_item'][] = $v;
     		}
 
-    		$this->data['order_data'] = $result;
+			$this->data['order_data'] = $result;
+			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
+			
 
         	$this->data['products'] = $this->model_products->getActiveProductData();      	
 

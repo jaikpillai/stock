@@ -184,11 +184,11 @@
                       <th style="width:20%">Description</th>
                       <th style="width:10%">Code</th>
                       <th style="width:10%">Make</th>
-                      <th style="width:5%">Qty</th>
+                      <th style="width:10%">Qty</th>
                       <th style="width:5%">Unit</th>
                       <th style="width:10%">Rate</th>
-                      <th style="width:5%">Disc. %</th>
-                      <th style="width:5%">Tax %</th>
+                      <th style="width:10%">Disc. %</th>
+                      <!-- <th style="width:5%">Tax %</th> -->
                       <th style="width:20%">Amount</th>      
                       <th style="width:10%"><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                     </tr>
@@ -239,10 +239,10 @@
                           <input type="number" name="discount[]"  id="discount_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
                          
                         </td>
-                        <td>
+                        <!-- <td>
                           <input type="number" name="gst[]" id="gst_1" class="form-control" disabled autocomplete="off">
                           <input type="hidden" name="gst_value[]" id="gst_value_1" class="form-control" autocomplete="off">
-                        </td>
+                        </td> -->
                         <td>
                           <input type="number" name="amount[]" id="amount_1" class="form-control" disabled autocomplete="off">
                           <input type="hidden" name="amount_value[]" id="amount_value_1" class="form-control" autocomplete="off">
@@ -274,6 +274,19 @@
                       <input type="hidden" class="form-control" id="total_gst" name="total_gst" autocomplete="off">
 
 
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="other_charge" class="col-sm-5 control-label">Tax</label>
+                    <div class="col-sm-7">
+                    <select class="form-control select_group product" id="tax"  name = "tax" style="width:100%;" onchange="subAmount()" required>
+                            <!-- <option value=""></option> -->
+                            <option value="" selected disabled>--Select--</option>
+                            <?php foreach ($tax_data as $k => $v): ?>
+                              <option value="<?php echo $v['iTax_ID'] ?>"><?php echo $v['sTax_Description'] ?></option>
+                            <?php endforeach ?>
+                          </select>
                     </div>
                   </div>
 
@@ -378,7 +391,7 @@
                     '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
                     '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
+                    // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
                     '<td><button type="button" class="btn btn-default" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
@@ -409,20 +422,26 @@
        
       // }
       // console.log(Number($("#rate_value_"+row).val()),  Number($("#qty_"+row).val()), total)
+      
        total = Math.round((total + Number.EPSILON) * 100) / 100
+      // total = total.toFixed(2);
       
 
 
-      var temp_total = total + ((total/100)* Number($("#gst_"+row).val()));
-      temp_total = Math.round((temp_total + Number.EPSILON) * 100) / 100
+      // var temp_total = total + ((total/100)* Number($("#gst_"+row).val()));
+   
+
+      // temp_total = Math.round((temp_total + Number.EPSILON) * 100) / 100
       // console.log(temp_total)
+
      
-      var final_total = temp_total - ((temp_total/100)* Number($("#discount_"+row).val()));
+     
+      var final_total = total - ((total/100)* Number($("#discount_"+row).val()));
       final_total = Math.round((final_total + Number.EPSILON) * 100) / 100
 
       // final_total = final_total.toFixed(2);
-      $("#amount_"+row).val(final_total);
-      $("#amount_value_"+row).val(final_total);
+      $("#amount_"+row).val(final_total.toFixed(2));
+      $("#amount_value_"+row).val(final_total.toFixed(2));
 
       
       
@@ -468,8 +487,8 @@
           $("#unit_"+row_id).val(response.sUnit);
           $("#unit_value_"+row_id).val(response.sUnit);
 
-          $("#gst_"+row_id).val(response.Tax);
-          $("#gst_value_"+row_id).val(response.Tax);
+          // $("#gst_"+row_id).val(response.Tax);
+          // $("#gst_value_"+row_id).val(response.Tax);
 
           // $("#rate_"+row_id).val(response.Price);
           // $("#rate_value_"+row_id).val(response.Price);
@@ -484,13 +503,13 @@
           $("#qty_"+row_id).val(1);
           $("#qty_value_"+row_id).val(1);
 
-          var tax = $("#gst_"+row_id).val();
+          // var tax = $("#gst_"+row_id).val();
           
 
           var total = Number(response.Price) * 1;
-          var temp_total = total + ((total/100)*tax);
+         
 
-          total = temp_total.toFixed(2);
+          total = total.toFixed(2);
           $("#amount_"+row_id).val(total);
           $("#amount_value_"+row_id).val(total);
           
