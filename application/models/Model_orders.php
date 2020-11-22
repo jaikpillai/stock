@@ -11,15 +11,16 @@ class Model_orders extends CI_Model
 	public function getOrdersData($id = null)
 	{
 		if($id) {
-			$sql = "SELECT * FROM invoice_master WHERE invoice_no = ?";
+			$sql = "SELECT * FROM invoice_master WHERE invoice_no = ? AND status = 1 "  ;
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM invoice_master ORDER BY invoice_no DESC";
+		$sql = "SELECT * FROM invoice_master WHERE status = 1 ORDER BY invoice_no DESC ";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}
+
 
 	// get the orders item data
 	public function getOrdersItemData($order_id = null)
@@ -121,7 +122,8 @@ class Model_orders extends CI_Model
 				'rate' => $this->input->post('rate')[$x],
 				'discount' => $this->input->post('discount')[$x],
 				'tax' => $this->input->post('gst_value')[$x],
-    			'financial_year_id' => $financial_year_id,
+				'financial_year_id' => $financial_year_id,
+				'status' => 1
 				
 				
     		);
@@ -154,7 +156,7 @@ class Model_orders extends CI_Model
 	public function countOrderItem($order_id)
 	{
 		if($order_id) {
-			$sql = "SELECT * FROM orders_item WHERE order_id = ?";
+			$sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
 			$query = $this->db->query($sql, array($order_id));
 			return $query->num_rows();
 		}
@@ -253,6 +255,7 @@ class Model_orders extends CI_Model
 					'discount' => $this->input->post('discount')[$x],
 					'tax' => $this->input->post('gst_value')[$x],
 					'financial_year_id' => $financial_year_id,
+					'status' => 1
 
 
 	    			// 'order_id' => $id,
@@ -280,11 +283,15 @@ class Model_orders extends CI_Model
 	public function remove($id)
 	{
 		if($id) {
-			$this->db->where('id', $id);
-			$delete = $this->db->delete('orders');
+			$data = array(
 
-			$this->db->where('order_id', $id);
-			$delete_item = $this->db->delete('orders_item');
+				'status' => 0);
+			
+			$this->db->where('invoice_no', $id);
+			$delete = $this->db->update('invoice_master',$data);
+
+			$this->db->where('invoice_no', $id);
+			$delete_item = $this->db->update('invoice_item', $data);
 			return ($delete == true && $delete_item) ? true : false;
 		}
 	}

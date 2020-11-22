@@ -44,41 +44,50 @@ class Orders extends Admin_Controller
 		
 		foreach ($data as $key => $value) {
 
-			$count_total_item = $this->model_orders->countOrderItem($value['id']);
-			$date = date('d-m-Y', $value['date_time']);
-			$time = date('h:i a', $value['date_time']);
+			$count_total_item = $this->model_orders->countOrderItem($value['invoice_no']);
+			// echo $count_total_item;
+			// $date = date('Y-m-d', $value['invoice_date']);
+			// $time = date('h:i a', $value['date_time']);
+			$party_data = $this->model_party->getPartyData($value['party_id']);
 
-			$date_time = $date . ' ' . $time;
+			// $date_time = $date;
 
+			if($party_data['address'] == NULL){
+				$party_data['address'] ="";
+			}
+			if($party_data['party_name'] == NULL){
+				$party_data['party_name'] ="";
+			}
 			// button
 			$buttons = '';
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('orders/printDiv/'.$value['id']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a target="__blank" href="'.base_url('orders/printDiv/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('orders/update/'.$value['id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a href="'.base_url('orders/update/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['invoice_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
-			if($value['paid_status'] == 1) {
+			if($value['is_payment_received'] == 1) {
 				$paid_status = '<span class="label label-success">Paid</span>';	
 			}
 			else {
 				$paid_status = '<span class="label label-warning">Not Paid</span>';
 			}
 
+		
+
 			$result['data'][$key] = array(
-				$value['bill_no'],
-				$value['customer_name'],
-				$value['customer_phone'],
-				$date_time,
+				$value['invoice_no'],
+				$party_data['party_name'],
+				$party_data['address'],
 				$count_total_item,
-				$value['net_amount'],
+				$value['total_amount'],
 				$paid_status,
 				$buttons
 			);
@@ -228,11 +237,11 @@ class Orders extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$order_id = $this->input->post('order_id');
+		$invoice_no = $this->input->post('invoice_no');
 
         $response = array();
-        if($order_id) {
-            $delete = $this->model_orders->remove($order_id);
+        if($invoice_no) {
+            $delete = $this->model_orders->remove($invoice_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 

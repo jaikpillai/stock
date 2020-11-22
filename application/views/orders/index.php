@@ -48,10 +48,9 @@
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
-                <th>Bill no</th>
-                <th>Customer Name</th>
-                <th>Customer Phone</th>
-                <th>Date Time</th>
+                <th>Invoice no</th>
+                <th>Party Name</th>
+                <th>Party Address</th>
                 <th>Total Products</th>
                 <th>Total Amount</th>
                 <th>Paid status</th>
@@ -136,7 +135,7 @@ function removeFunc(id)
       $.ajax({
         url: form.attr('action'),
         type: form.attr('method'),
-        data: { order_id:id }, 
+        data: { invoice_no:id }, 
         dataType: 'json',
         success:function(response) {
 
