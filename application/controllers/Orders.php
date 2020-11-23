@@ -350,7 +350,7 @@ class Orders extends Admin_Controller
 
 						  $product_data = $this->model_products->getProductData($v['item_id']); 
 						  $amount = $v['qty']*$v['rate'];
-						  $discount_amount = $amount - ($amount/100*$v['discount']);
+						  $discount_amount = $amount - ($amount/100)*$v['discount'];
 			          	
 			          	$html .= '<tr>
 							<td>'.$product_data['Item_Name'].'</td>
