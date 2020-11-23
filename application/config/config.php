@@ -380,7 +380,12 @@ $config['encryption_key'] = 'Go87NSzqqq96Dq2jcjnvhVUCpKPeP2ea';
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
-$config['sess_save_path'] = NULL;
+
+//Development
+// $config['sess_save_path'] = NULL;
+
+//Live
+$config['sess_save_path'] = FCPATH.'ci_sessions';
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
