@@ -349,7 +349,7 @@ class Orders extends Admin_Controller
 			          foreach ($orders_items as $k => $v) {
 
 						  $product_data = $this->model_products->getProductData($v['item_id']); 
-						  $amount = $v['qty']*$v['rate']
+						  $amount = $v['qty']*$v['rate'];
 						  $discount_amount = $amount - ($amount/100*$v['discount']);
 			          	
 			          	$html .= '<tr>
