@@ -330,7 +330,7 @@ class Orders extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			        <table class="table" >
 			          <thead>
 			          <tr>
 			            <th>Item name</th>
