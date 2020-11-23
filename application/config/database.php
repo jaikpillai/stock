@@ -97,7 +97,7 @@ $query_builder = TRUE;
 // );
 
 //Remote DB
-$dsn = "mysql:host=remotemysql.com;dbnam=vAcWtXMOgZ;charset=utf8";
+$dsn = "mysql:host=remotemysql.com;dbname=vAcWtXMOgZ;charset=utf8";
 $db['default'] = array(
 	'dsn'	=> $dsn,
 	'hostname' => 'remotemysql.com',
