@@ -330,37 +330,41 @@ class Orders extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table" >
+			        <table class="table table-stripped" >
 			          <thead>
-			          <tr>
-			            <th>Item name</th>
-			            <th>Item Code</th>
-						<th>Item Make</th>
+					  <tr>
+						<th>S.N.</th>
+						<th>Code</th>
+			            <th>Description</th>
+						<th>Make</th>
 			            <th>Qty</th>
 						<th>Unit</th>
 						<th>Rate</th>
 			            <th>Disc. %</th>
-			            <th>Tax</th>
 			            <th>Amount</th>
 			          </tr>
 			          </thead>
 			          <tbody>'; 
-
+					  $gross_total = 0;
 			          foreach ($orders_items as $k => $v) {
 
 						  $product_data = $this->model_products->getProductData($v['item_id']); 
 						  $amount = $v['qty']*$v['rate'];
+						  $index = $k + 1;
 						  $discount_amount = $amount - ($amount/100)*$v['discount'];
+						  
+						  $gross_total = $gross_total + $discount_amount;
+						  $tax_data = $this->model_tax->getTaxData($order_data['tax_id']);
 			          	
-			          	$html .= '<tr>
-							<td>'.$product_data['Item_Name'].'</td>
+						  $html .= '<tr>
+							<td>'.$index.'</td>
 							<td>'.$product_data['Item_Code'].'</td>
+							<td>'.$product_data['Item_Name'].'</td>
 							<td>'.$product_data['Item_Make'].'</td>
 							<td>'.$v['qty'].'</td>
 							<td>'.$v['unit'].'</td>
 							<td>'.$v['rate'].'</td>
 							<td>'.$v['discount'].'</td>
-							<td>'.$v['tax'].'</td>
 				            <td>'.$discount_amount.'</td>
 			          	</tr>';
 			          }
@@ -379,29 +383,33 @@ class Orders extends Admin_Controller
 			        <div class="table-responsive">
 			          <table class="table">
 			            <tr>
-			              <th style="width:50%">Gross Amount:</th>
-			              <td>'.$order_data['gross_amount'].'</td>
+			              <th style="width:50%">Total:</th>
+			              <td>'.$gross_total.'</td>
 			            </tr>';
 
-			            if($order_data['service_charge'] > 0) {
-			            	$html .= '<tr>
-				              <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
-				              <td>'.$order_data['service_charge'].'</td>
-				            </tr>';
-			            }
+			            // if($order_data['service_charge'] > 0) {
+			            // 	$html .= '<tr>
+				        //       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
+				        //       <td>'.$order_data['service_charge'].'</td>
+				        //     </tr>';
+			            // }
 
-			            if($order_data['vat_charge'] > 0) {
-			            	$html .= '<tr>
-				              <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
-				              <td>'.$order_data['vat_charge'].'</td>
-				            </tr>';
-			            }
+			            // if($order_data['vat_charge'] > 0) {
+			            // 	$html .= '<tr>
+				        //       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
+				        //       <td>'.$order_data['vat_charge'].'</td>
+				        //     </tr>';
+			            // }
 			            
 			            
 			            $html .=' <tr>
 			              <th>Tax</th>
-			              <td>'.$order_data['total_tax'].'</td>
-			            </tr>
+			              <td>'.$tax_data['sTax_Description'].'</td>
+						</tr>
+						<tr>
+						<th>Freight/Others</th>
+						<td>'.$order_data['other_charges'].'</td>
+					  </tr>
 			            <tr>
 			              <th>Total Amount:</th>
 			              <td>'.$order_data['total_amount'].'</td>
