@@ -339,7 +339,7 @@ class Orders extends Admin_Controller
 			            <th>Qty</th>
 						<th>Unit</th>
 						<th>Rate</th>
-			            <th>Discount</th>
+			            <th>Disc. %</th>
 			            <th>Tax</th>
 			            <th>Amount</th>
 			          </tr>
