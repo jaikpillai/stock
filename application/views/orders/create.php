@@ -284,7 +284,7 @@
                             <!-- <option value=""></option> -->
                             <option value="" selected disabled>--Select--</option>
                             <?php foreach ($tax_data as $k => $v): ?>
-                              <option value="<?php echo $v['iTax_ID'] ?>"><?php echo $v['sTax_Description'] ?></option>
+                              <option value="<?php echo $v['iTax_ID'] ?> " data-tax-value="<?php echo $v['sValue'] ?> "> <?php echo $v['sTax_Description'] ?> </option>
                             <?php endforeach ?>
                           </select>
                     </div>
@@ -342,6 +342,11 @@
 </div>
 <!-- /.content-wrapper -->
 
+
+<script type="text/javascript">
+var removed_row_count =0;
+</script>
+
 <script type="text/javascript">
   var base_url = "<?php echo base_url(); ?>";
 
@@ -356,12 +361,14 @@
         'onclick="alert(\'Call your custom code here.\')">' +
         '<i class="glyphicon glyphicon-tag"></i>' +
         '</button>'; 
+
+
   
     // Add new row in the table 
     $("#add_row").unbind('click').bind('click', function() {
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-      var row_id = count_table_tbody_tr + 1;
+      var row_id = count_table_tbody_tr + 1 + Number(removed_row_count);
 
       $.ajax({
           url: base_url + '/orders/getTableProductRow/',
@@ -539,23 +546,31 @@
 
       x = Number($("#rate_"+count).val()) * Number($("#qty_"+count).val());
       x  = x.toFixed(2);
-      y = Number(x) * Number($("#gst_"+count).val())/100;
-      y = y.toFixed(2);
-      z = (Number(y)+Number(x)) * Number($("#discount_"+count).val())/100;
+      // y = Number(x) * Number($("#gst_"+count).val())/100;
+      // y = y.toFixed(2);
+      z = Number(x) * Number($("#discount_"+count).val())/100;
       z= z.toFixed(2);
-      console.log(x,y,z);
+      // console.log(x,y,z);
 
-      total_gst = Number(total_gst) + Number(y);
+      // total_gst = Number(total_gst) + Number(y);
       total_discount = Number(total_discount) + Number(z);
       totalSubAmount = Number(totalSubAmount) + Number($("#amount_"+count).val());
       
     }
-    console.log("tgst",total_gst.toFixed(2),"tdsic", total_discount.toFixed(2))
-    
-    $("#total_discount").val(total_discount.toFixed(2));
-    $("#total_gst").val(total_gst.toFixed(2));
-     // /for
 
+    var tax = $("#tax").find(':selected').attr('data-tax-value');
+    console.log(tax);
+
+    total_gst = Number(totalSubAmount) * Number(tax) /100 
+    // total_gst = total_gst.toFixed(2);
+
+    console.log("tgst",total_gst.toFixed(2),"tdsic", total_discount.toFixed(2))
+    // total_discount = total_discount.toFixed(2);
+
+
+    $("#total_discount").val(total_discount);
+    $("#total_gst").val(total_gst);
+     // /for
     totalSubAmount = totalSubAmount.toFixed(2);
 
     // sub total
@@ -576,6 +591,7 @@
     
     // total amount
     var totalAmount = (Number(totalSubAmount) + Number($("#other_charge").val()));
+    totalAmount = totalAmount + total_gst;
     totalAmount = totalAmount.toFixed(2);
     // $("#net_amount").val(totalAmount);
     // $("#totalAmountValue").val(totalAmount);
@@ -596,7 +612,7 @@
       
     // } // /else discount 
 
-  } // /sub total amount
+  }// /sub total amount
 
 
 
@@ -604,6 +620,8 @@
   {
 
     $("#product_info_table tbody tr#row_"+tr_id).remove();
+    removed_row_count = Number(removed_row_count) + 1;
     subAmount();
+
   }
 </script>

@@ -284,6 +284,8 @@ class Orders extends Admin_Controller
 			$order_date = date( 'd/m/Y', $order_date );
 			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 
+
+
 			$html = '<!-- Main content -->
 			<!DOCTYPE html>
 			<html>
@@ -301,7 +303,7 @@ class Orders extends Admin_Controller
 			</head>
 			<body onload="window.print();">
 			
-			<div class="wrapper">
+			<div class="wrapper" style= "overflow: visible">
 			  <section class="invoice">
 			    <!-- title row -->
 			    <div class="row">
@@ -321,16 +323,16 @@ class Orders extends Admin_Controller
 			        <b>Invoice No:</b> '.$order_data['invoice_no'].'<br>
 			        <b>Sold To:</b> '.$party_data ['party_name'].'<br>
 			        <b>Address:</b> '.$party_data['address'].' <br>
-			    
+
 			      </div>
 			      <!-- /.col -->
 			    </div>
 			    <!-- /.row -->
-
+				<hr>	
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-stripped" >
+			        <table class="table table-bordered" >
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -345,16 +347,20 @@ class Orders extends Admin_Controller
 			          </tr>
 			          </thead>
 			          <tbody>'; 
-					  $gross_total = 0;
+					  $total = 0;
+					  
 			          foreach ($orders_items as $k => $v) {
-
+						
 						  $product_data = $this->model_products->getProductData($v['item_id']); 
 						  $amount = $v['qty']*$v['rate'];
+						  $total = $total + $amount; 
 						  $index = $k + 1;
-						  $discount_amount = $amount - ($amount/100)*$v['discount'];
+
+						  $freight_other_charge = $order_data['other_charges'];
+
+						  $discount_amount = $amount - ($amount * $v['discount'])/100;
 						  
-						  $gross_total = $gross_total + $discount_amount;
-						  $tax_data = $this->model_tax->getTaxData($order_data['tax_id']);
+						  
 			          	
 						  $html .= '<tr>
 							<td>'.$index.'</td>
@@ -367,7 +373,19 @@ class Orders extends Admin_Controller
 							<td>'.$v['discount'].'</td>
 				            <td>'.$discount_amount.'</td>
 			          	</tr>';
-			          }
+					  }
+
+					$tax_value = $order_data['tax_value'];
+					$gross_total = $total - $order_data['total_discount'];
+					$total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
+					$final_total = $total_after_tax + $freight_other_charge;
+
+					
+					$rounded_total_amount = round($final_total);
+					$round_off =  ($rounded_total_amount - $final_total);
+					$round_off = round($round_off, 2);
+
+
 			          
 			          $html .= '</tbody>
 			        </table>
@@ -377,11 +395,11 @@ class Orders extends Admin_Controller
 			    <!-- /.row -->
 
 			    <div class="row">
-			      
-			      <div class="col-xs-6 pull pull-right">
+			    
+			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
-			        <div class="table-responsive">
-			          <table class="table">
+			        <div class="table-responsive" >
+			          <table class="table table-bordered" >
 			            <tr>
 			              <th style="width:50%">Total:</th>
 			              <td>'.$gross_total.'</td>
@@ -402,18 +420,23 @@ class Orders extends Admin_Controller
 			            // }
 			            
 			            
-			            $html .=' <tr>
-			              <th>Tax</th>
-			              <td>'.$tax_data['sTax_Description'].'</td>
+						$html .='
+						<tr>
+			              <th>GST ('. $order_data['tax_value'].'%)</th>
+			              <td>'.$order_data['total_gst'].'</td>
 						</tr>
 						<tr>
 						<th>Freight/Others</th>
 						<td>'.$order_data['other_charges'].'</td>
 					  </tr>
-			            <tr>
-			              <th>Total Amount:</th>
-			              <td>'.$order_data['total_amount'].'</td>
-			            </tr>
+					  <tr>
+						<th>Round off</th>
+						<td>'.$round_off.'</td>
+					  </tr>
+					  <tr>
+					  <th>Total Amount:</th>
+					  <td>'.$rounded_total_amount.'</td>
+					</tr>
 			            <tr>
 			              <th>Paid Status:</th>
 			              <td>'.$paid_status.'</td>

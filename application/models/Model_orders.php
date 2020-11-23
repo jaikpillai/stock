@@ -48,13 +48,14 @@ class Model_orders extends CI_Model
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
 		$financial_id = $this->getFinancialYearID();
-		// $tax = $this->model_tax->getTaxData($this->input->post('tax'));
+		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
 
 		foreach ($financial_id as  $key => $value): 
 			// $new_id =$value['MAX(Item_ID)']+1
 			$financial_year_id = $value['key_value'];
 		endforeach;
 
+	
 
 		// $is_received = $this->input->post('total_gst');
 		$invoice_no = $this->input->post('invoice_no');
@@ -83,7 +84,8 @@ class Model_orders extends CI_Model
 			'total_amount' => $this->input->post('total_amount_value'),
 			'is_payment_received' => 1,
 			'status' => 1,
-			'tax_id' =>  $this->input->post('tax')
+			'tax_id' =>  $this->input->post('tax'),
+			'tax_value' => $tax['sValue']
 
 			
 			
@@ -133,9 +135,9 @@ class Model_orders extends CI_Model
     		);
 
     		$this->db->insert('invoice_item', $items);
-
     		// now decrease the stock from the product
-    		$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
+			$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
+			
     		$qty = (int) $product_data['Max_Suggested_Qty'] - (int) $this->input->post('qty')[$x];
 
     		$update_product = array('Max_Suggested_Qty' => $qty);
@@ -171,7 +173,8 @@ class Model_orders extends CI_Model
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
 		$financial_id = $this->getFinancialYearID();
-		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
+		$tax_id = $this->input->post('tax');
+		$tax = $this->model_tax->getTaxData($tax_id);
 
 		foreach ($financial_id as  $key => $value): 
 			// $new_id =$value['MAX(Item_ID)']+1
@@ -179,6 +182,7 @@ class Model_orders extends CI_Model
 		endforeach;
 
 	
+
 
 		// $is_received = $this->input->post('total_gst');
 		$invoice_no = $this->input->post('invoice_no');
@@ -208,6 +212,7 @@ class Model_orders extends CI_Model
 			'is_payment_received' => $this->input->post('paid_status'),
 			'status' => 1,
 			'tax_id' => $this->input->post('tax'),
+			'tax_value' => $tax['sValue']
 
 
 

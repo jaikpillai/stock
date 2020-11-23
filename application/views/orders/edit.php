@@ -210,11 +210,11 @@
                           <input type="hidden" name="unit_value[]" id="unit_value_<?php echo $x; ?>"  value="<?php echo $val['unit']?>" class="form-control" autocomplete="off">
                         </td>
                           <td>
-                            <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control"   value="<?php echo $val['rate'] ?>" autocomplete="off">
+                            <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control"   value="<?php echo $val['rate'] ?>" onchange= "getTotal(<?php echo $x; ?>)" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off">
                             <input type="hidden" name="rate_value[]" id="rate_value_<?php echo $x; ?>" class="form-control" value="<?php echo $val['rate'] ?>" autocomplete="off">
                           </td>
                           <td>
-                          <input type="number" name="discount[]"  id="discount_<?php echo $x; ?>" class="form-control" value = "<?php echo $val['discount'] ?>" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
+                          <input type="number" name="discount[]"  id="discount_<?php echo $x; ?>" class="form-control" value = "<?php echo $val['discount'] ?>" onchange="getTotal(<?php echo $x; ?>)" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off">
                          
                         </td>
                         <!-- <td>
@@ -237,11 +237,15 @@
 
                 <div class="col-md-6 col-xs-12 pull pull-right">
 
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label">Total</label>
+                <div class="form-group">
+                    <label for="total" class="col-sm-5 control-label">Total</label>
                     <div class="col-sm-7">
                       <input type="text" class="form-control" id="total" name="total" disabled autocomplete="off">
-                      <input type="hidden" class="form-control" id="total_value" name="total_value"  autocomplete="off">
+                      <input type="hidden" class="form-control" id="total_value" name="total_value" autocomplete="off">
+                      <input type="hidden" class="form-control" id="total_discount" name="total_discount" autocomplete="off">
+                      <input type="hidden" class="form-control" id="total_gst" name="total_gst" autocomplete="off">
+
+
                     </div>
                   </div>
                 
@@ -255,7 +259,7 @@
                             <option value="" selected disabled>--Select--</option>
 
                             <?php foreach ($tax_data as $k => $v): ?>
-                              <option value="<?php echo $v['iTax_ID'] ?>" <?php if($order_data['invoice_master']['tax_id'] == $v['iTax_ID']) { echo "selected='selected'"; } ?>><?php echo $v['sTax_Description'] ?></option>
+                              <option value="<?php echo $v['iTax_ID'] ?>" data-tax-value = "<?php echo $v['sValue'] ?>" <?php if($order_data['invoice_master']['tax_id'] == $v['iTax_ID']) { echo "selected='selected'"; } ?>><?php echo $v['sTax_Description'] ?></option>
 
                               <!-- <option value="<?php echo $v['iTax_ID'] ?>"><?php echo $v['sTax_Description'] ?></option> -->
                             <?php endforeach ?>
@@ -329,6 +333,10 @@
 <!-- /.content-wrapper -->
 
 <script type="text/javascript">
+var removed_rows_count =0;
+</script>
+
+<script type="text/javascript">
   var base_url = "<?php echo base_url(); ?>";
 
   // function printOrder(id)
@@ -373,7 +381,7 @@
     $("#add_row").unbind('click').bind('click', function() {
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
-      var row_id = count_table_tbody_tr + 1;
+      var row_id = count_table_tbody_tr + 1 +Number(removed_rows_count);
       
 
       $.ajax({
@@ -563,23 +571,31 @@
 
       x = Number($("#rate_"+count).val()) * Number($("#qty_"+count).val());
       x  = x.toFixed(2);
-      y = Number(x) * Number($("#gst_"+count).val())/100;
-      y = y.toFixed(2);
-      z = (Number(y)+Number(x)) * Number($("#discount_"+count).val())/100;
+      // y = Number(x) * Number($("#gst_"+count).val())/100;
+      // y = y.toFixed(2);
+      z = Number(x) * Number($("#discount_"+count).val())/100;
       z= z.toFixed(2);
-      console.log(x,y,z);
+      // console.log(x,y,z);
 
-      total_gst = Number(total_gst) + Number(y);
+      // total_gst = Number(total_gst) + Number(y);
       total_discount = Number(total_discount) + Number(z);
       totalSubAmount = Number(totalSubAmount) + Number($("#amount_"+count).val());
       
     }
-    console.log("tgst",total_gst.toFixed(2),"tdsic", total_discount.toFixed(2))
-    
-    $("#total_discount").val(total_discount.toFixed(2));
-    $("#total_gst").val(total_gst.toFixed(2));
-     // /for
 
+    var tax = $("#tax").find(':selected').attr('data-tax-value');
+    console.log(tax);
+
+    total_gst = Number(totalSubAmount) * Number(tax) /100 
+    // total_gst = total_gst.toFixed(2);
+
+    console.log("tgst",total_gst.toFixed(2),"tdsic", total_discount.toFixed(2))
+    // total_discount = total_discount.toFixed(2);
+
+
+    $("#total_discount").val(total_discount);
+    $("#total_gst").val(total_gst);
+     // /for
     totalSubAmount = totalSubAmount.toFixed(2);
 
     // sub total
@@ -600,6 +616,7 @@
     
     // total amount
     var totalAmount = (Number(totalSubAmount) + Number($("#other_charge").val()));
+    totalAmount = totalAmount + total_gst;
     totalAmount = totalAmount.toFixed(2);
     // $("#net_amount").val(totalAmount);
     // $("#totalAmountValue").val(totalAmount);
@@ -699,6 +716,7 @@
   function removeRow(tr_id)
   {
     $("#product_info_table tbody tr#row_"+tr_id).remove();
+   removed_rows_count =  Number(removed_rows_count) + 1;
     subAmount();
   }
 </script>
