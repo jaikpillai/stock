@@ -538,7 +538,8 @@
           $("#amount_"+row_id).val(total);
           $("#amount_value_"+row_id).val(total);
           
-          subAmount();
+          getTotal();
+          // subAmount();
         } // /success
       }); // /ajax function to fetch the product data 
     }
