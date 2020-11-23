@@ -10,12 +10,12 @@ class Model_groups extends CI_Model
 	public function getGroupData($groupId = null) 
 	{
 		if($groupId) {
-			$sql = "SELECT * FROM groups WHERE id = ?";
+			$sql = "SELECT * FROM `groups` WHERE id = ?";
 			$query = $this->db->query($sql, array($groupId));
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM groups WHERE id != ?";
+		$sql = "SELECT * FROM `groups` WHERE id != ?";
 		$query = $this->db->query($sql, array(1));
 		return $query->result_array();
 	}
