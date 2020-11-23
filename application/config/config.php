@@ -23,7 +23,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/stock/';
+//Development
+// $config['base_url'] = 'http://localhost/stock/';
+
+//Live
+$config['base_url'] = 'http://inventorymangement.herokuapp.com';
+
 
 /*
 |--------------------------------------------------------------------------
