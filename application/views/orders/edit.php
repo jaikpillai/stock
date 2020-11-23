@@ -187,7 +187,7 @@
                         <?php //print_r($v); ?>
                        <tr id="row_<?php echo $x; ?>">
                          <td>
-                          <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
+                          <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getTotal(<?php echo $x; ?>)" required>
                               <option value=""></option>
                               <?php foreach ($products as $k => $v): ?>
                                 <option value="<?php echo $v['Item_ID'] ?>" <?php if($val['item_id'] == $v['Item_ID']) { echo "selected='selected'"; } ?>><?php echo $v['Item_Name'] ?></option>
