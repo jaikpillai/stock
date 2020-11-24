@@ -17,9 +17,69 @@
     <!-- Main content -->
     <section class="content">
       <!-- Small boxes (Stat box) -->
+
+
+  
+      
+    
+
+
+      
       <?php if($is_admin == true): ?>
 
+
+
+
         <div class="row">
+
+
+        <div class="col-lg-12 col-xs-12">
+            <!-- small box -->
+            <div class="small-box bg-purple">
+              <div class="inner">
+             
+              <h4>Select Financial Year</h4>
+              
+          
+          <form class="form-inline" action="<?php echo base_url('reports/') ?>" method="POST">
+            <div class="form-group">
+              <!-- <label for="date">Select Financial Year</label> -->
+              <select class="form-control" name="select_year" id="select_year">
+                <?php $yearCurrent = date("Y"); $dates = range('2014', date('Y')-1);  $finalcialYearCurrent = date("Y") . '-' . ($yearCurrent+1)?>
+                     
+
+                  <?php
+                    foreach($dates as $date){
+
+
+                      if (date('m', strtotime($date)) <= 6) {//Upto June
+                          $year = ($date-1) . '-' . $date;
+                      } else {//After June
+                          $year = $date . '-' . ($date + 1);
+                      }
+                  
+                      echo "<option value='$year'>$year</option>";
+
+                  }
+                      ?>
+                <option value="<?php echo $finalcialYearCurrent ?>" <?php   echo "selected";   ?>><?php echo $finalcialYearCurrent ?></option>
+                
+                <?php $test = substr($finalcialYearCurrent, 0, 4); echo "<script>var te = '".  $test ."';console.log(te)</script>"?>
+
+              </select>
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+        
+
+              </div>
+             
+              <!-- <a href="<?php echo base_url('products/') ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a> -->
+            </div>
+          </div>
+              
+
+        
           <div class="col-lg-3 col-xs-6">
             <!-- small box -->
             <div class="small-box bg-aqua">

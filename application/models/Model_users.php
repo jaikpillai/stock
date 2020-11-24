@@ -28,7 +28,7 @@ class Model_users extends CI_Model
 			$result = $query->row_array();
 
 			$group_id = $result['group_id'];
-			$g_sql = "SELECT * FROM groups WHERE id = ?";
+			$g_sql = "SELECT * FROM `groups` WHERE id = ?";
 			$g_query = $this->db->query($g_sql, array($group_id));
 			$q_result = $g_query->row_array();
 			return $q_result;

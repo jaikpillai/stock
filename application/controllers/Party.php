@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Tax extends Admin_Controller 
+class Party extends Admin_Controller 
 {
 	public function __construct()
 	{
@@ -10,9 +10,9 @@ class Tax extends Admin_Controller
 
 		$this->not_logged_in();
 
-		$this->data['page_title'] = 'tax';
+		$this->data['page_title'] = 'party';
 
-		$this->load->model('model_tax');
+		$this->load->model('model_party');
 	}
 
 	/* 
@@ -25,7 +25,7 @@ class Tax extends Admin_Controller
 			redirect('dashboard', 'refresh');
 		}
 
-		$this->render_template('tax/index', $this->data);	
+		$this->render_template('party/index', $this->data);	
 	}	
 
 	/*
@@ -34,10 +34,10 @@ class Tax extends Admin_Controller
 	* returns the data into json format. 
 	* This function is invoked from the view page.
 	*/
-	public function fetchTaxDataById($id) 
+	public function fetchPartyDataById($id) 
 	{
 		if($id) {
-			$data = $this->model_tax->getTaxData($id);
+			$data = $this->model_party->getPartyData($id);
 			echo json_encode($data);
 		}
 
@@ -48,11 +48,11 @@ class Tax extends Admin_Controller
 	* Fetches the category value from the category table 
 	* this function is called from the datatable ajax function
 	*/
-	public function fetchTaxData()
+	public function fetchPartyData()
 	{
 		$result = array('data' => array());
 
-		$data = $this->model_tax->getTaxData();
+		$data = $this->model_party->getPartyData();
 
 		foreach ($data as $key => $value) {
 
@@ -71,6 +71,9 @@ class Tax extends Admin_Controller
 				
 
 			$status = ($value['active'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-warning">Inactive</span>';
+
+
+           
 
 			$result['data'][$key] = array(
 				$value['iTax_ID'],
@@ -108,7 +111,7 @@ class Tax extends Admin_Controller
         		'active' => $this->input->post('active'),	
         	);
 
-        	$create = $this->model_tax->create($data);
+        	$create = $this->model_party->create($data);
         	if($create == true) {
         		$response['success'] = true;
         		$response['messages'] = 'Succesfully created';
@@ -154,7 +157,7 @@ class Tax extends Admin_Controller
 	        		'active' => $this->input->post('edit_active'),	
 	        	);
 
-	        	$update = $this->model_tax->update($data, $id);
+	        	$update = $this->model_party->update($data, $id);
 	        	if($update == true) {
 	        		$response['success'] = true;
 	        		$response['messages'] = 'Succesfully updated';
@@ -189,11 +192,11 @@ class Tax extends Admin_Controller
 			redirect('dashboard', 'refresh');
 		}
 		
-		$category_id = $this->input->post('category_id');
+		$party_id = $this->input->post('party_id');
 
 		$response = array();
-		if($category_id) {
-			$delete = $this->model_category->remove($category_id);
+		if($party_id) {
+			$delete = $this->model_party->remove($party_id);
 			if($delete == true) {
 				$response['success'] = true;
 				$response['messages'] = "Successfully removed";	

@@ -14,7 +14,9 @@ class Orders extends Admin_Controller
 
 		$this->load->model('model_orders');
 		$this->load->model('model_products');
+		$this->load->model('model_tax');
 		$this->load->model('model_company');
+		$this->load->model('model_party');
 	}
 
 	/* 
@@ -27,7 +29,8 @@ class Orders extends Admin_Controller
         }
 
 		$this->data['page_title'] = 'Manage Orders';
-		$this->render_template('orders/index', $this->data);		
+		$this->render_template('orders/index', $this->data);	
+			
 	}
 
 	/*
@@ -39,44 +42,53 @@ class Orders extends Admin_Controller
 		$result = array('data' => array());
 
 		$data = $this->model_orders->getOrdersData();
-
+		
 		foreach ($data as $key => $value) {
 
-			$count_total_item = $this->model_orders->countOrderItem($value['id']);
-			$date = date('d-m-Y', $value['date_time']);
-			$time = date('h:i a', $value['date_time']);
+			$count_total_item = $this->model_orders->countOrderItem($value['invoice_no']);
+			// echo $count_total_item;
+			// $date = date('Y-m-d', $value['invoice_date']);
+			// $time = date('h:i a', $value['date_time']);
+			$party_data = $this->model_party->getPartyData($value['party_id']);
 
-			$date_time = $date . ' ' . $time;
+			// $date_time = $date;
 
+			if($party_data['address'] == NULL){
+				$party_data['address'] ="";
+			}
+			if($party_data['party_name'] == NULL){
+				$party_data['party_name'] ="";
+			}
 			// button
 			$buttons = '';
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('orders/printDiv/'.$value['id']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a target="__blank" href="'.base_url('orders/printDiv/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('orders/update/'.$value['id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a href="'.base_url('orders/update/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['invoice_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
-			if($value['paid_status'] == 1) {
+			if($value['is_payment_received'] == 1) {
 				$paid_status = '<span class="label label-success">Paid</span>';	
 			}
 			else {
 				$paid_status = '<span class="label label-warning">Not Paid</span>';
 			}
 
+		
+
 			$result['data'][$key] = array(
-				$value['bill_no'],
-				$value['customer_name'],
-				$value['customer_phone'],
-				$date_time,
+				$value['invoice_no'],
+				$party_data['party_name'],
+				$party_data['address'],
 				$count_total_item,
-				$value['net_amount'],
+				$value['total_amount'],
 				$paid_status,
 				$buttons
 			);
@@ -121,9 +133,16 @@ class Orders extends Admin_Controller
         	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
         	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
-        	$this->data['products'] = $this->model_products->getActiveProductData();      	
 
-            $this->render_template('orders/create', $this->data);
+		
+			$this->data['products'] = $this->model_products->getActiveProductData(); 
+			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
+			
+			$this->data['party_data'] =$this->model_party->getPartyData(); 
+            $this->data['getlastinvoiceid'] = $this->model_orders->getLastInvoiceID();
+
+			$this->render_template('orders/create', $this->data);
+			
         }	
 	}
 
@@ -149,6 +168,7 @@ class Orders extends Admin_Controller
 	public function getTableProductRow()
 	{
 		$products = $this->model_products->getActiveProductData();
+
 		echo json_encode($products);
 	}
 
@@ -195,14 +215,16 @@ class Orders extends Admin_Controller
         	$result = array();
         	$orders_data = $this->model_orders->getOrdersData($id);
 
-    		$result['order'] = $orders_data;
-    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['id']);
-
+    		$result['invoice_master'] = $orders_data;
+    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['invoice_no']);
+			$this->data['party_data'] = $this->model_party->getPartyData();
     		foreach($orders_item as $k => $v) {
-    			$result['order_item'][] = $v;
+    			$result['invoice_item'][] = $v;
     		}
 
-    		$this->data['order_data'] = $result;
+			$this->data['order_data'] = $result;
+			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
+			
 
         	$this->data['products'] = $this->model_products->getActiveProductData();      	
 
@@ -220,11 +242,11 @@ class Orders extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$order_id = $this->input->post('order_id');
+		$invoice_no = $this->input->post('invoice_no');
 
         $response = array();
-        if($order_id) {
-            $delete = $this->model_orders->remove($order_id);
+        if($invoice_no) {
+            $delete = $this->model_orders->remove($invoice_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 
@@ -256,9 +278,13 @@ class Orders extends Admin_Controller
 			$order_data = $this->model_orders->getOrdersData($id);
 			$orders_items = $this->model_orders->getOrdersItemData($id);
 			$company_info = $this->model_company->getCompanyData(1);
+			$party_data = $this->model_party->getPartyData($order_data['party_id']);
 
-			$order_date = date('d/m/Y', $order_data['date_time']);
-			$paid_status = ($order_data['paid_status'] == 1) ? "Paid" : "Unpaid";
+			$order_date = strtotime($order_data['invoice_date']);
+			$order_date = date( 'd/m/Y', $order_date );
+			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
+
+
 
 			$html = '<!-- Main content -->
 			<!DOCTYPE html>
@@ -266,7 +292,7 @@ class Orders extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>AdminLTE 2 | Invoice</title>
+			  <title>GST INVOICE NO. '. $order_data['invoice_no'].'</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -277,7 +303,7 @@ class Orders extends Admin_Controller
 			</head>
 			<body onload="window.print();">
 			
-			<div class="wrapper">
+			<div class="wrapper" style= "overflow: visible">
 			  <section class="invoice">
 			    <!-- title row -->
 			    <div class="row">
@@ -294,40 +320,72 @@ class Orders extends Admin_Controller
 			      
 			      <div class="col-sm-4 invoice-col">
 			        
-			        <b>Bill ID:</b> '.$order_data['bill_no'].'<br>
-			        <b>Name:</b> '.$order_data['customer_name'].'<br>
-			        <b>Address:</b> '.$order_data['customer_address'].' <br />
-			        <b>Phone:</b> '.$order_data['customer_phone'].'
+			        <b>Invoice No:</b> '.$order_data['invoice_no'].'<br>
+			        <b>Sold To:</b> '.$party_data ['party_name'].'<br>
+			        <b>Address:</b> '.$party_data['address'].' <br>
+
 			      </div>
 			      <!-- /.col -->
 			    </div>
 			    <!-- /.row -->
-
+				<hr>	
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-striped">
+			        <table class="table table-bordered" >
 			          <thead>
-			          <tr>
-			            <th>Product name</th>
-			            <th>Price</th>
+					  <tr>
+						<th>S.N.</th>
+						<th>Code</th>
+			            <th>Description</th>
+						<th>Make</th>
 			            <th>Qty</th>
+						<th>Unit</th>
+						<th>Rate</th>
+			            <th>Disc. %</th>
 			            <th>Amount</th>
 			          </tr>
 			          </thead>
 			          <tbody>'; 
-
+					  $total = 0;
+					  
 			          foreach ($orders_items as $k => $v) {
+						
+						  $product_data = $this->model_products->getProductData($v['item_id']); 
+						  $amount = $v['qty']*$v['rate'];
+						  $total = $total + $amount; 
+						  $index = $k + 1;
 
-			          	$product_data = $this->model_products->getProductData($v['product_id']); 
+						  $freight_other_charge = $order_data['other_charges'];
+
+						  $discount_amount = $amount - ($amount * $v['discount'])/100;
+						  
+						  
 			          	
-			          	$html .= '<tr>
-				            <td>'.$product_data['name'].'</td>
-				            <td>'.$v['rate'].'</td>
-				            <td>'.$v['qty'].'</td>
-				            <td>'.$v['amount'].'</td>
+						  $html .= '<tr>
+							<td>'.$index.'</td>
+							<td>'.$product_data['Item_Code'].'</td>
+							<td>'.$product_data['Item_Name'].'</td>
+							<td>'.$product_data['Item_Make'].'</td>
+							<td>'.$v['qty'].'</td>
+							<td>'.$v['unit'].'</td>
+							<td>'.$v['rate'].'</td>
+							<td>'.$v['discount'].'</td>
+				            <td>'.$discount_amount.'</td>
 			          	</tr>';
-			          }
+					  }
+
+					$tax_value = $order_data['tax_value'];
+					$gross_total = $total - $order_data['total_discount'];
+					$total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
+					$final_total = $total_after_tax + $freight_other_charge;
+
+					
+					$rounded_total_amount = round($final_total);
+					$round_off =  ($rounded_total_amount - $final_total);
+					$round_off = round($round_off, 2);
+
+
 			          
 			          $html .= '</tbody>
 			        </table>
@@ -337,39 +395,48 @@ class Orders extends Admin_Controller
 			    <!-- /.row -->
 
 			    <div class="row">
-			      
-			      <div class="col-xs-6 pull pull-right">
+			    
+			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
-			        <div class="table-responsive">
-			          <table class="table">
+			        <div class="table-responsive" >
+			          <table class="table table-bordered" >
 			            <tr>
-			              <th style="width:50%">Gross Amount:</th>
-			              <td>'.$order_data['gross_amount'].'</td>
+			              <th style="width:50%">Total:</th>
+			              <td>'.$gross_total.'</td>
 			            </tr>';
 
-			            if($order_data['service_charge'] > 0) {
-			            	$html .= '<tr>
-				              <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
-				              <td>'.$order_data['service_charge'].'</td>
-				            </tr>';
-			            }
+			            // if($order_data['service_charge'] > 0) {
+			            // 	$html .= '<tr>
+				        //       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
+				        //       <td>'.$order_data['service_charge'].'</td>
+				        //     </tr>';
+			            // }
 
-			            if($order_data['vat_charge'] > 0) {
-			            	$html .= '<tr>
-				              <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
-				              <td>'.$order_data['vat_charge'].'</td>
-				            </tr>';
-			            }
+			            // if($order_data['vat_charge'] > 0) {
+			            // 	$html .= '<tr>
+				        //       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
+				        //       <td>'.$order_data['vat_charge'].'</td>
+				        //     </tr>';
+			            // }
 			            
 			            
-			            $html .=' <tr>
-			              <th>Discount:</th>
-			              <td>'.$order_data['discount'].'</td>
-			            </tr>
-			            <tr>
-			              <th>Net Amount:</th>
-			              <td>'.$order_data['net_amount'].'</td>
-			            </tr>
+						$html .='
+						<tr>
+			              <th>GST ('. $order_data['tax_value'].'%)</th>
+			              <td>'.$order_data['total_gst'].'</td>
+						</tr>
+						<tr>
+						<th>Freight/Others</th>
+						<td>'.$order_data['other_charges'].'</td>
+					  </tr>
+					  <tr>
+						<th>Round off</th>
+						<td>'.$round_off.'</td>
+					  </tr>
+					  <tr>
+					  <th>Total Amount:</th>
+					  <td>'.$rounded_total_amount.'</td>
+					</tr>
 			            <tr>
 			              <th>Paid Status:</th>
 			              <td>'.$paid_status.'</td>

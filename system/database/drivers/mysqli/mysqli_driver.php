@@ -219,6 +219,8 @@ class CI_DB_mysqli_driver extends CI_DB {
 		return FALSE;
 	}
 
+	
+
 	// --------------------------------------------------------------------
 
 	/**
