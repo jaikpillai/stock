@@ -24,10 +24,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //Development
-// $config['base_url'] = 'http://localhost/stock/';
+$config['base_url'] = 'http://localhost/stock/';
 
 //Live
-$config['base_url'] = 'http://inventorymangement.herokuapp.com';
+// $config['base_url'] = 'http://inventorymangement.herokuapp.com';
 
 
 /*
