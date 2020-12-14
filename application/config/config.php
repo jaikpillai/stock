@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $config['base_url'] = 'http://localhost/stock/';
 
 //Live
-// $config['base_url'] = 'http://inventorymangement.herokuapp.com';
+// $config['base_url'] = 'https://bharatscientific.co.in/stock';
 
 
 /*
