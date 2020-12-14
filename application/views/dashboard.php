@@ -43,30 +43,17 @@
           
           <form class="form-inline" action="<?php echo base_url('reports/') ?>" method="POST">
             <div class="form-group">
-              <!-- <label for="date">Select Financial Year</label> -->
-              <select class="form-control" name="select_year" id="select_year">
-                <?php $yearCurrent = date("Y"); $dates = range('2014', date('Y')-1);  $finalcialYearCurrent = date("Y") . '-' . ($yearCurrent+1)?>
-                     
+                   
+                    <select class="form-control select_group product" id="party" name="party" style="width:100%;" required>
+                            <option value="" disabled selected>--Select--</option>
+                            <?php foreach ($financial_year as $k => $v): ?>
+                            <!-- <option value="<?php echo $v['sUnit'] ?>" <?php if(($unit_data_sUnit['sUnit'] == $v['sUnit'])) { echo 'selected="selected"'; } ?>><?php echo $v['sUnit'] ?></option> -->
 
-                  <?php
-                    foreach($dates as $date){
-
-
-                      if (date('m', strtotime($date)) <= 6) {//Upto June
-                          $year = ($date-1) . '-' . $date;
-                      } else {//After June
-                          $year = $date . '-' . ($date + 1);
-                      }
-                  
-                      echo "<option value='$year'>$year</option>";
-
-                  }
-                      ?>
-                <option value="<?php echo $finalcialYearCurrent ?>" <?php   echo "selected";   ?>><?php echo $finalcialYearCurrent ?></option>
-                
-                <?php $test = substr($finalcialYearCurrent, 0, 4); echo "<script>var te = '".  $test ."';console.log(te)</script>"?>
-
-              </select>
+                              <option value="<?php echo $v['key_value'] ?>"<?php if(($v['status'] == 1)) { echo 'selected="selected"'; } ?>><?php echo $v['year_range'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                      
+                 
             </div>
             <button type="submit" class="btn btn-default">Submit</button>
           </form>

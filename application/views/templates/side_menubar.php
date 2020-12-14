@@ -16,20 +16,20 @@
             <li class="treeview" id="mainUserNav">
             <!-- Add users and mange users -->
             
-            <!-- <a href="#">
+            <a href="#">
               <i class="fa fa-users"></i>
               <span>Users</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
               </span>
-            </a> -->
+            </a>
             <ul class="treeview-menu">
               <?php if(in_array('createUser', $user_permission)): ?>
-              <!-- <li id="createUserNav"><a href="<?php echo base_url('users/create') ?>"><i class="fa fa-circle-o"></i> Add User</a></li> -->
+              <li id="createUserNav"><a href="<?php echo base_url('users/create') ?>"><i class="fa fa-circle-o"></i> Add User</a></li>
               <?php endif; ?>
 
               <?php if(in_array('updateUser', $user_permission) || in_array('viewUser', $user_permission) || in_array('deleteUser', $user_permission)): ?>
-              <!-- <li id="manageUserNav"><a href="<?php echo base_url('users') ?>"><i class="fa fa-circle-o"></i> Manage Users</a></li> -->
+              <li id="manageUserNav"><a href="<?php echo base_url('users') ?>"><i class="fa fa-circle-o"></i> Manage Users</a></li>
             <?php endif; ?>
             </ul>
           </li>
@@ -39,19 +39,19 @@
             <li class="treeview" id="mainGroupNav">
               <!-- Groups -->
               
-              <!-- <a href="#">
+              <a href="#">
                 <i class="fa fa-files-o"></i>
                 <span>Groups</span>
                 <span class="pull-right-container">
                   <i class="fa fa-angle-left pull-right"></i>
                 </span>
-              </a> -->
+              </a>
               <ul class="treeview-menu">
                 <?php if(in_array('createGroup', $user_permission)): ?>
-                  <!-- <li id="addGroupNav"><a href="<?php echo base_url('groups/create') ?>"><i class="fa fa-circle-o"></i> Add Group</a></li> -->
+                  <li id="addGroupNav"><a href="<?php echo base_url('groups/create') ?>"><i class="fa fa-circle-o"></i> Add Group</a></li>
                 <?php endif; ?>
                 <?php if(in_array('updateGroup', $user_permission) || in_array('viewGroup', $user_permission) || in_array('deleteGroup', $user_permission)): ?>
-                <!-- <li id="manageGroupNav"><a href="<?php echo base_url('groups') ?>"><i class="fa fa-circle-o"></i> Manage Groups</a></li> -->
+                <li id="manageGroupNav"><a href="<?php echo base_url('groups') ?>"><i class="fa fa-circle-o"></i> Manage Groups</a></li>
                 <?php endif; ?>
               </ul>
             </li>

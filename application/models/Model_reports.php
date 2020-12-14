@@ -60,4 +60,22 @@ class Model_reports extends CI_Model
 			
 		}
 	}
+
+	public function getInvoiceListing($date_start == null, $date_end == null){
+
+		if($date_start && $date_end) {
+			$sql = "SELECT * FROM invoice_master where invoice_date >= $date_start and invoice_date <= $date_end";
+			$query = $this->db->query($sql);
+			return $query->row_array();
+		}
+	}
+
+	public function getStockLedger($item_id == null, $date_start == null , $date_end == null){
+
+		if($item_id && $date_start && $date_end) {
+			$sql = "SELECT invoice_item.item_id, invoice_master.invoice_date FROM invoice_item inner join invoice_item on invoice_item.invoice_no = invoice_master.invoice_no";
+			$query = $this->db->query($sql, array($item_id));
+			return $query->row_array();
+		}
+	}
 }
