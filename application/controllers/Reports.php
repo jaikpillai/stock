@@ -69,6 +69,7 @@ class Reports extends Admin_Controller
 	
 		$this->data['company_currency'] = $this->company_currency();
 		$this->data['results'] = $final_parking_data;
+		$this->data['products'] = $this->model_products->getProductData();
 
 		$this->render_template('reports/index', $this->data);
 	}
@@ -94,16 +95,14 @@ class Reports extends Admin_Controller
 		$date_from = $this->input->post('date_from');
 		$date_to = $this->input->post('date_to');
 
-		$data = array(
-			$date_from,
-			$date_to,
-		);
+
+	
 
 	
         
 		if($date_from && $date_to ) {
 
-			$invoice_data = $this->model_reports->getInvoiceListing($data);
+			$invoice_data = $this->model_reports->getInvoiceListing($date_from, $date_to);
 			$company_info = $this->model_company->getCompanyData(1);
 
 			setlocale(LC_MONETARY,"en_US");
@@ -115,7 +114,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. '. $date_from.' to '.$date_to.'</title>
+			  <title>Invoice Report from '. $date_from.' to '.$date_to.'</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -238,7 +237,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. '. $date_from.' to '.$date_to.'</title>
+			  <title>Invoice Report from '. $date_from.' to '.$date_to.'</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -253,6 +252,195 @@ class Reports extends Admin_Controller
 			 
 				  <div class="col-md-12 table-responsive">
 				  <p> No Invoice found between '. $date_from.' and '. $date_to .' </p>
+			       </div>
+			</body>
+			</html>';
+
+			  echo $html;
+					}
+		
+		}
+		else{
+			$html = '<!-- Main content -->
+			<!DOCTYPE html>
+			<html>
+			<head>
+			  <meta charset="utf-8">
+			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+			  <title>Invoice Report from '. $date_from.' to '.$date_to.'</title>
+			  <!-- Tell the browser to be responsive to screen width -->
+			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			  <!-- Bootstrap 3.3.7 -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css').'">
+			  <!-- Font Awesome -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/font-awesome/css/font-awesome.min.css').'">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.min.css').'">
+			</head>
+			<body >
+			
+			<div class="wrapper" style= "overflow: visible">
+			 
+				  <div class="col-md-12 table-responsive">
+				  <p> Please provide necessary dates </p>
+			       </div>
+			</body>
+			</html>';
+
+			  echo $html;;
+		}
+	}
+
+
+	public function stockLedger()
+	{
+		if(!in_array('viewOrder', $this->permission)) {
+            redirect('dashboard', 'refresh');
+		}
+		
+		$date_from = $this->input->post('date_from_stock');
+		$date_to = $this->input->post('date_to_stock');
+		$item_id = $this->input->post('product');
+
+		$data = array(
+			$date_from,
+			$date_to,
+		);
+
+	
+        
+		if($date_from && $date_to ) {
+
+			$item_data = $this->model_reports->geItemSell($item_id, $date_from, $date_to);
+			$company_info = $this->model_company->getCompanyData(1);
+
+			setlocale(LC_MONETARY,"en_US");
+		
+			if($item_data){
+			$html = '<!-- Main content -->
+			<!DOCTYPE html>
+			<html>
+			<head>
+			  <meta charset="utf-8">
+			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+			  <title>Invoice Report from. '. $date_from.' to '.$date_to.'</title>
+			  <!-- Tell the browser to be responsive to screen width -->
+			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			  <!-- Bootstrap 3.3.7 -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css').'">
+			  <!-- Font Awesome -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/font-awesome/css/font-awesome.min.css').'">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.min.css').'">
+			</head>
+			<body onload="window.print();">
+			
+			<div class="wrapper" style= "overflow: visible">
+			  <section class="invoice">
+			    <!-- title row -->
+			    <div class="row">
+			      <div class="col-xs-12">
+			        <h2 class="page-header">
+			          '.$company_info['company_name'].'
+
+					</h2>
+					  <h4>Item ID. '. $item_id.'</h4>
+					  <h5> Sold from '. $date_from.' to '. $date_to .'</h5>
+			
+			      </div>
+			      <!-- /.col -->
+			    </div>
+			    <!-- info row -->
+			    <div class="row invoice-info">
+			      
+			      <div class="col-sm-4 invoice-col">
+			   
+
+			      </div>
+			      <!-- /.col -->
+			    </div>
+			    <!-- /.row -->
+				<hr>	
+			    <!-- Table row -->
+			    <div class="row">
+			      <div class="col-xs-12 table-responsive">
+			        <table class="table table-bordered" >
+			          <thead>
+					  <tr>
+						<th>S.N.</th>
+						<th>Invoice Date</th>
+						
+
+
+
+
+			        
+			          </tr>
+			          </thead>
+			          <tbody>'; 
+					  
+			          foreach ($item_data as $k => $v) {
+
+					
+						
+						//   $product_data = $this->model_products->getProductData($v['item_id']); 
+						//   $amount = $v['qty']*$v['rate'];
+						//   $total = $total + $amount; 
+						  $index = $k + 1;
+
+						//   $freight_other_charge = $order_data['other_charges'];
+
+						//   $discount_amount = $amount - ($amount * $v['discount'])/100;
+						  
+						
+						  $html .= '<tr>
+							<td>'.$index.'</td>
+							<td>'.$v['invoice_date'].'</td>
+					
+						
+			          	</tr>';
+					  }
+
+
+
+			          
+			          $html .= '</tbody>
+			        </table>
+			      </div>
+			      <!-- /.col -->
+			    </div>
+			    <!-- /.row -->
+
+			   
+			    <!-- /.row -->
+			  </section>
+			  <!-- /.content -->
+			</div>
+			</body>
+			</html>';
+
+			  echo $html;
+					}
+					else{
+						$html = '<!-- Main content -->
+			<!DOCTYPE html>
+			<html>
+			<head>
+			  <meta charset="utf-8">
+			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+			  <title>Invoice Report from. '. $date_from.' to '.$date_to.'</title>
+			  <!-- Tell the browser to be responsive to screen width -->
+			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			  <!-- Bootstrap 3.3.7 -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css').'">
+			  <!-- Font Awesome -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/font-awesome/css/font-awesome.min.css').'">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.min.css').'">
+			</head>
+			<body >
+			
+			<div class="wrapper" style= "overflow: visible">
+			 
+				  <div class="col-md-12 table-responsive">
+				  <p> No data found between '. $date_from.' and '. $date_to .' </p>
 			       </div>
 			</body>
 			</html>';
@@ -290,6 +478,7 @@ class Reports extends Admin_Controller
 			  echo $html;;
 		}
 	}
+
 
 	 public function test($var = null)
 	{
