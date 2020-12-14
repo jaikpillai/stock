@@ -16,7 +16,7 @@
     <!-- Main content -->
     <section class="content">
       <!-- Small boxes (Stat box) -->
-      <div class="row">
+      <!-- <div class="row">
 
         <div class="col-md-12 col-xs-12">
           <form class="form-inline" action="<?php echo base_url('reports/') ?>" method="POST">
@@ -35,7 +35,9 @@
         <br /> <br />
 
 
-        <div class="col-md-12 col-xs-12">
+        <div class="col-md-12 col-xs-12"> -->
+
+
 
           <?php if($this->session->flashdata('success')): ?>
             <div class="alert alert-success alert-dismissible" role="alert">
@@ -51,66 +53,63 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Total Parking - Report</h3>
+              <h3 class="box-title">Listing of Invoices</h3>
+              
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div class="chart">
-                <canvas id="barChart" style="height:250px"></canvas>
+              <div class="col-md-4 col-xs-12 pull pull-left">
+              <form role = "form" action = "<?php echo base_url('reports/printDiv') ?>"  method="post" class="form-horizontal" >
+
+              <div class="form-group">
+              <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">From</label>
+              <div class="col-sm-7">
+                <input type="date"  value = "<?php echo date("Y-m-d"); ?>" class="form-control" id="date_from" name="date_from"  autocomplete="off" />
+      
+              </div>
+              
+            </div>
+          <div class="form-group">
+              <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">To</label>
+              <div class="col-sm-7">
+                <input type="date" value = "<?php echo date("Y-m-d"); ?>"class="form-control" id="date_to" name="date_to"  autocomplete="off" />
+      
               </div>
             </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Total Paid Orders - Report Data</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <table id="datatables" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Month - Year</th>
-                  <th>Amount</th>
-                </tr>
-                </thead>
-                <tbody>
 
-                  <?php foreach ($results as $k => $v): ?>
-                    <tr>
-                      <td><?php echo $k; ?></td>
-                      <td><?php 
-                      
-                        echo $company_currency .' ' . $v;
-                        //echo $v;
-                      
-                      ?></td>
-                    </tr>
-                  <?php endforeach ?>
-                  
-                </tbody>
-                <tbody>
-                  <tr>
-                    <th>Total Amount</th>
-                    <th>
-                      <?php //echo $company_currency . ' ' . array_sum($parking_data); ?>
-                      <?php echo array_sum($results); ?>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
+            <button type="submit" class="btn btn-primary">Generate Report</button>
+             
+            </div>
+            </div>
+            </form>
+         
+  
+        
+
+  
+
+                
+              </div>
+              
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
-        </div>
+        
+
+          <!-- /.box -->
+          
+     
+
+
         <!-- col-md-12 -->
-      </div>
+     
       <!-- /.row -->
       
+     
 
-    </section>
+   
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

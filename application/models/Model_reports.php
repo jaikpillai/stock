@@ -61,15 +61,16 @@ class Model_reports extends CI_Model
 		}
 	}
 
-	public function getInvoiceListing($date_start = null, $date_end = null){
+	public function getInvoiceListing($data){
 
-		if($date_start && $date_end) {
-			$sql = "SELECT * FROM invoice_master where invoice_date >= $date_start and invoice_date <= $date_end";
+		if($data) {
+			$sql = "SELECT * FROM invoice_master where invoice_date >= '$data[0]' and invoice_date <= '$data[1]' ";
 			$query = $this->db->query($sql);
-			return $query->row_array();
+			return $query->result_array();
 		}
 	}
 
+	
 	public function getStockLedger($item_id = null, $date_start = null , $date_end = null){
 
 		if($item_id && $date_start && $date_end) {
@@ -78,4 +79,7 @@ class Model_reports extends CI_Model
 			return $query->row_array();
 		}
 	}
+
+	
+
 }
