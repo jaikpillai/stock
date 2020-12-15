@@ -145,7 +145,7 @@
                   <label for="gst_number">GST Number</label>
                   <input value = "<?php echo $party_data['gst_number'];?>" type="text" class="form-control" id="gst_number" name="gst_number" placeholder="Enter GST Number" autocomplete="off"/>
                 </div>
-              </div>
+           
 
               <div class="form-group">
                   <label for="active">Status</label>
