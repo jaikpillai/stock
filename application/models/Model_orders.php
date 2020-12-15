@@ -312,7 +312,7 @@ class Model_orders extends CI_Model
 
 	public function countTotalPaidOrders()
 	{
-		$sql = "SELECT * FROM orders WHERE paid_status = ?";
+		$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1";
 		$query = $this->db->query($sql, array(1));
 		return $query->num_rows();
 	}
