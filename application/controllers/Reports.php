@@ -104,6 +104,10 @@ class Reports extends Admin_Controller
 
 			$invoice_data = $this->model_reports->getInvoiceListing($date_from, $date_to);
 			$company_info = $this->model_company->getCompanyData(1);
+			$grand_total_discount = 0;
+			$grand_total_gst = 0;
+			$grand_total_amount = 0; 
+
 
 			setlocale(LC_MONETARY,"en_US");
 		
@@ -174,7 +178,11 @@ class Reports extends Admin_Controller
 					  
 			          foreach ($invoice_data as $k => $v) {
 
-					
+							$grand_total_discount = $v['total_discount'] + $grand_total_discount;
+							$grand_total_gst = $v['total_gst'] + $grand_total_gst;
+							$grand_total_amount = $v['total_amount'] + $grand_total_amount;
+
+
 						
 						//   $product_data = $this->model_products->getProductData($v['item_id']); 
 						//   $amount = $v['qty']*$v['rate'];
@@ -200,13 +208,6 @@ class Reports extends Admin_Controller
 							<td>'.$v['total_gst'].'</td>
 							<td>'.$v['total_amount'].'</td>
 							<td>'. $payment.'</td>
-
-
-							
-
-
-							
-						
 			          	</tr>';
 					  }
 
@@ -220,7 +221,47 @@ class Reports extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			   
+			    <div class="row">
+			    
+			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
+
+			        <div class="table-responsive" >
+			          <table class="table table-bordered" >
+			            <tr>
+			              <th style="width:50%">Total Discount:</th>
+			              <td>'.$grand_total_discount.'</td>
+			            </tr>';
+
+			            // if($order_data['service_charge'] > 0) {
+			            // 	$html .= '<tr>
+				        //       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
+				        //       <td>'.$order_data['service_charge'].'</td>
+				        //     </tr>';
+			            // }
+
+			            // if($order_data['vat_charge'] > 0) {
+			            // 	$html .= '<tr>
+				        //       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
+				        //       <td>'.$order_data['vat_charge'].'</td>
+				        //     </tr>';
+			            // }
+			            
+			            
+						$html .='
+						<tr>
+			              <th>Total GST:</th>
+			              <td>'.$grand_total_gst.'</td>
+						</tr>
+						<tr>
+						<th>Total Amount:</th>
+						<td>'.$grand_total_amount.'</td>
+					  </tr>
+					 
+			          </table>
+			        </div>
+			      </div>
+			      <!-- /.col -->
+			    </div>
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
