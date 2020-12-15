@@ -110,8 +110,8 @@ var base_url = "<?php echo base_url(); ?>";
 
 $(document).ready(function() {
 
-  $("#mainOrdersNav").addClass('active');
-  $("#manageOrdersNav").addClass('active');
+  $("#mainOrderNav").addClass('active');
+  $("#manageOrderNav").addClass('active');
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({

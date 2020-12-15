@@ -128,7 +128,7 @@
 
 
           <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
-            <li class="treeview" id="mainOrdersNav">
+            <li class="treeview" id="mainOrderNav">
               <a href="#">
                 <i class="fa fa-inr"></i>
                 <span>Invoice Transaction</span>

@@ -354,7 +354,7 @@ var removed_row_count =0;
     $(".select_group").select2();
     // $("#description").wysihtml5();
 
-    $("#mainOrdersNav").addClass('active');
+    $("#mainOrderNav").addClass('active');
     $("#addOrderNav").addClass('active');
     
     var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
