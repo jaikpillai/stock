@@ -5,7 +5,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Add
+      Edit
       <small>Party</small>
     </h1>
     <ol class="breadcrumb">
@@ -36,7 +36,7 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Add Party</h3>
+            <h3 class="box-title">Edit Party</h3>
           </div>
           <!-- /.box-header -->
           <form role="form" action="<?php base_url('party/edit') ?>" method="post" enctype="multipart/form-data">
@@ -181,7 +181,7 @@
     $("#description").wysihtml5();
 
     $("#mainPartyNav").addClass('active');
-    $("#addPartyNav").addClass('active');
+    $("#managePartyNav").addClass('active');
     
     var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
         'onclick="alert(\'Call your custom code here.\')">' +
