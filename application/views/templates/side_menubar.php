@@ -138,10 +138,10 @@
               </a>
               <ul class="treeview-menu">
                 <?php if(in_array('createOrder', $user_permission)): ?>
-                  <li id="addOrdersNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Add Order</a></li>
+                  <li id="addOrderNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Add Order</a></li>
                 <?php endif; ?>
                 <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
-                <li id="manageOrdersNav"><a href="<?php echo base_url('orders/') ?>"><i class="fa fa-circle-o"></i> Manage Orders</a></li>
+                <li id="manageOrderNav"><a href="<?php echo base_url('orders/') ?>"><i class="fa fa-circle-o"></i> Manage Orders</a></li>
                 <?php endif; ?>
               </ul>
             </li>
