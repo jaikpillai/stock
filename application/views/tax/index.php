@@ -94,7 +94,7 @@
           </div>
           <div class="form-group">
             <label for="tax_value">Tax Value(%)</label>
-            <input type="number" class="form-control" id="tax_value" name="tax_value" placeholder="Enter Tax value in percentage" autocomplete="off">
+            <input type="text" class="form-control" id="tax_value" name="tax_value" placeholder="Enter Tax value in percentage" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="active">Status</label>
@@ -173,7 +173,7 @@
         <h4 class="modal-title">Remove Category</h4>
       </div>
 
-      <form role="form" action="<?php echo base_url('category/remove') ?>" method="post" id="removeForm">
+      <form role="form" action="<?php echo base_url('tax/remove') ?>" method="post" id="removeForm">
         <div class="modal-body">
           <p>Do you really want to remove?</p>
         </div>
@@ -265,12 +265,13 @@ $(document).ready(function() {
 function editFunc(id)
 { 
   $.ajax({
-    url: 'fetchCategoryDataById/'+id,
+    url: 'fetchTaxDataById/'+id,
     type: 'post',
     dataType: 'json',
     success:function(response) {
 
-      $("#edit_category_name").val(response.name);
+      $("#edit_tax_description").val(response.sTax_Description);
+      $("#edit_tax_value").val(response.sValue);
       $("#edit_active").val(response.active);
 
       // submit the edit from 
@@ -283,12 +284,12 @@ function editFunc(id)
         $.ajax({
           url: form.attr('action') + '/' + id,
           type: form.attr('method'),
+
           data: form.serialize(), // /converting the form data into array and sending it to server
           dataType: 'json',
           success:function(response) {
 
             manageTable.ajax.reload(null, false); 
-
             if(response.success === true) {
               $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
@@ -346,7 +347,7 @@ function removeFunc(id)
       $.ajax({
         url: form.attr('action'),
         type: form.attr('method'),
-        data: { category_id:id }, 
+        data: { tax_id:id }, 
         dataType: 'json',
         success:function(response) {
 
