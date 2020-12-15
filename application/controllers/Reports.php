@@ -353,6 +353,8 @@ class Reports extends Admin_Controller
 
 			$item_data = $this->model_reports->geItemSell($item_id, $date_from, $date_to);
 			$company_info = $this->model_company->getCompanyData(1);
+			$product_data = $this->model_products->getProductData($item_id);
+			$total_qty_sold = 0;
 
 			setlocale(LC_MONETARY,"en_US");
 		
@@ -384,6 +386,7 @@ class Reports extends Admin_Controller
 
 					</h2>
 					  <h4>Item ID. '. $item_id.'</h4>
+					  <h4>Item Name. '. $product_data['Item_Name'].'</h4>
 					  <h5> Sold from '. $date_from.' to '. $date_to .'</h5>
 			
 			      </div>
@@ -407,7 +410,9 @@ class Reports extends Admin_Controller
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
+						<th>Invoice Number</th>
 						<th>Invoice Date</th>
+
 						
 
 
@@ -419,6 +424,8 @@ class Reports extends Admin_Controller
 			          <tbody>'; 
 					  
 			          foreach ($item_data as $k => $v) {
+
+						$total_qty_sold = $total_qty_sold + 1;
 
 					
 						
@@ -434,9 +441,8 @@ class Reports extends Admin_Controller
 						
 						  $html .= '<tr>
 							<td>'.$index.'</td>
+							<td>'.$v['invoice_no'].'</td>
 							<td>'.$v['invoice_date'].'</td>
-					
-						
 			          	</tr>';
 					  }
 
@@ -449,7 +455,26 @@ class Reports extends Admin_Controller
 			      <!-- /.col -->
 			    </div>
 			    <!-- /.row -->
+				<div class="row">
+			    
+				<div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
+				  <div class="table-responsive" >
+					<table class="table table-bordered" >
+					  <tr>
+						<th style="width:50%">Total Qty Sold:</th>
+						<td>'.$total_qty_sold.'</td>
+					  </tr>
+					  <tr>
+						<th style="width:50%">Remaining Qty</th>
+						<td>'.$product_data['Max_Suggested_Qty'].'</td>
+					  </tr>
+				   
+					</table>
+				  </div>
+				</div>
+				<!-- /.col -->
+			  </div>
 			   
 			    <!-- /.row -->
 			  </section>
