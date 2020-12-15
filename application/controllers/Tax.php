@@ -104,8 +104,9 @@ class Tax extends Admin_Controller
 
         if ($this->form_validation->run() == TRUE) {
         	$data = array(
-        		'name' => $this->input->post('category_name'),
-        		'active' => $this->input->post('active'),	
+        		'sTax_Description' => $this->input->post('tax_description'),
+        		'sValue' => $this->input->post('tax_value'),
+				'active' => $this->input->post('active'),	
         	);
 
         	$create = $this->model_tax->create($data);
@@ -150,8 +151,9 @@ class Tax extends Admin_Controller
 
 	        if ($this->form_validation->run() == TRUE) {
 	        	$data = array(
-	        		'name' => $this->input->post('edit_category_name'),
-	        		'active' => $this->input->post('edit_active'),	
+	        	'sTax_Description' => $this->input->post('edit_tax_description'),
+        		'sValue' => $this->input->post('edit_tax_value'),
+				'active' => $this->input->post('active'),	
 	        	);
 
 	        	$update = $this->model_tax->update($data, $id);
