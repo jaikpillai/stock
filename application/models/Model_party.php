@@ -43,6 +43,16 @@ class Model_party extends CI_Model
 		// return $query->result_array();
 	}
 
+	public function getLastID()
+	{
+		$sql = "SELECT  MAX(party_id) FROM party_master";
+		$query = $this->db->query($sql);
+		// $row = mysql_fetch_array($query);
+		// echo $row['id'];
+		return $query->result_array();
+
+	}
+
 	public function create($data)
 	{
 		if($data) {

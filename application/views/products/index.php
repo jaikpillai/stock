@@ -128,6 +128,8 @@ var base_url = "<?php echo base_url(); ?>";
 $(document).ready(function() {
 
   $("#mainProductNav").addClass('active');
+  $("#manageProductNav").addClass('active');
+
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({
@@ -202,7 +204,7 @@ checkbox.addEventListener( 'change', function() {
         // Checkbox is not checked..
     }
 });
-})
+}) 
 
 
 </script>

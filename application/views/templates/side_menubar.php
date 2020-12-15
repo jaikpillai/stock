@@ -60,15 +60,10 @@
           
 
 
-          <?php if(in_array('createBrand', $user_permission) || in_array('updateBrand', $user_permission) || in_array('viewBrand', $user_permission) || in_array('deleteBrand', $user_permission)): ?>
+        
             
-            <!-- Brands -->
-            <!-- <li id="brandNav">
-              <a href="<?php echo base_url('brands/') ?>">
-                <i class="glyphicon glyphicon-tags"></i> <span>Group</span>
-              </a>
-            </li>
-          <?php endif; ?> -->
+           
+        
 
           <?php if(in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)): ?>
             <!-- Category -->
@@ -143,14 +138,36 @@
               </a>
               <ul class="treeview-menu">
                 <?php if(in_array('createOrder', $user_permission)): ?>
-                  <li id="addOrderNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Add Order</a></li>
+                  <li id="addOrdersNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Add Order</a></li>
                 <?php endif; ?>
                 <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
-                <li id="manageOrdersNav"><a href="<?php echo base_url('orders') ?>"><i class="fa fa-circle-o"></i> Manage Orders</a></li>
+                <li id="manageOrdersNav"><a href="<?php echo base_url('orders/') ?>"><i class="fa fa-circle-o"></i> Manage Orders</a></li>
                 <?php endif; ?>
               </ul>
             </li>
           <?php endif; ?>
+
+            <!-- Party Master -->
+            <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+            <li class="treeview" id="mainPartyNav">
+              <a href="#">
+                <i class="fa fa-user"></i>
+                <span>Party Master</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <?php if(in_array('createOrder', $user_permission)): ?>
+                  <li id="addPartyNav"><a href="<?php echo base_url('party/create') ?>"><i class="fa fa-circle-o"></i> Add Party</a></li>
+                <?php endif; ?>
+                <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+                <li id="managePartyNav"><a href="<?php echo base_url('party') ?>"><i class="fa fa-circle-o"></i> Manage Party</a></li>
+                <?php endif; ?>
+              </ul>
+            </li>
+          <?php endif; ?>
+
 
           <?php if(in_array('viewReports', $user_permission)): ?>
             <li id="reportNav">

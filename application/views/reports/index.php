@@ -111,7 +111,7 @@
           
 
               <div class="form-group">
-              <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">Select Item</label>
+              <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Item</label>
               <div class="col-sm-9">
                       <select class="form-control select_group product"  id="product" name="product" style="width:100%;" required>
                             <option value=""></option>
