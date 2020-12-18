@@ -14,6 +14,8 @@ class Dashboard extends Admin_Controller
 		$this->load->model('model_orders');
 		$this->load->model('model_users');
 		$this->load->model('model_stores');
+		$this->load->model('model_financialyear');
+
 	}
 
 	/* 
@@ -27,6 +29,8 @@ class Dashboard extends Admin_Controller
 		$this->data['total_paid_orders'] = $this->model_orders->countTotalPaidOrders();
 		$this->data['total_users'] = $this->model_users->countTotalUsers();
 		$this->data['total_stores'] = $this->model_stores->countTotalStores();
+		$this->data['financial_year'] = $this->model_financialyear->getFinancialYear();
+
 
 		$user_id = $this->session->userdata('id');
 		$is_admin = ($user_id == 1) ? true :false;

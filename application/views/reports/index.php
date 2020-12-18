@@ -13,29 +13,11 @@
       </ol>
     </section>
 
-    <!-- Main content -->
+    <!-- Invoice Lisiting -->
     <section class="content">
-      <!-- Small boxes (Stat box) -->
       <div class="row">
+        <div class="col-md-4 col-xs-12 pull pull-left">
 
-        <div class="col-md-12 col-xs-12">
-          <form class="form-inline" action="<?php echo base_url('reports/') ?>" method="POST">
-            <div class="form-group">
-              <label for="date">Year</label>
-              <select class="form-control" name="select_year" id="select_year">
-                <?php foreach ($report_years as $key => $value): ?>
-                  <option value="<?php echo $value ?>" <?php if($value == $selected_year) { echo "selected"; } ?>><?php echo $value; ?></option>
-                <?php endforeach ?>
-              </select>
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-          </form>
-        </div>
-
-        <br /> <br />
-
-
-        <div class="col-md-12 col-xs-12">
 
           <?php if($this->session->flashdata('success')): ?>
             <div class="alert alert-success alert-dismissible" role="alert">
@@ -51,66 +33,136 @@
 
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Total Parking - Report</h3>
+              <h3 class="box-title">Listing of Invoices</h3>
+              
             </div>
             <!-- /.box-header -->
+            <form role = "form" action = "<?php echo base_url('reports/printDiv') ?>"  method="post" class="form-horizontal">
             <div class="box-body">
-              <div class="chart">
-                <canvas id="barChart" style="height:250px"></canvas>
+         
+           
+
+                <div class="form-group">
+                  <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
+                  <div class="col-sm-9">
+                    <input type="date"  value = "<?php echo date("Y-m-d"); ?>" class="form-control" id="date_from" name="date_from"  autocomplete="off" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">To</label>
+                  <div class="col-sm-9">
+                   <input type="date" value = "<?php echo date("Y-m-d"); ?>"class="form-control" id="date_to" name="date_to"  autocomplete="off" />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
+                  <div class="col-sm-9">
+                  <button type="submit" class="btn btn-primary">Generate Report</button>
+
+                  </div>
+                </div>
+             
               </div>
+             
+          
+           
+            </form>
+
             </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+        
+        </div>
+
+
+      </div>
+
+   </section>
+ 
+ 
+
+    <!-- Items Sold -->
+    <section class="content">
+     
+
+        <div class="row">
+        <div class="col-md-4 col-xs-12">
+
+          <?php if($this->session->flashdata('success')): ?>
+            <div class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <?php echo $this->session->flashdata('success'); ?>
+            </div>
+          <?php elseif($this->session->flashdata('error')): ?>
+            <div class="alert alert-error alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <?php echo $this->session->flashdata('error'); ?>
+            </div>
+          <?php endif; ?>
+
+          <form role = "form" action = "<?php echo base_url('reports/stockLedger') ?>"  method="post" class="form-horizontal" >
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Total Paid Orders - Report Data</h3>
+              <h3 class="box-title">Item Sold</h3>
             </div>
             <!-- /.box-header -->
+
             <div class="box-body">
-              <table id="datatables" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Month - Year</th>
-                  <th>Amount</th>
-                </tr>
-                </thead>
-                <tbody>
+          
 
-                  <?php foreach ($results as $k => $v): ?>
-                    <tr>
-                      <td><?php echo $k; ?></td>
-                      <td><?php 
-                      
-                        echo $company_currency .' ' . $v;
-                        //echo $v;
-                      
-                      ?></td>
-                    </tr>
-                  <?php endforeach ?>
-                  
-                </tbody>
-                <tbody>
-                  <tr>
-                    <th>Total Amount</th>
-                    <th>
-                      <?php //echo $company_currency . ' ' . array_sum($parking_data); ?>
-                      <?php echo array_sum($results); ?>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <!-- /.box-body -->
+              <div class="form-group">
+              <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Item</label>
+              <div class="col-sm-9">
+                      <select class="form-control select_group product"  id="product" name="product" style="width:100%;" required>
+                            <option value=""></option>
+                            <?php foreach ($products as $k => $v): ?>
+                              <option value="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Name'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+              </div>
+              </div>
+
+              
+              <div class="form-group">
+              <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
+              <div class="col-sm-9">
+                <input type="date"  value = "<?php echo date("Y-m-d"); ?>" class="form-control" id="date_from_stock" name="date_from_stock"  autocomplete="off" />
+              </div>
+              </div>
+
+              <div class="form-group">
+              <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">To</label>
+              <div class="col-sm-9">
+                <input type="date" value = "<?php echo date("Y-m-d"); ?>"class="form-control" id="date_to_stock" name="date_to_stock"  autocomplete="off" />
+              </div>
+              </div>
+              
+           
+              <div class="form-group">
+              <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
+              <div class="col-sm-9">
+              <button type="submit" class="btn btn-primary">Generate Report</button>
+              </div>
+              </div>
+              
+             
+            
           </div>
-          <!-- /.box -->
-        </div>
-        <!-- col-md-12 -->
-      </div>
-      <!-- /.row -->
-      
+          </form>
+             
+            </div>
+            
+          </div>
+          </div>
+       
 
-    </section>
+  
+   </section>
+   
+
+
+   <!-- Test -->
+   
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

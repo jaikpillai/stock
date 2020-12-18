@@ -62,11 +62,13 @@ class Party extends Admin_Controller
 			//Buttons according to permission
 
 			if(in_array('updateCategory', $this->permission)) {
-				$buttons .= '<button type="button" class="btn btn-default" onclick="editFunc('.$value['iTax_ID'].')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
+				if(in_array('updateProduct', $this->permission)) {
+					$buttons .= '<a href="'.base_url('party/update/'.$value['party_id']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				}
 			}
 
 			if(in_array('deleteCategory', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['iTax_ID'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['party_id'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 				
 
@@ -74,11 +76,10 @@ class Party extends Admin_Controller
 
 
            
-
 			$result['data'][$key] = array(
-				$value['iTax_ID'],
-				$value['sTax_Description'],
-				$value['sValue'],
+				$value['party_id'],
+				$value['party_name'],
+				$value['address'],
 				$status,
 				$buttons
 			);
@@ -100,35 +101,53 @@ class Party extends Admin_Controller
 
 		$response = array();
 
-		$this->form_validation->set_rules('category_name', 'Category name', 'trim|required');
-		$this->form_validation->set_rules('active', 'Active', 'trim|required');
+		$this->form_validation->set_rules('party_name', 'Party Name', 'required');
+		$this->form_validation->set_rules('party_address', 'Party Address', 'required');
+		$this->form_validation->set_rules('state', 'State', 'required');
 
 		$this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 
         if ($this->form_validation->run() == TRUE) {
         	$data = array(
-        		'name' => $this->input->post('category_name'),
-        		'active' => $this->input->post('active'),	
+				'party_name' => $this->input->post('party_name'),
+				'address' => $this->input->post('party_address'),
+				'state' => $this->input->post('state'),
+				'contact_person' => $this->input->post('contact_person'),	
+				'contact_number' => $this->input->post('contact_number'),	
+				'is_vendor' => $this->input->post('is_vendor'),
+				'is_customer' => $this->input->post('is_customer'),
+				'is_customer' => $this->input->post('is_customer'),
+				'email_id' => $this->input->post('email_id'),
+				'gst_number' => $this->input->post('gst_number'),
+
         	);
 
-        	$create = $this->model_party->create($data);
-        	if($create == true) {
-        		$response['success'] = true;
-        		$response['messages'] = 'Succesfully created';
+			$create = $this->model_party->create($data);
+			
+			if($create == true) {
+        		$this->session->set_flashdata('success', 'Successfully created');
+				redirect('party/', 'refresh');
+
         	}
         	else {
-        		$response['success'] = false;
-        		$response['messages'] = 'Error in the database while creating the brand information';			
+        		$this->session->set_flashdata('errors', 'Error occurred!!');
+				redirect('party/create', 'refresh');
+
         	}
+        	
         }
         else {
         	$response['success'] = false;
         	foreach ($_POST as $key => $value) {
         		$response['messages'][$key] = form_error($key);
         	}
-        }
+		}
+		$this->data['getid'] = $this->model_party->getLastID();
 
-        echo json_encode($response);
+		$this->render_template('party/create', $this->data);
+		
+
+
 	}
 
 	/*
@@ -146,26 +165,37 @@ class Party extends Admin_Controller
 		$response = array();
 
 		if($id) {
-			$this->form_validation->set_rules('edit_category_name', 'Category name', 'trim|required');
-			$this->form_validation->set_rules('edit_active', 'Active', 'trim|required');
-
+			$this->form_validation->set_rules('party_name', 'Party Name', 'required');
+			$this->form_validation->set_rules('party_address', 'Party Address', 'required');
 			$this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 
 	        if ($this->form_validation->run() == TRUE) {
 	        	$data = array(
-	        		'name' => $this->input->post('edit_category_name'),
-	        		'active' => $this->input->post('edit_active'),	
+	        	'party_name' => $this->input->post('party_name'),
+				'address' => $this->input->post('party_address'),
+				'state' => $this->input->post('state'),
+				'contact_person' => $this->input->post('contact_person'),	
+				'contact_number' => $this->input->post('contact_number'),	
+				'is_vendor' => $this->input->post('is_vendor'),
+				'is_customer' => $this->input->post('is_customer'),
+				'is_customer' => $this->input->post('is_customer'),
+				'email_id' => $this->input->post('email_id'),
+				'gst_number' => $this->input->post('gst_number'),
+				'active' => $this->input->post('active'),
+
 	        	);
 
 	        	$update = $this->model_party->update($data, $id);
 	        	if($update == true) {
-	        		$response['success'] = true;
-	        		$response['messages'] = 'Succesfully updated';
-	        	}
-	        	else {
-	        		$response['success'] = false;
-	        		$response['messages'] = 'Error in the database while updated the brand information';			
-	        	}
+					$this->session->set_flashdata('success', 'Successfully Updated');
+					redirect('party/', 'refresh');
+	
+				}
+				else {
+					$this->session->set_flashdata('errors', 'Error occurred!!');
+					redirect('party/edit', 'refresh');
+	
+				}
 	        }
 	        else {
 	        	$response['success'] = false;
@@ -179,7 +209,11 @@ class Party extends Admin_Controller
     		$response['messages'] = 'Error please refresh the page again!!';
 		}
 
-		echo json_encode($response);
+		$this->data['party_data']= $this->model_party->getPartyData($id);
+
+		$this->render_template('party/edit', $this->data); 
+
+
 	}
 
 	/*
@@ -193,10 +227,13 @@ class Party extends Admin_Controller
 		}
 		
 		$party_id = $this->input->post('party_id');
+		$data = array(
+			'active' => 0,
+			);
 
 		$response = array();
 		if($party_id) {
-			$delete = $this->model_party->remove($party_id);
+			$delete = $this->model_party->update($data ,$party_id);
 			if($delete == true) {
 				$response['success'] = true;
 				$response['messages'] = "Successfully removed";	

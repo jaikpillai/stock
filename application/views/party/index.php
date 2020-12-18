@@ -6,12 +6,14 @@
   <section class="content-header">
     <h1>
       Manage
-      <small>Orders</small>
+      <small>Party</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Orders</li>
+      <li class="active">Party</li>
     </ol>
+
+    
   </section>
 
   <!-- Main content -->
@@ -21,6 +23,7 @@
       <div class="col-md-12 col-xs-12">
 
         <div id="messages"></div>
+        
 
         <?php if($this->session->flashdata('success')): ?>
           <div class="alert alert-success alert-dismissible" role="alert">
@@ -34,27 +37,36 @@
           </div>
         <?php endif; ?>
 
-        <?php if(in_array('createOrder', $user_permission)): ?>
-          <a href="<?php echo base_url('orders/create') ?>" class="btn btn-primary">Add Order</a>
+        <?php if(in_array('createProduct', $user_permission)): ?>
+          <a href="<?php echo base_url('party/create') ?>" class="btn btn-primary">Add Party</a>
+          
+
           <br /> <br />
         <?php endif; ?>
+        
+
+        
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Manage Orders</h3>
+            <h3 class="box-title">Manage Party</h3>
+            
           </div>
+          
           <!-- /.box-header -->
           <div class="box-body">
+        
+            
+          <br>
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
-                <th>Invoice no</th>
+                <th>Party ID</th>
                 <th>Party Name</th>
-                <th>Party Address</th>
-                <th>Total Products</th>
-                <th>Total Amount</th>
-                <th>Paid status</th>
-                <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+                <th>Address</th>
+                <th>Status</th>
+
+                <?php if(in_array('updateProduct', $user_permission) || in_array('deleteProduct', $user_permission)): ?>
                   <th>Action</th>
                 <?php endif; ?>
               </tr>
@@ -76,17 +88,17 @@
 </div>
 <!-- /.content-wrapper -->
 
-<?php if(in_array('deleteOrder', $user_permission)): ?>
+<?php if(in_array('deleteProduct', $user_permission)): ?>
 <!-- remove brand modal -->
 <div class="modal fade" tabindex="-1" role="dialog" id="removeModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Remove Order</h4>
+        <h4 class="modal-title">Remove Product</h4>
       </div>
 
-      <form role="form" action="<?php echo base_url('orders/remove') ?>" method="post" id="removeForm">
+      <form role="form" action="<?php echo base_url('party/remove') ?>" method="post" id="removeForm">
         <div class="modal-body">
           <p>Do you really want to remove?</p>
         </div>
@@ -110,12 +122,13 @@ var base_url = "<?php echo base_url(); ?>";
 
 $(document).ready(function() {
 
-  $("#mainOrderNav").addClass('active');
-  $("#manageOrderNav").addClass('active');
+  $("#mainPartyNav").addClass('active');
+  $("#managePartyNav").addClass('active');
+
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({
-    'ajax': base_url + 'orders/fetchOrdersData',
+    'ajax': base_url + 'party/fetchPartyData',
     'order': []
   });
 
@@ -135,7 +148,7 @@ function removeFunc(id)
       $.ajax({
         url: form.attr('action'),
         type: form.attr('method'),
-        data: { invoice_no:id }, 
+        data: { party_id:id }, 
         dataType: 'json',
         success:function(response) {
 
@@ -164,6 +177,10 @@ function removeFunc(id)
     });
   }
 }
+
+
+
+
 
 
 </script>

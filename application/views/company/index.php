@@ -45,14 +45,27 @@
                   <label for="company_name">Company Name</label>
                   <input type="text" class="form-control" id="company_name" name="company_name" placeholder="Enter company name" value="<?php echo $company_data['company_name'] ?>" autocomplete="off">
                 </div>
+<!-- 
                 <div class="form-group">
+                    <label for="financial_year">Financial Year</label>
+                   
+                    <select class="form-control select_group product" id="party" name="party" style="width:100%;" required>
+                            <option value="" disabled selected>--Select--</option>
+                            <?php foreach ($party_data as $k => $v): ?>
+                              <option value="<?php echo $v['party_id'] ?>"><?php echo $v['party_name'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                      
+                 
+                  </div> -->
+                <!-- <div class="form-group">
                   <label for="service_charge_value">Charge Amount (%)</label>
                   <input type="text" class="form-control" id="service_charge_value" name="service_charge_value" placeholder="Enter charge amount %" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
                 </div>
                 <div class="form-group">
                   <label for="vat_charge_value">Vat Charge (%)</label>
                   <input type="text" class="form-control" id="vat_charge_value" name="vat_charge_value" placeholder="Enter vat charge %" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
-                </div>
+                </div> -->
                 <div class="form-group">
                   <label for="address">Address</label>
                   <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" value="<?php echo $company_data['address'] ?>" autocomplete="off">

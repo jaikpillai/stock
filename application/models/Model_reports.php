@@ -60,4 +60,26 @@ class Model_reports extends CI_Model
 			
 		}
 	}
+
+	public function getInvoiceListing($date_from, $date_to){
+
+		if($date_from && $date_to) {
+			$sql = "SELECT * FROM invoice_master where invoice_date >= '$date_from' and invoice_date <= '$date_to' ";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+	}
+
+
+	public function geItemSell($item_id, $date_from , $date_to){
+
+		if($item_id && $date_from && $date_to) {
+			$sql = "SELECT invoice_item.item_id, invoice_master.invoice_date, invoice_master.invoice_no FROM invoice_item inner join invoice_master on invoice_item.invoice_no = invoice_master.invoice_no where invoice_item.item_id = $item_id and invoice_master.invoice_date >= '$date_from' and invoice_master.invoice_date <= '$date_to'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+	}
+
+	
+
 }

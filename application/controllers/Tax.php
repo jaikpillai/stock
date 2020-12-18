@@ -52,7 +52,7 @@ class Tax extends Admin_Controller
 	{
 		$result = array('data' => array());
 
-		$data = $this->model_tax->getTaxData();
+		$data = $this->model_tax->getActiveTax();
 
 		foreach ($data as $key => $value) {
 
@@ -97,15 +97,16 @@ class Tax extends Admin_Controller
 
 		$response = array();
 
-		$this->form_validation->set_rules('category_name', 'Category name', 'trim|required');
+		$this->form_validation->set_rules('tax_description', 'Category name', 'trim|required');
 		$this->form_validation->set_rules('active', 'Active', 'trim|required');
 
 		$this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 
         if ($this->form_validation->run() == TRUE) {
         	$data = array(
-        		'name' => $this->input->post('category_name'),
-        		'active' => $this->input->post('active'),	
+        		'sTax_Description' => $this->input->post('tax_description'),
+        		'sValue' => $this->input->post('tax_value'),
+				'active' => $this->input->post('active'),	
         	);
 
         	$create = $this->model_tax->create($data);
@@ -143,15 +144,16 @@ class Tax extends Admin_Controller
 		$response = array();
 
 		if($id) {
-			$this->form_validation->set_rules('edit_category_name', 'Category name', 'trim|required');
+			$this->form_validation->set_rules('edit_tax_description', 'Category name', 'trim|required');
 			$this->form_validation->set_rules('edit_active', 'Active', 'trim|required');
 
 			$this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 
 	        if ($this->form_validation->run() == TRUE) {
 	        	$data = array(
-	        		'name' => $this->input->post('edit_category_name'),
-	        		'active' => $this->input->post('edit_active'),	
+	        	'sTax_Description' => $this->input->post('edit_tax_description'),
+        		'sValue' => $this->input->post('edit_tax_value'),
+				'active' => $this->input->post('edit_active'),	
 	        	);
 
 	        	$update = $this->model_tax->update($data, $id);
@@ -189,11 +191,14 @@ class Tax extends Admin_Controller
 			redirect('dashboard', 'refresh');
 		}
 		
-		$category_id = $this->input->post('category_id');
+		$category_id = $this->input->post('tax_id');
 
 		$response = array();
 		if($category_id) {
-			$delete = $this->model_category->remove($category_id);
+			$data = array(
+				'active' => 0	
+	        	);
+			$delete = $this->model_tax->update($data, $category_id);
 			if($delete == true) {
 				$response['success'] = true;
 				$response['messages'] = "Successfully removed";	

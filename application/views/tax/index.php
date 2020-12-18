@@ -81,22 +81,26 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Add Category</h4>
+        <h4 class="modal-title">Add Tax</h4>
       </div>
 
-      <form role="form" action="<?php echo base_url('category/create') ?>" method="post" id="createForm">
+      <form role="form" action="<?php echo base_url('tax/create') ?>" method="post" id="createForm">
 
         <div class="modal-body">
 
           <div class="form-group">
-            <label for="brand_name">Category Name</label>
-            <input type="text" class="form-control" id="category_name" name="category_name" placeholder="Enter category name" autocomplete="off">
+            <label for="tax_description">Tax Description</label>
+            <input type="text" class="form-control" id="tax_description" name="tax_description" placeholder="Enter Tax Description" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="tax_value">Tax Value(%)</label>
+            <input type="text" class="form-control" id="tax_value" name="tax_value" placeholder="Enter Tax value in percentage" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="active">Status</label>
             <select class="form-control" id="active" name="active">
               <option value="1">Active</option>
-              <option value="2">Inactive</option>
+              <option value="0">Inactive</option>
             </select>
           </div>
         </div>
@@ -124,14 +128,18 @@
         <h4 class="modal-title">Edit Category</h4>
       </div>
 
-      <form role="form" action="<?php echo base_url('category/update') ?>" method="post" id="updateForm">
+      <form role="form" action="<?php echo base_url('tax/update') ?>" method="post" id="updateForm">
 
         <div class="modal-body">
           <div id="messages"></div>
 
           <div class="form-group">
-            <label for="edit_brand_name">Category Name</label>
-            <input type="text" class="form-control" id="edit_category_name" name="edit_category_name" placeholder="Enter category name" autocomplete="off">
+            <label for="edit_tax_description">Tax Description</label>
+            <input type="text" class="form-control" id="edit_tax_description" name="edit_tax_description" placeholder="Enter Tax Description" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="edit_tax_value">Tax Value(%)</label>
+            <input type="number" class="form-control" id="edit_tax_value" name="edit_tax_value" placeholder="Enter Tax value in percentage" autocomplete="off">
           </div>
           <div class="form-group">
             <label for="edit_active">Status</label>
@@ -165,7 +173,7 @@
         <h4 class="modal-title">Remove Category</h4>
       </div>
 
-      <form role="form" action="<?php echo base_url('category/remove') ?>" method="post" id="removeForm">
+      <form role="form" action="<?php echo base_url('tax/remove') ?>" method="post" id="removeForm">
         <div class="modal-body">
           <p>Do you really want to remove?</p>
         </div>
@@ -257,12 +265,13 @@ $(document).ready(function() {
 function editFunc(id)
 { 
   $.ajax({
-    url: 'fetchCategoryDataById/'+id,
+    url: 'fetchTaxDataById/'+id,
     type: 'post',
     dataType: 'json',
     success:function(response) {
 
-      $("#edit_category_name").val(response.name);
+      $("#edit_tax_description").val(response.sTax_Description);
+      $("#edit_tax_value").val(response.sValue);
       $("#edit_active").val(response.active);
 
       // submit the edit from 
@@ -275,12 +284,12 @@ function editFunc(id)
         $.ajax({
           url: form.attr('action') + '/' + id,
           type: form.attr('method'),
+
           data: form.serialize(), // /converting the form data into array and sending it to server
           dataType: 'json',
           success:function(response) {
 
             manageTable.ajax.reload(null, false); 
-
             if(response.success === true) {
               $("#messages").html('<div class="alert alert-success alert-dismissible" role="alert">'+
                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>'+
@@ -338,7 +347,7 @@ function removeFunc(id)
       $.ajax({
         url: form.attr('action'),
         type: form.attr('method'),
-        data: { category_id:id }, 
+        data: { tax_id:id }, 
         dataType: 'json',
         success:function(response) {
 
