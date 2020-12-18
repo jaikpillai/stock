@@ -313,7 +313,7 @@
                 <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
                 <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
 
-                <a target="__blank" href="<?php echo base_url() . 'orders/printDiv/'.$order_data['invoice_master']['invoice_no'] ?>" class="btn btn-default" >Print</a>
+                <a  onclick="printOrder(<?php echo $order_data['invoice_master']['invoice_no'] ?>)" class="btn btn-default" >Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="<?php echo base_url('orders/') ?>" class="btn btn-warning">Back</a>
               </div>
@@ -339,28 +339,29 @@ var removed_rows_count =0;
 <script type="text/javascript">
   var base_url = "<?php echo base_url(); ?>";
 
-  // function printOrder(id)
-  // {
-  //   if(id) {
-  //     $.ajax({
-  //       url: base_url + 'orders/printDiv/' + id,
-  //       type: 'post',
-  //       success:function(response) {
-  //         var mywindow = window.open('', 'new div', 'height=400,width=600');
-  //         // mywindow.document.write('<html><head><title></title>');
-  //         // mywindow.document.write('<link rel="stylesheet" href="<?php //echo base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css') ?>" type="text/css" />');
-  //         // mywindow.document.write('</head><body >');
-  //         mywindow.document.write(response);
-  //         // mywindow.document.write('</body></html>');
+  function printOrder(id)
+  {
+    if(id) {
+      $.ajax({
+        url: base_url + 'orders/printDiv/' + id,
+        type: 'post',
+        success:function(response) {
+          var mywindow = window.open('', 'new div', 'height=1000,width=1500');
+          // mywindow.document.write('<html><head><title></title>');
+          // mywindow.document.write('<link rel="stylesheet" href="<?php //echo base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css') ?>" type="text/css" />');
+          // mywindow.document.write('</head><body >');
+          mywindow.document.write(response);
+          // mywindow.document.write('</body></html>');
+          myWindow.document.close();
+          myWindow.focus();
+          mywindow.print();
+          mywindow.close();
 
-  //         mywindow.print();
-  //         mywindow.close();
-
-  //         return true;
-  //       }
-  //     });
-  //   }
-  // }
+          return true;
+        }
+      });
+    }
+  }
 
   $(document).ready(function() {
 

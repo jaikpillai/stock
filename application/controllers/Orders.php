@@ -277,6 +277,7 @@ class Orders extends Admin_Controller
 		if($id) {
 			$order_data = $this->model_orders->getOrdersData($id);
 			$orders_items = $this->model_orders->getOrdersItemData($id);
+			$footer_items = $this->model_orders->getFooter($id);
 			$company_info = $this->model_company->getCompanyData(1);
 			$party_data = $this->model_party->getPartyData($order_data['party_id']);
 
@@ -292,7 +293,7 @@ class Orders extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>GST INVOICE NO. '. $order_data['invoice_no'].'</title>
+			  <title></title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -300,6 +301,7 @@ class Orders extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="'.base_url('assets/bower_components/font-awesome/css/font-awesome.min.css').'">
 			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.min.css').'">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
@@ -307,32 +309,76 @@ class Orders extends Admin_Controller
 			  <section class="invoice">
 			    <!-- title row -->
 			    <div class="row">
-			      <div class="col-xs-12">
-			        <h2 class="page-header">
+				  <div class="col-xs-12 ">
+				  <h5 class="invoice-title-address">GST INVOICE</h5>
+			        <h1 class="invoice-title-name">
 			          '.$company_info['company_name'].'
-			          <small class="pull-right">Date: '.$order_date.'</small>
-			        </h2>
+					</h1>
+					<h6 class="invoice-title-address">
+			          '.$company_info['address'].'
+					</h6>
+					<div class="display-flex">
+					<h6 class="invoice-title-address">
+					Phone No:'.$company_info['phone'].'
+					</h6>
+					<h6 class="invoice-title-address">
+			          Email:'.$company_info['address'].'
+					</h6>
+					</div>
 			      </div>
 			      <!-- /.col -->
 			    </div>
-			    <!-- info row -->
-			    <div class="row invoice-info">
+				<!-- info row -->
+				<div class="invoice-border">
+			    <div class="row invoice-info" style="margin-right: -8px;">
 			      
-			      <div class="col-sm-4 invoice-col">
-			        
-			        <b>Invoice No:</b> '.$order_data['invoice_no'].'<br>
-			        <b>Sold To:</b> '.$party_data ['party_name'].'<br>
-			        <b>Address:</b> '.$party_data['address'].' <br>
+				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
+				  <div class="padding-10">
+					<b>Sold To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
+					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
+					</div>
+					<div class="invoice-boxes padding-10">
+					<div class="col-sm-6 invoice-col padding-0">
+					<b>Order/Challan No.:</b> '.$order_data['order_no'].' </div>
+					<div class="col-sm-6 invoice-col padding-0">
+					<b>Date.:</b> '.$order_data['order_date'].' </div><br>
 
 			      </div>
-			      <!-- /.col -->
+
+			      </div>
+				  <!-- /.col -->
+				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
+				  <div class="padding-5" style="text-align: center;background: lightgray;">
+					<b>Credit Memo</b><br>
+					</div>
+					<div class="invoice-boxes padding-5">
+					<b>Invoice No.:</b> '.$order_data['invoice_no'].'
+
+				  </div>
+				  <div class="invoice-boxes padding-5">
+					<b>Date.:</b> '.$order_data['invoice_date'].'
+
+				  </div>
+				  <div class="invoice-boxes padding-5">
+					<b>Dispatch Through.:</b> 
+				  </div>
+				  
+				  <div class="invoice-boxes padding-5">
+					<div class="col-sm-6 invoice-col padding-0">
+					<b>GR No. & Date:</b> '.$order_data['gr_rr_no'].' </div>
+					<div class="col-sm-6 invoice-col padding-0">
+					<b>Freight Paid.:</b> </div>
+
+			      </div>
+
+			      </div>
+				  <!-- /.col -->
 			    </div>
-			    <!-- /.row -->
-				<hr>	
+			    <!-- /.row -->	
 			    <!-- Table row -->
-			    <div class="row">
-			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			    <div class="row" style="margin-right: -15px;">
+			      <div class="col-xs-12 table-responsive table-invoice">
+			        <table class="table table-bordered-invoice" >
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -385,8 +431,6 @@ class Orders extends Admin_Controller
 					$round_off =  ($rounded_total_amount - $final_total);
 					$round_off = round($round_off, 2);
 
-
-			          
 			          $html .= '</tbody>
 			        </table>
 			      </div>
@@ -446,7 +490,43 @@ class Orders extends Admin_Controller
 			      </div>
 			      <!-- /.col -->
 			    </div>
-			    <!-- /.row -->
+				<!-- /.row -->
+				<div style=" border-top: 2px solid;padding: 10px;">
+				<div class="row">
+				
+				<div>
+
+				<b>GST R.No. :</b><br>
+				<b>Our Bank Detail :</b><br><br>
+
+
+				  <b>Terms & Conditions</b><br>
+
+				';
+				foreach ($footer_items as $k => $v) {
+					
+					$index = $k + 1;
+					$html .= '  <b>'.$index.'.</b> '.$v['description'].'<br>';
+				}
+					
+					$html.='
+					<br><br><br>
+					<b>Receiver\'s Signature</b><br>
+			      </div>
+			      <!-- /.col -->
+			      
+			      <div class="col-sm-2 invoice-footer">
+				  <b>For '.$company_info['company_name'].'</b>
+				  <br><br><br>
+				  <b>Authorised Signatory</b><br>
+
+			      </div>
+				  <!-- /.col -->
+				  
+			    </div>
+			    <!-- /.row -->	
+				</div>
+				<!-- /.border -->
 			  </section>
 			  <!-- /.content -->
 			</div>

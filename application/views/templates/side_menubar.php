@@ -152,6 +152,26 @@
             </li>
           <?php endif; ?>
 
+          <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+            <li class="treeview" id="mainPurchaseNav">
+              <a href="#">
+                <i class="fa fa-inr"></i>
+                <span>Purchase Transaction</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <?php if(in_array('createOrder', $user_permission)): ?>
+                  <li id="addPurchaseNav"><a href="<?php echo base_url('purchase/create') ?>"><i class="fa fa-circle-o"></i> Add Purchase</a></li>
+                <?php endif; ?>
+                <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+                <li id="managePurchaseNav"><a href="<?php echo base_url('purchase') ?>"><i class="fa fa-circle-o"></i> Manage Purchase</a></li>
+                <?php endif; ?>
+              </ul>
+            </li>
+          <?php endif; ?>
+
           <?php if(in_array('viewReports', $user_permission)): ?>
             <li id="reportNav">
               <a href="<?php echo base_url('reports/') ?>">

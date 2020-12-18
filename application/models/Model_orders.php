@@ -34,6 +34,19 @@ class Model_orders extends CI_Model
 		return $query->result_array();
 	}
 
+	public function getFooter($order_id = null)
+	{
+		if(!$order_id) {
+			return false;
+		}
+
+		$sql = "SELECT terms_and_conditions.description FROM invoice_footer JOIN terms_and_conditions ON invoice_footer.t_and_c=terms_and_conditions.s_no AND invoice_footer.invoice_id=? UNION
+		SELECT terms_and_conditions.description FROM terms_and_conditions WHERE is_default=1";
+		$query = $this->db->query($sql, array($order_id));
+		return $query->result_array();
+	}
+
+
 	public function getFinancialYearID()
 	{
 		

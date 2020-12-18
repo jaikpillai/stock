@@ -2789,6 +2789,39 @@ a:focus {
 .table-bordered {
   border: 1px solid #f4f4f4;
 }
+
+.invoice-top{
+  left: 4px;
+  padding: 0px;
+  border-top: 0px !important;
+}
+
+.padding-10{
+  padding: 10px;
+}
+
+.padding-0{
+  padding: 0px;
+}
+
+.padding-5{
+  padding: 5px;
+}
+
+.invoice-footer{
+  float:right;
+  position: absolute;
+  bottom: 20px;
+	right: 20px;
+	border: 1px solid;
+	text-align: center;
+	padding: 10px;
+}
+
+.table-bordered-invoice {
+  border: 1px solid;
+}
+
 .table-bordered > thead > tr > th,
 .table-bordered > tbody > tr > th,
 .table-bordered > tfoot > tr > th,
@@ -2801,6 +2834,32 @@ a:focus {
 .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
 }
+
+.table-bordered-invoice > thead > tr > th,
+.table-bordered-invoice > tbody > tr > th,
+.table-bordered-invoice > tfoot > tr > th,
+.table-bordered-invoice > thead > tr > td,
+.table-bordered-invoice > tbody > tr > td,
+.table-bordered-invoice > tfoot > tr > td {
+  border: 1px solid;
+  border-top: none;
+  border-bottom: none;
+}
+.table-bordered-invoice > thead > tr > th,
+.table-bordered-invoice > thead > tr > td {
+  border-bottom: 1px solid;
+  border-bottom-width: 1px;
+}
+
+.table-invoice{
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.table-border-custom{
+  border: 1px solid;
+}
+
 .table.no-border,
 .table.no-border td,
 .table.no-border th {
@@ -3484,6 +3543,44 @@ table.text-center th {
 .invoice-title {
   margin-top: 0;
 }
+
+.invoice-border{
+  border: 2px solid;
+  padding: 10px;
+  padding-top: 0px !important;
+  margin-top: 25px;
+}
+
+.invoice-boxes{
+  border-top: 1px solid;
+}
+
+.invoice-title-name {
+  margin: 0 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  
+}
+
+.invoice-title-address {
+  margin: 0 !important;
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.display-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
 /*
  * Page: Profile
  * -------------
@@ -5661,7 +5758,7 @@ table.text-center th {
   }
   .invoice-col {
     float: left;
-    width: 33.3333333%;
+    width: 50%;
   }
   .table-responsive {
     overflow: auto;
