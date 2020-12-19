@@ -59,7 +59,7 @@
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Quotation Number</label>
                     <div class="col-sm-7">
                    
-                    <input value = "<?php echo$quotation_data['quotation_master']['quotation_no']?>" type="text"  class="form-control" id="quotation_no" name="quotation_no" placeholder="" autocomplete="off" readonly/>
+                    <input value = "<?php echo $quotation_data['quotation_master']['quotation_no']?>" type="text"  class="form-control" id="quotation_no" name="quotation_no" placeholder="" autocomplete="off" readonly/>
                   
                       <!-- <input type="text" class="form-control" id="invoice_no" name="invoice_no" disabled autocomplete="off" /> -->
                       
