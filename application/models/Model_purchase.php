@@ -71,7 +71,7 @@ class Model_purchase extends CI_Model
 	
 
 		// $is_received = $this->input->post('total_gst');
-		$purchase_no = $this->input->post('purchase_no');
+		// $purchase_no = $this->input->post('purchase_no');
 
 		// $total_discount
 
@@ -167,7 +167,7 @@ class Model_purchase extends CI_Model
 		}
 	}
 
-	public function update($id)
+	public function update($id,$purchase_no)
 	{
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
@@ -184,7 +184,7 @@ class Model_purchase extends CI_Model
 
 
 		// $is_received = $this->input->post('total_gst');
-		$purchase_no = $this->input->post('purchase_no');
+		// $purchase_no = $this->input->post('purchase_no');
 
 		if($id) {
 			$user_id = $this->session->userdata('id');
@@ -223,7 +223,7 @@ class Model_purchase extends CI_Model
 	    		// 'user_id' => $user_id
 	    	);
 
-			$this->db->where('purchase_no', $id);
+			$this->db->where('s_no', $id);
 			$update = $this->db->update('purchase_master', $data);
 
 			// now the order item 
@@ -243,7 +243,7 @@ class Model_purchase extends CI_Model
 			}
 
 			// now remove the order item data 
-			$this->db->where('purchase_no', $id);
+			$this->db->where('purchase_no', $purchase_no);
 			$this->db->delete('purchase_item');
 
 			// now decrease the product qty

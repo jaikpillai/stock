@@ -69,7 +69,7 @@ class Purchase extends Admin_Controller
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('purchase/update/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a href="'.base_url('purchase/update/'.$value['s_no'].'/'.$value['purchase_no'].'').'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
@@ -179,13 +179,13 @@ class Purchase extends Admin_Controller
 	* If the validation is successfully then it updates the data into the database 
 	* and it stores the operation message into the session flashdata and display on the manage group page
 	*/
-	public function update($id)
+	public function update($id, $purchase_no)
 	{
 		if(!in_array('updateOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
 
-		if(!$id) {
+		if(!$id || !$purchase_no) {
 			redirect('dashboard', 'refresh');
 		}
 
@@ -196,15 +196,15 @@ class Purchase extends Admin_Controller
 	
         if ($this->form_validation->run() == TRUE) {        	
         	
-        	$update = $this->model_purchase->update($id);
+        	$update = $this->model_purchase->update($id,  $purchase_no);
         	
         	if($update == true) {
         		$this->session->set_flashdata('success', 'Successfully updated');
-        		redirect('purchase/update/'.$id, 'refresh');
+        		redirect('purchase/update/'.$id.'/'.$purchase_no, 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');
-        		redirect('purchase/update/'.$id, 'refresh');
+        		redirect('purchase/update/'.$id.'/'.$purchase_no, 'refresh');
         	}
         }
         else {
