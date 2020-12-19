@@ -248,8 +248,8 @@ class Purchase extends Admin_Controller
 
 
         $response = array();
-        if($invoice_no) {
-            $delete = $this->model_purchase->remove($purchase_no);
+        if($purchase_no) {
+            $delete = $this->model_purchase->remove($sno, $purchase_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 
