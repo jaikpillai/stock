@@ -13,7 +13,7 @@ class Purchase extends Admin_Controller
 		$this->data['page_title'] = 'Purchase Orders';
 
 		$this->load->model('model_purchase');
-		$this->load->model('model_orders');
+		// $this->load->model('model_orders');
 		$this->load->model('model_products');
 		$this->load->model('model_tax');
 		$this->load->model('model_company');
@@ -111,7 +111,7 @@ class Purchase extends Admin_Controller
 
 		$this->data['page_title'] = 'Add Purchase Order';
 
-		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
+		// $this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
@@ -190,12 +190,12 @@ class Purchase extends Admin_Controller
 
 		$this->data['page_title'] = 'Update Purchase Order';
 
-		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
+		// $this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
         	
-        	$update = $this->model_orders->update($id);
+        	$update = $this->model_purchase->update($id);
         	
         	if($update == true) {
         		$this->session->set_flashdata('success', 'Successfully updated');
@@ -214,16 +214,16 @@ class Purchase extends Admin_Controller
         	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
         	$result = array();
-        	$orders_data = $this->model_orders->getOrdersData($id);
+        	$purchase_data = $this->model_purchase->getPurchaseData($id);
 
-    		$result['invoice_master'] = $orders_data;
-    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['invoice_no']);
+    		$result['purchase_master'] = $purchase_data;
+    		$purchase_item = $this->model_purchase->getPurchaseItemData($purchase_data['purchase_no']);
 			$this->data['party_data'] = $this->model_party->getPartyData();
-    		foreach($orders_item as $k => $v) {
-    			$result['invoice_item'][] = $v;
+    		foreach($purchase_item as $k => $v) {
+    			$result['purchase_item'][] = $v;
     		}
 
-			$this->data['order_data'] = $result;
+			$this->data['purchase_data'] = $result;
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
 			
 
@@ -243,11 +243,11 @@ class Purchase extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$invoice_no = $this->input->post('invoice_no');
+		$purchase_no = $this->input->post('purchase_no');
 
         $response = array();
         if($invoice_no) {
-            $delete = $this->model_orders->remove($invoice_no);
+            $delete = $this->model_purchase->remove($purchase_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 

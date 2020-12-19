@@ -40,7 +40,7 @@
             <h3 class="box-title">Edit Order</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('orders/create') ?>" method="post" class="form-horizontal">
+          <form role="form" action="<?php base_url('purchase/create') ?>" method="post" class="form-horizontal">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>
@@ -98,15 +98,12 @@
                     <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
                     <option value="" disabled selected> <?php echo ucfirst($order_data['invoice_master']['mode_of_payment']) ?></option>
                    
-                    <option value="Cash"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cash"): ?> selected <?php endif; ?>>Cash</option>
-                    <option value="Credit"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "credit"): ?> selected <?php endif; ?>>Credit</option>
-                      <option value="Personally"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "personally"): ?> selected <?php endif; ?>>Personally</option>
-                    <option value="Cheque"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cheque"): ?> selected <?php endif; ?>>Cheque</option>
-                      <option value="UPI"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "upi"): ?> selected <?php endif; ?>>UPI</option>
-            
-               
-                   
-  
+                    <option value="Cash"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "Cash"): ?> selected <?php endif; ?>>Cash</option>
+                    <option value="Credit"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "Credit"): ?> selected <?php endif; ?>>Credit</option>
+                      <option value="Personally"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "Personally"): ?> selected <?php endif; ?>>Personally</option>
+                    <option value="Cheque"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "Cheque"): ?> selected <?php endif; ?>>Cheque</option>
+                      <option value="UPI"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "UPI"): ?> selected <?php endif; ?>>UPI</option>
+      
                         </select>
                       
                     </div>
