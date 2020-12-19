@@ -64,7 +64,25 @@ class Model_reports extends CI_Model
 	public function getInvoiceListing($date_from, $date_to){
 
 		if($date_from && $date_to) {
-			$sql = "SELECT * FROM invoice_master where invoice_date >= '$date_from' and invoice_date <= '$date_to' ";
+			$sql = "SELECT * FROM invoice_master where invoice_date >= '$date_from' and invoice_date <= '$date_to' and `status` = 1 ";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+	}
+	
+	public function getQuotationListing($date_from, $date_to){
+
+		if($date_from && $date_to) {
+			$sql = "SELECT * FROM quotation_master where quotation_date >= '$date_from' and quotation_date <= '$date_to' and `status` = 1 ";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+	}
+
+	public function getPurchaseListing($date_from, $date_to){
+
+		if($date_from && $date_to) {
+			$sql = "SELECT * FROM purchase_master where purchase_date >= '$date_from' and purchase_date <= '$date_to' and `status` = 1 ";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
@@ -74,7 +92,7 @@ class Model_reports extends CI_Model
 	public function geItemSell($item_id, $date_from , $date_to){
 
 		if($item_id && $date_from && $date_to) {
-			$sql = "SELECT invoice_item.item_id, invoice_master.invoice_date, invoice_master.invoice_no FROM invoice_item inner join invoice_master on invoice_item.invoice_no = invoice_master.invoice_no where invoice_item.item_id = $item_id and invoice_master.invoice_date >= '$date_from' and invoice_master.invoice_date <= '$date_to'";
+			$sql = "SELECT invoice_item.item_id, invoice_master.invoice_date, invoice_master.invoice_no FROM invoice_item inner join invoice_master on invoice_item.invoice_no = invoice_master.invoice_no where invoice_item.item_id = $item_id and invoice_master.invoice_date >= '$date_from' and invoice_master.invoice_date <= '$date_to' and invoice_master.status = 1";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

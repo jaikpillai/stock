@@ -503,7 +503,7 @@ class Quotation extends Admin_Controller
 					<b>Receiver\'s Signature</b><br>
 			      </div>
 			      <!-- /.col -->
-			      
+	
 			      <div class="col-sm-2 invoice-footer">
 				  <b>For '.$company_info['company_name'].'</b>
 				  <br><br><br>
