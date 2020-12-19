@@ -37,7 +37,7 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Edit Order</h3>
+            <h3 class="box-title">Edit Purchase</h3>
           </div>
           <!-- /.box-header -->
           <form role="form" action="<?php base_url('purchase/create') ?>" method="post" class="form-horizontal">
@@ -54,23 +54,27 @@
 
                 <div class="col-md-4 col-xs-12 pull pull-left">
 
+                
                 <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Invoice Number</label>
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">PO Number</label>
                     <div class="col-sm-7">
-           
-                    <input value = "<?php echo $order_data['invoice_master']['invoice_no']?>" type="text"  class="form-control" id="invoice_no" name="invoice_no" placeholder="" autocomplete="off" readonly/>
+                    <?php foreach ($getlastpurchaseid as  $key => $value): 
+                     $new_id =$value['MAX(purchase_no)']+1?>
+                    <input value = "<?php echo $new_id;?>" type="text"  class="form-control" id="purchase_no" name="purchase_no" placeholder="" autocomplete="off" readonly/>
+                  <?php endforeach ?>
+                  
+                      <!-- <input type="text" class="form-control" id="invoice_no" name="invoice_no" disabled autocomplete="off" /> -->
+                      
                     </div>
                   </div>
-                  
+
                   <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party Name</label>
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party</label>
                     <div class="col-sm-7">
                     <select class="form-control select_group product" id="party" name="party" style="width:100%;" required>
-                            <!-- <option value="" disabled></option> -->
+                            <option value="" disabled selected>--Select--</option>
                             <?php foreach ($party_data as $k => $v): ?>
-                            
-                            
-                              <option value="<?php echo $v['party_id'] ?>"<?php if(($v['party_id'] == $order_data['invoice_master']['party_id'])) { echo 'selected="selected"'; } ?>><?php echo $v['party_name'] ?></option>
+                              <option value="<?php echo $v['party_id'] ?>"><?php echo $v['party_name'] ?></option>
                             <?php endforeach ?>
                           </select>
                       
@@ -78,44 +82,26 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">GR/RR Number</label>
-                    <div class="col-sm-7">
-                      <input type="text" class="form-control" id="gr_rr_no" name="gr_rr_no"  value ="<?php echo $order_data['invoice_master']['gr_rr_no'] ?>" autocomplete="off" />
-                      
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Dispatch Through</label>
-                    <div class="col-sm-7">
-                      <input type="text" class="form-control" id="dispatch_through" name="dispatch_through" placeholder="Enter Dispatch Through" value = "<?php echo $order_data['invoice_master']['dispatched_through'] ?>" autocomplete="off" />
-                    </div>
-                  </div>
-
-                  <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
                     <div class="col-sm-7">
                     <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
-                    <option value="" disabled selected> <?php echo ucfirst($order_data['invoice_master']['mode_of_payment']) ?></option>
-                   
-                    <option value="cash"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cash"): ?> selected <?php endif; ?>>Cash</option>
-                    <option value="credit"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "credit"): ?> selected <?php endif; ?>>Credit</option>
-                      <option value="personally"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "personally"): ?> selected <?php endif; ?>>Personally</option>
-                    <option value="cheque"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cheque"): ?> selected <?php endif; ?>>Cheque</option>
-                      <option value="upi"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "upi"): ?> selected <?php endif; ?>>UPI</option>
-            
-               
+                    <option value="" disabled selected>--Select--</option>
+  
+                    <option value="Cash"  >Cash</option>
+                    <option value="Credit"  >Credit</option>
+                    <option value="Personally"  >Personally</option>
+                    <option value="Cheque"  >Cheque</option>
+                    <option value="UPI"  >UPI</option>
                    
   
                         </select>
                       
                     </div>
-                </div>
+                </div>  
 
                 </div>
                 
                 <div class="col-md-4 col-xs-12 pull pull-left">
-
 <div class="form-group">
     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Date</label>
     <div class="col-sm-7">
