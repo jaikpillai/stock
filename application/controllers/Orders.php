@@ -510,7 +510,7 @@ class Orders extends Admin_Controller
 				}
 					
 					$html.='
-					<br><br><br>
+					<br><br><br><br><br>
 					<b>Receiver\'s Signature</b><br>
 			      </div>
 			      <!-- /.col -->

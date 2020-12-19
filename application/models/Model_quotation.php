@@ -40,7 +40,7 @@ class Model_quotation extends CI_Model
 			return false;
 		}
 
-		$sql = "SELECT terms_and_conditions.description FROM invoice_footer JOIN terms_and_conditions ON invoice_footer.t_and_c=terms_and_conditions.s_no AND invoice_footer.invoice_id=? UNION
+		$sql = "SELECT terms_and_conditions.description FROM quotation_footer JOIN terms_and_conditions ON quotation_footer.t_and_c=terms_and_conditions.s_no AND quotation_footer.quotation_id=? UNION
 		SELECT terms_and_conditions.description FROM terms_and_conditions WHERE is_default=1";
 		$query = $this->db->query($sql, array($order_id));
 		return $query->result_array();

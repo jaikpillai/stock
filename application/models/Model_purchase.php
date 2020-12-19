@@ -16,7 +16,7 @@ class Model_purchase extends CI_Model
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM purchase_master WHERE status = 1 ORDER BY purchase_no DESC ";
+	  	$sql = "SELECT * FROM purchase_master WHERE status = 1 ORDER BY purchase_no DESC ";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

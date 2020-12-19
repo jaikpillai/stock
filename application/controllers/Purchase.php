@@ -280,15 +280,15 @@ class Purchase extends Admin_Controller
         }
         
 		if($id) {
-			$order_data = $this->model_orders->getOrdersData($id);
-			$orders_items = $this->model_orders->getOrdersItemData($id);
-			$footer_items = $this->model_orders->getFooter($id);
+			$order_data = $this->model_purchase->getPurchaseData($id);
+			$orders_items = $this->model_purchase->getPurchaseItemData($id);
+			// $footer_items = $this->model_orders->getFooter($id);
 			$company_info = $this->model_company->getCompanyData(1);
 			$party_data = $this->model_party->getPartyData($order_data['party_id']);
 
-			$order_date = strtotime($order_data['invoice_date']);
+			$order_date = strtotime($order_data['purchase_date']);
 			$order_date = date( 'd/m/Y', $order_date );
-			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
+			// $paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 
 
 
@@ -315,7 +315,6 @@ class Purchase extends Admin_Controller
 			    <!-- title row -->
 			    <div class="row">
 				  <div class="col-xs-12 ">
-				  <h5 class="invoice-title-address">GST INVOICE</h5>
 			        <h1 class="invoice-title-name">
 			          '.$company_info['company_name'].'
 					</h1>
@@ -339,38 +338,32 @@ class Purchase extends Admin_Controller
 			      
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
 				  <div class="padding-10">
-					<b>Sold To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
+					<b>To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
 					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
 					</div>
 					<div class="invoice-boxes padding-10">
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Order/Challan No.:</b> '.$order_data['order_no'].' </div>
+					<b>Purchase No.:</b> '.$order_data['purchase_no'].' </div>
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Date.:</b> '.$order_data['order_date'].' </div><br>
+					<b>Date.:</b> '.$order_data['purchase_date'].' </div><br>
 
 			      </div>
 
 			      </div>
 				  <!-- /.col -->
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
-				  <div class="padding-5" style="text-align: center;background: lightgray;">
-					<b>Credit Memo</b><br>
-					</div>
 					<div class="invoice-boxes padding-5">
-					<b>Invoice No.:</b> '.$order_data['invoice_no'].'
+					<b>Ref. No.:</b> '.$order_data['ref_no'].'
 
 				  </div>
 				  <div class="invoice-boxes padding-5">
-					<b>Date.:</b> '.$order_data['invoice_date'].'
+					<b>Ref. Date.:</b> '.$order_data['ref_date'].'
 
-				  </div>
-				  <div class="invoice-boxes padding-5">
-					<b>Dispatch Through.:</b> 
 				  </div>
 				  
 				  <div class="invoice-boxes padding-5">
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>GR No. & Date:</b> '.$order_data['gr_rr_no'].' </div>
+					<b>Payment Mode:</b> '.$order_data['mode_of_payment'].' </div>
 					<div class="col-sm-6 invoice-col padding-0">
 					<b>Freight Paid.:</b> </div>
 
@@ -486,51 +479,12 @@ class Purchase extends Admin_Controller
 					  <th>Total Amount:</th>
 					  <td>'.$rounded_total_amount.'</td>
 					</tr>
-			            <tr>
-			              <th>Paid Status:</th>
-			              <td>'.$paid_status.'</td>
-			            </tr>
 			          </table>
 			        </div>
 			      </div>
 			      <!-- /.col -->
 			    </div>
 				<!-- /.row -->
-				<div style=" border-top: 2px solid;padding: 10px;">
-				<div class="row">
-				
-				<div>
-
-				<b>GST R.No. :</b><br>
-				<b>Our Bank Detail :</b><br><br>
-
-
-				  <b>Terms & Conditions</b><br>
-
-				';
-				foreach ($footer_items as $k => $v) {
-					
-					$index = $k + 1;
-					$html .= '  <b>'.$index.'.</b> '.$v['description'].'<br>';
-				}
-					
-					$html.='
-					<br><br><br>
-					<b>Receiver\'s Signature</b><br>
-			      </div>
-			      <!-- /.col -->
-			      
-			      <div class="col-sm-2 invoice-footer">
-				  <b>For '.$company_info['company_name'].'</b>
-				  <br><br><br>
-				  <b>Authorised Signatory</b><br>
-
-			      </div>
-				  <!-- /.col -->
-				  
-			    </div>
-			    <!-- /.row -->	
-				</div>
 				<!-- /.border -->
 			  </section>
 			  <!-- /.content -->

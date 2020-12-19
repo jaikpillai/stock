@@ -279,15 +279,15 @@ class Quotation extends Admin_Controller
         }
         
 		if($id) {
-			$order_data = $this->model_orders->getOrdersData($id);
-			$orders_items = $this->model_orders->getOrdersItemData($id);
-			$footer_items = $this->model_orders->getFooter($id);
+			$order_data = $this->model_quotation->getQuotationData($id);
+			$orders_items = $this->model_quotation->getQuotationItemData($id);
+			$footer_items = $this->model_quotation->getFooter($id);
 			$company_info = $this->model_company->getCompanyData(1);
 			$party_data = $this->model_party->getPartyData($order_data['party_id']);
 
-			$order_date = strtotime($order_data['invoice_date']);
+			$order_date = strtotime($order_data['quotation_date']);
 			$order_date = date( 'd/m/Y', $order_date );
-			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
+			// $paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 
 
 
@@ -314,7 +314,6 @@ class Quotation extends Admin_Controller
 			    <!-- title row -->
 			    <div class="row">
 				  <div class="col-xs-12 ">
-				  <h5 class="invoice-title-address">GST INVOICE</h5>
 			        <h1 class="invoice-title-name">
 			          '.$company_info['company_name'].'
 					</h1>
@@ -343,9 +342,9 @@ class Quotation extends Admin_Controller
 					</div>
 					<div class="invoice-boxes padding-10">
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Order/Challan No.:</b> '.$order_data['order_no'].' </div>
+					<b>Quotation No.:</b> '.$order_data['quotation_no'].' </div>
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Date.:</b> '.$order_data['order_date'].' </div><br>
+					<b>Date.:</b> '.$order_data['quotation_date'].' </div><br>
 
 			      </div>
 
@@ -356,24 +355,14 @@ class Quotation extends Admin_Controller
 					<b>Credit Memo</b><br>
 					</div>
 					<div class="invoice-boxes padding-5">
-					<b>Invoice No.:</b> '.$order_data['invoice_no'].'
+					<b>Ref. No.:</b> '.$order_data['ref_no'].'
 
 				  </div>
 				  <div class="invoice-boxes padding-5">
-					<b>Date.:</b> '.$order_data['invoice_date'].'
+					<b>Ref. Date.:</b> '.$order_data['ref_date'].'
 
-				  </div>
-				  <div class="invoice-boxes padding-5">
-					<b>Dispatch Through.:</b> 
 				  </div>
 				  
-				  <div class="invoice-boxes padding-5">
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>GR No. & Date:</b> '.$order_data['gr_rr_no'].' </div>
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Freight Paid.:</b> </div>
-
-			      </div>
 
 			      </div>
 				  <!-- /.col -->
@@ -485,10 +474,6 @@ class Quotation extends Admin_Controller
 					  <th>Total Amount:</th>
 					  <td>'.$rounded_total_amount.'</td>
 					</tr>
-			            <tr>
-			              <th>Paid Status:</th>
-			              <td>'.$paid_status.'</td>
-			            </tr>
 			          </table>
 			        </div>
 			      </div>
@@ -514,7 +499,7 @@ class Quotation extends Admin_Controller
 				}
 					
 					$html.='
-					<br><br><br>
+					<br><br><br><br><br>
 					<b>Receiver\'s Signature</b><br>
 			      </div>
 			      <!-- /.col -->
