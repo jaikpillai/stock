@@ -111,7 +111,7 @@ class Purchase extends Admin_Controller
 
 		$this->data['page_title'] = 'Add Purchase Order';
 
-		// $this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
+		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
@@ -190,7 +190,7 @@ class Purchase extends Admin_Controller
 
 		$this->data['page_title'] = 'Update Purchase Order';
 
-		// $this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
+		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
