@@ -267,7 +267,7 @@
                 <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
                 <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
 
-                <a  onclick="printOrder(<?php echo $purchase_data['purchase_master']['purchase_no'] ?>)" class="btn btn-default" >Print</a>
+                <a  onclick="printOrder(<?php echo $purchase_data['purchase_master']['s_no'] ?>)" class="btn btn-default" >Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
               </div>

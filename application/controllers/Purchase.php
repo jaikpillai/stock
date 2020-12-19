@@ -121,7 +121,7 @@ class Purchase extends Admin_Controller
         	
         	if($purchase_id) {
         		$this->session->set_flashdata('success', 'Successfully created');
-        		redirect('purchase/update/'.$purchase_id, 'refresh');
+        		redirect('purchase/', 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');

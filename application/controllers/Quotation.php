@@ -10,10 +10,10 @@ class Quotation extends Admin_Controller
 
 		$this->not_logged_in();
 
-		$this->data['page_title'] = 'Quotation Orders';
+		$this->data['page_title'] = 'Quotaion Orders';
 
 		$this->load->model('model_quotation');
-		$this->load->model('model_orders');
+		// $this->load->model('model_orders');
 		$this->load->model('model_products');
 		$this->load->model('model_tax');
 		$this->load->model('model_company');
@@ -38,15 +38,15 @@ class Quotation extends Admin_Controller
 	* Fetches the orders data from the orders table 
 	* this function is called from the datatable ajax function
 	*/
-	public function fetchPurchaseData()
+	public function fetchQuotationData()
 	{
 		$result = array('data' => array());
 
-		$data = $this->model_orders->getOrdersData();
+		$data = $this->model_quotation->getQuotationData();
 		
 		foreach ($data as $key => $value) {
 
-			$count_total_item = $this->model_orders->countOrderItem($value['invoice_no']);
+			$count_total_item = $this->model_quotation->countQuotationItem($value['quotation_no']);
 			// echo $count_total_item;
 			// $date = date('Y-m-d', $value['invoice_date']);
 			// $time = date('h:i a', $value['date_time']);
@@ -62,35 +62,35 @@ class Quotation extends Admin_Controller
 			}
 			// button
 			$buttons = '';
+			
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('purchase/printDiv/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a target="__blank" href="'.base_url('quotation/printDiv/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('purchase/update/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a href="'.base_url('quotation/update/'.$value['s_no'].'/'.$value['quotation_no'].'').'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['invoice_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].', '.$value['quotation_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
-			if($value['is_payment_received'] == 1) {
-				$paid_status = '<span class="label label-success">Paid</span>';	
-			}
-			else {
-				$paid_status = '<span class="label label-warning">Not Paid</span>';
-			}
+			// if($value['is_payment_received'] == 1) {
+			// 	$paid_status = '<span class="label label-success">Paid</span>';	
+			// }
+			// else {
+			// 	$paid_status = '<span class="label label-warning">Not Paid</span>';
+			// }
 
 		
 
 			$result['data'][$key] = array(
-				$value['invoice_no'],
+				$value['quotation_no'],
 				$party_data['party_name'],
-				$party_data['address'],
+				$value['quotation_date'],
 				$count_total_item,
 				$value['total_amount'],
-				$paid_status,
 				$buttons
 			);
 		} // /foreach
@@ -109,18 +109,18 @@ class Quotation extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$this->data['page_title'] = 'Add Purchase Order';
+		$this->data['page_title'] = 'Add Quotation Order';
 
 		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
         	
-        	$purchase_id = $this->model_purchase->create();
+        	$quotation_id = $this->model_quotation->create();
         	
-        	if($purchase_id) {
+        	if($quotation_id) {
         		$this->session->set_flashdata('success', 'Successfully created');
-        		redirect('quotation/update/'.$purchase_id, 'refresh');
+        		redirect('quotation/', 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');
@@ -178,32 +178,32 @@ class Quotation extends Admin_Controller
 	* If the validation is successfully then it updates the data into the database 
 	* and it stores the operation message into the session flashdata and display on the manage group page
 	*/
-	public function update($id)
+	public function update($id, $quotation_no)
 	{
 		if(!in_array('updateOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
 
-		if(!$id) {
+		if(!$id || !$quotation_no) {
 			redirect('dashboard', 'refresh');
 		}
 
-		$this->data['page_title'] = 'Update Order';
+		$this->data['page_title'] = 'Update Quotation Order';
 
 		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		
 	
         if ($this->form_validation->run() == TRUE) {        	
         	
-        	$update = $this->model_orders->update($id);
+        	$update = $this->model_quotation->update($id,  $quotation_no);
         	
         	if($update == true) {
         		$this->session->set_flashdata('success', 'Successfully updated');
-        		redirect('quotation/update/'.$id, 'refresh');
+        		redirect('quotation/update/'.$id.'/'.$quotation_no, 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');
-        		redirect('quotation/update/'.$id, 'refresh');
+        		redirect('quotation/update/'.$id.'/'.$quotation_no, 'refresh');
         	}
         }
         else {
@@ -214,16 +214,16 @@ class Quotation extends Admin_Controller
         	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
         	$result = array();
-        	$orders_data = $this->model_orders->getOrdersData($id);
+        	$quotation_data = $this->model_quotation->getQuotationData($id);
 
-    		$result['invoice_master'] = $orders_data;
-    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['invoice_no']);
+    		$result['quotation_master'] = $quotation_data;
+    		$quotation_item = $this->model_quotation->getQuotationItemData($quotation_data['quotation_no']);
 			$this->data['party_data'] = $this->model_party->getPartyData();
-    		foreach($orders_item as $k => $v) {
-    			$result['invoice_item'][] = $v;
+    		foreach($quotation_item as $k => $v) {
+    			$result['quotation_item'][] = $v;
     		}
 
-			$this->data['order_data'] = $result;
+			$this->data['quotation_data'] = $result;
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
 			
 
@@ -243,11 +243,14 @@ class Quotation extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$invoice_no = $this->input->post('invoice_no');
+		$s_no = $this->input->post('s_no');
+		$quotation_no = $this->input->post('quotation_no');
+
+
 
         $response = array();
-        if($invoice_no) {
-            $delete = $this->model_orders->remove($invoice_no);
+        if($s_no && $quotation_no) {
+            $delete = $this->model_quotation->remove($s_no, $quotation_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 

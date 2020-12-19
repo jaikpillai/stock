@@ -6,11 +6,11 @@
   <section class="content-header">
     <h1>
       Manage
-      <small>Purchase Transactions</small>
+      <small>Quotation Transactions</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Purchase Transactions</li>
+      <li class="active">Quotation Transactions</li>
     </ol>
   </section>
 
@@ -37,10 +37,10 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Edit Order</h3>
+            <h3 class="box-title">Edit Quotation</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('purchase/create') ?>" method="post" class="form-horizontal">
+          <form role="form" action="<?php base_url('quotation/update') ?>" method="post" class="form-horizontal">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>
@@ -54,14 +54,18 @@
 
                 <div class="col-md-4 col-xs-12 pull pull-left">
 
+                
                 <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Invoice Number</label>
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">PO Number</label>
                     <div class="col-sm-7">
-           
-                    <input value = "<?php echo $order_data['invoice_master']['invoice_no']?>" type="text"  class="form-control" id="invoice_no" name="invoice_no" placeholder="" autocomplete="off" readonly/>
+                   
+                    <input value = "<?php echo$quotation_data['quotation_master']['quotation_no']?>" type="text"  class="form-control" id="quotation_no" name="quotation_no" placeholder="" autocomplete="off" readonly/>
+                  
+                      <!-- <input type="text" class="form-control" id="invoice_no" name="invoice_no" disabled autocomplete="off" /> -->
+                      
                     </div>
                   </div>
-                  
+
                   <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party Name</label>
                     <div class="col-sm-7">
@@ -70,95 +74,49 @@
                             <?php foreach ($party_data as $k => $v): ?>
                             
                             
-                              <option value="<?php echo $v['party_id'] ?>"<?php if(($v['party_id'] == $order_data['invoice_master']['party_id'])) { echo 'selected="selected"'; } ?>><?php echo $v['party_name'] ?></option>
+                              <option value="<?php echo $v['party_id'] ?>"<?php if(($v['party_id'] ==$quotation_data['quotation_master']['party_id'])) { echo 'selected="selected"'; } ?>><?php echo $v['party_name'] ?></option>
                             <?php endforeach ?>
                           </select>
                       
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">GR/RR Number</label>
-                    <div class="col-sm-7">
-                      <input type="text" class="form-control" id="gr_rr_no" name="gr_rr_no"  value ="<?php echo $order_data['invoice_master']['gr_rr_no'] ?>" autocomplete="off" />
-                      
-                    </div>
-                  </div>
+                
 
                   <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Dispatch Through</label>
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Variation %</label>
                     <div class="col-sm-7">
-                      <input type="text" class="form-control" id="dispatch_through" name="dispatch_through" placeholder="Enter Dispatch Through" value = "<?php echo $order_data['invoice_master']['dispatched_through'] ?>" autocomplete="off" />
+                      <input type="number" class="form-control" id="variation" name="variation" value =  "<?php echo$quotation_data['quotation_master']['variation'] ?>" placeholder="Enter Variation Percentage" autocomplete="off">
+
+
                     </div>
                   </div>
-
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
-                    <div class="col-sm-7">
-                    <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
-                    <option value="" disabled selected> <?php echo ucfirst($order_data['invoice_master']['mode_of_payment']) ?></option>
-                   
-                    <option value="cash"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cash"): ?> selected <?php endif; ?>>Cash</option>
-                    <option value="credit"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "credit"): ?> selected <?php endif; ?>>Credit</option>
-                      <option value="personally"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "personally"): ?> selected <?php endif; ?>>Personally</option>
-                    <option value="cheque"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cheque"): ?> selected <?php endif; ?>>Cheque</option>
-                      <option value="upi"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "upi"): ?> selected <?php endif; ?>>UPI</option>
-            
-               
-                   
-  
-                        </select>
-                      
-                    </div>
-                </div>
 
                 </div>
                 
                 <div class="col-md-4 col-xs-12 pull pull-left">
+                <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Date</label>
+                    <div class="col-sm-7">
+                    <input type="date" class="form-control" id="date" name="date"  value = "<?php echo$quotation_data['quotation_master']['quotation_date'] ?>" autocomplete="off" />
 
-<div class="form-group">
-    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Date</label>
-    <div class="col-sm-7">
-      <input type="date" class="form-control" id="date" name="date"  value = "<?php echo $order_data['invoice_master']['invoice_date'] ?>" autocomplete="off" />
-      
-    </div>
-  </div>
+                      
+                    </div>
+                  </div>
 
-  <div class="form-group">
-    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Order/Challan Number</label>
-    <div class="col-sm-7">
-      <input type="text" class="form-control" id="challan_number" name="challan_number" placeholder="Enter Order/Challan Number" value = "<?php echo $order_data['invoice_master']['order_no'] ?>" autocomplete="off">
-      <input type="date" class="form-control" id="challan_date" name="challan_date" placeholder="Enter Order/Challan Number" value = "<?php echo $order_data['invoice_master']['order_date'] ?>" autocomplete="off">
-    
-    </div>
-  </div>
-  
-  
-   <div class="form-group">
-    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Document Through</label>
-    <div class="col-sm-7">
-     
-      <input type="text" class="form-control" id="document" name="document" placeholder="Document"  value = "<?php echo $order_data['invoice_master']['document_through'] ?>" autocomplete="off" />
-      <input type="text" class="form-control" id="declaration" name="declaration" placeholder="Declaration" value = "<?php echo $order_data['invoice_master']['form_declaration'] ?>"  autocomplete="off">
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Reference Number</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="ref_no" name="ref_no"  value = "<?php echo$quotation_data['quotation_master']['ref_no'] ?>" placeholder="Enter Reference Number" autocomplete="off">
+                      <input type="date" class="form-control" id="ref_date" name="ref_date"  value = "<?php echo$quotation_data['quotation_master']['ref_date'] ?>"  autocomplete="off" />
 
-    </div>
-  </div>
-
-
-
-  <div class="form-group">
-    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Form Received</label>
-    <div class="col-sm-7">
-    <select class="form-control select_group product" id="form_received" name="form_received" style="width:100%;" required>
-          <option value="" disabled selected>--Select--</option>
-            <option value=""></option>
-          
-            <option value="1"  <?php if ($order_data['invoice_master']['form_received'] == 1): ?> selected <?php endif; ?>>Yes</option>
-            <option value="0"  <?php if ($order_data['invoice_master']['form_received'] == 0): ?> selected <?php endif; ?>>No</option>
-          </select>
-    </div>
-  </div> 
-</div>
+                    </div>
+                  </div>
+                  
+                  
+                   
+                </div>
+                
 
 
 
@@ -181,9 +139,9 @@
 
                    <tbody>
 
-                    <?php if(isset($order_data['invoice_item'])): ?>
+                    <?php if(isset($quotation_data['quotation_item'])): ?>
                       <?php $x = 1; ?>
-                      <?php foreach ($order_data['invoice_item'] as $key => $val): ?>
+                      <?php foreach ($quotation_data['quotation_item'] as $key => $val): ?>
                         <?php //print_r($v); ?>
                        <tr id="row_<?php echo $x; ?>">
                          <td>
@@ -255,11 +213,11 @@
                     <select class="form-control select_group product" data-row-id="row_1" id="tax" name = "tax" style="width:100%;" onchange="subAmount()" required>
                             <!-- <option value=""></option> -->
                           
-                          <?php   echo $order_data['invoice_master']['tax_id'] ?>
+                          <?php   echo$quotation_data['quotation_master']['tax_id'] ?>
                             <option value="" selected disabled>--Select--</option>
 
                             <?php foreach ($tax_data as $k => $v): ?>
-                              <option value="<?php echo $v['iTax_ID'] ?>" data-tax-value = "<?php echo $v['sValue'] ?>" <?php if($order_data['invoice_master']['tax_id'] == $v['iTax_ID']) { echo "selected='selected'"; } ?>><?php echo $v['sTax_Description'] ?></option>
+                              <option value="<?php echo $v['iTax_ID'] ?>" data-tax-value = "<?php echo $v['sValue'] ?>" <?php if($quotation_data['quotation_master']['tax_id'] == $v['iTax_ID']) { echo "selected='selected'"; } ?>><?php echo $v['sTax_Description'] ?></option>
 
                               <!-- <option value="<?php echo $v['iTax_ID'] ?>"><?php echo $v['sTax_Description'] ?></option> -->
                             <?php endforeach ?>
@@ -270,8 +228,8 @@
                   <div class="form-group">
                     <label for="other_charge" class="col-sm-5 control-label">Freight/Others</label>
                     <div class="col-sm-7">
-                      <input type="number" class="form-control" id="other_charge" name="other_charge" value="<?php echo $order_data['invoice_master']['other_charges'] ?>" onkeyup="subAmount()" onchange="subAmount()"  autocomplete="off">
-                      <input type="hidden" class="form-control" id="other_charge_value" name="other_charge_value" value="<?php echo $order_data['invoice_master']['other_charges'] ?>" autocomplete="off">
+                      <input type="number" class="form-control" id="other_charge" name="other_charge" value="<?php echo$quotation_data['quotation_master']['other_charges'] ?>" onkeyup="subAmount()" onchange="subAmount()"  autocomplete="off">
+                      <input type="hidden" class="form-control" id="other_charge_value" name="other_charge_value" value="<?php echo$quotation_data['quotation_master']['other_charges'] ?>" autocomplete="off">
                     </div>
                   </div>
                  
@@ -292,17 +250,7 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label for="paid_status" class="col-sm-5 control-label">Paid Status</label>
-                    <div class="col-sm-7">
-                      <select type="text" class="form-control" id="paid_status" name="paid_status">
-                      <option value="1"  <?php if ($order_data['invoice_master']['is_payment_received'] == 1): ?> selected <?php endif; ?>>Paid</option>
-                      <option value="0"  <?php if ($order_data['invoice_master']['is_payment_received'] == 0): ?> selected <?php endif; ?>>Unpaid</option>
-             
-                  
-                      </select>
-                    </div>
-                  </div>
+                 
 
                 </div>
               </div>
@@ -313,7 +261,7 @@
                 <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
                 <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
 
-                <a  onclick="printOrder(<?php echo $order_data['invoice_master']['invoice_no'] ?>)" class="btn btn-default" >Print</a>
+                <a  onclick="printOrder(<?php echo$quotation_data['quotation_master']['s_no'] ?>)" class="btn btn-default" >Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
               </div>
@@ -343,7 +291,7 @@ var removed_rows_count =0;
   {
     if(id) {
       $.ajax({
-        url: base_url + 'purchase/printDiv/' + id,
+        url: base_url + 'quotation/printDiv/' + id,
         type: 'post',
         success:function(response) {
           var mywindow = window.open('', 'new div', 'height=1000,width=1500');
@@ -386,7 +334,7 @@ var removed_rows_count =0;
       
 
       $.ajax({
-          url: base_url + '/purchase/getTableProductRow/',
+          url: base_url + '/quotation/getTableProductRow/',
           type: 'post',
           dataType: 'json',
           success:function(response) {
@@ -516,7 +464,7 @@ var removed_rows_count =0;
 
     } else {
       $.ajax({
-        url: base_url + 'purchase/getProductValueById',
+        url: base_url + 'quotation/getProductValueById',
         type: 'post',
         data: {product_id : product_id},
         dataType: 'json',
