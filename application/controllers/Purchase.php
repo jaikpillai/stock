@@ -73,7 +73,7 @@ class Purchase extends Admin_Controller
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['purchase_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].', '.$value['purchase_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
 			// if($value['is_payment_received'] == 1) {
@@ -244,12 +244,14 @@ class Purchase extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$s_no = $this->input->post('purchase_no');
+		$s_no = $this->input->post('s_no');
+		$purchase_no = $this->input->post('purchase_no');
+
 
 
         $response = array();
-        if($purchase_no) {
-            $delete = $this->model_purchase->remove($s_no);
+        if($s_no && $purchase_no) {
+            $delete = $this->model_purchase->remove($s_no, $purchase_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 
