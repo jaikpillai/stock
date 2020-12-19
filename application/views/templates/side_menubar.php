@@ -168,6 +168,7 @@
             </li>
           <?php endif; ?>
 
+          <!-- Purchase Transaction -->
           <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
             <li class="treeview" id="mainPurchaseNav">
               <a href="#">
@@ -188,6 +189,27 @@
             </li>
           <?php endif; ?>
 
+            <!-- Quotation Transaction -->
+            <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+            <li class="treeview" id="mainQuotationNav">
+              <a href="#">
+                <i class="fa fa-inr"></i>
+                <span>Quotation Transaction</span>
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+              </a>
+              <ul class="treeview-menu">
+                <?php if(in_array('createOrder', $user_permission)): ?>
+                  <li id="addQuotationNav"><a href="<?php echo base_url('quotation/create') ?>"><i class="fa fa-circle-o"></i> Add Quotation</a></li>
+                <?php endif; ?>
+                <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
+                <li id="manageQuotationNav"><a href="<?php echo base_url('quotation') ?>"><i class="fa fa-circle-o"></i> Manage Quotations</a></li>
+                <?php endif; ?>
+              </ul>
+            </li>
+          <?php endif; ?>
+
           <?php if(in_array('viewReports', $user_permission)): ?>
             <li id="reportNav">
               <a href="<?php echo base_url('reports/') ?>">
@@ -196,6 +218,17 @@
             </li>
           <?php endif; ?>
 
+
+          <?php if(in_array('viewReports', $user_permission)): ?>
+            <li id="reportNav">
+              <a href="<?php echo base_url('reports/') ?>">
+                <i class="glyphicon glyphicon-stats"></i> <span>Reports</span>
+              </a>
+            </li>
+          <?php endif; ?>
+
+
+         
 
           <?php if(in_array('updateCompany', $user_permission)): ?>
             <li id="companyNav"><a href="<?php echo base_url('company/') ?>"><i class="fa fa-files-o"></i> <span>Company</span></a></li>
