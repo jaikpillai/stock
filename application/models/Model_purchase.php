@@ -118,7 +118,7 @@ class Model_purchase extends CI_Model
     	for($x = 0; $x < $count_product; $x++) {
     		$items = array(
 				
-    			'purchase_no' => $this->input->post('purchase_no'),
+    			'purchase_no' =>  $order_id,
 				'item_id' => $this->input->post('product')[$x],
 				'item_code' => $this->input->post('code_value')[$x],
 				'item_make' => $this->input->post('make_value')[$x],
@@ -251,7 +251,7 @@ class Model_purchase extends CI_Model
 	    	for($x = 0; $x < $count_product; $x++) {
 	    		$items = array(
 
-					'purchase_no' => $this->input->post('purchase_no'),
+					'purchase_no' =>  $this->input->post('purchase_no'),
 					'item_id' => $this->input->post('product')[$x],
 					'item_code' => $this->input->post('code_value')[$x],
 					'item_make' => $this->input->post('make_value')[$x],
@@ -285,17 +285,17 @@ class Model_purchase extends CI_Model
 
 
 
-	public function remove($id, $purchase_no)
+	public function remove($id)
 	{
 		if($id) {
 			$data = array(
 
 				'status' => 0);
 			
-			$this->db->where('s_no', $id);
+			$this->db->where('purchase_no', $id);
 			$delete = $this->db->update('purchase_master',$data);
 
-			$this->db->where('purchase_no', $purchase_no);	
+			$this->db->where('purchase_no', $id);	
 			$delete_item = $this->db->update('purchase_item', $data);
 			return ($delete == true && $delete_item) ? true : false;
 		}

@@ -122,7 +122,7 @@ $(document).ready(function() {
 });
 
 // remove functions 
-function removeFunc(id, purchase_no)
+function removeFunc(id)
 {
   if(id) {
     $("#removeForm").on('submit', function() {
@@ -135,7 +135,7 @@ function removeFunc(id, purchase_no)
       $.ajax({
         url: form.attr('action'),
         type: form.attr('method'),
-        data: { s_no:id, purchase_no: purchase_no }, 
+        data: { purchase_no:id }, 
         dataType: 'json',
         success:function(response) {
 
