@@ -71,7 +71,7 @@ class Model_purchase extends CI_Model
 	
 
 		// $is_received = $this->input->post('total_gst');
-		$purchase_no = $this->input->post('purchase_no');
+		// $purchase_no = $this->input->post('purchase_no');
 
 		// $total_discount
 
@@ -92,6 +92,7 @@ class Model_purchase extends CI_Model
 			'tax_id' =>  $this->input->post('tax'),
 			'financial_year_id' => $financial_year_id,
 			'tax_value' => $tax['sValue'],
+			'other_charges' => $this->input->post('other_charge'),
     		// 'bill_no' => $bill_no,
     		// 'customer_name' => $this->input->post('customer_name'),
     		// 'customer_address' => $this->input->post('customer_address'),
@@ -117,7 +118,7 @@ class Model_purchase extends CI_Model
     	for($x = 0; $x < $count_product; $x++) {
     		$items = array(
 				
-    			'purchase_no' => $purchase_no,
+    			'purchase_no' =>  $this->input->post('purchase_no'),
 				'item_id' => $this->input->post('product')[$x],
 				'item_code' => $this->input->post('code_value')[$x],
 				'item_make' => $this->input->post('make_value')[$x],
@@ -160,13 +161,13 @@ class Model_purchase extends CI_Model
 	public function countPurchaseItem($purchase_no)
 	{
 		if($purchase_no) {
-			$sql = "SELECT * FROM purchase_item WHERE purchase_no = $purchase_no";
+			$sql = "SELECT * FROM purchase_item WHERE purchase_no = ?";
 			$query = $this->db->query($sql, array($purchase_no));
 			return $query->num_rows();
 		}
 	}
 
-	public function update($id)
+	public function update($id,$purchase_no)
 	{
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
@@ -183,7 +184,7 @@ class Model_purchase extends CI_Model
 
 
 		// $is_received = $this->input->post('total_gst');
-		$purchase_no = $this->input->post('purchase_no');
+		// $purchase_no = $this->input->post('purchase_no');
 
 		if($id) {
 			$user_id = $this->session->userdata('id');
@@ -204,7 +205,7 @@ class Model_purchase extends CI_Model
 				'tax_id' =>  $this->input->post('tax'),
 				'financial_year_id' => $financial_year_id,
 				'tax_value' => $tax['sValue'],
-
+				'other_charges' => $this->input->post('other_charge'),
 
 
 
@@ -222,13 +223,13 @@ class Model_purchase extends CI_Model
 	    		// 'user_id' => $user_id
 	    	);
 
-			$this->db->where('purchase_no', $id);
+			$this->db->where('s_no', $id);
 			$update = $this->db->update('purchase_master', $data);
 
 			// now the order item 
 			// first we will replace the product qty to original and subtract the qty again
 			$this->load->model('model_products');
-			$get_order_item = $this->getOrdersItemData($id);
+			$get_order_item = $this->getPurchaseItemData($id);
 			foreach ($get_order_item as $k => $v) {
 				$product_id = $v['item_id'];
 				$qty = $v['qty'];
@@ -242,7 +243,7 @@ class Model_purchase extends CI_Model
 			}
 
 			// now remove the order item data 
-			$this->db->where('purchase_no', $id);
+			$this->db->where('purchase_no', $purchase_no);
 			$this->db->delete('purchase_item');
 
 			// now decrease the product qty
@@ -250,7 +251,7 @@ class Model_purchase extends CI_Model
 	    	for($x = 0; $x < $count_product; $x++) {
 	    		$items = array(
 
-					'purchase_no' => $purchase_no,
+					'purchase_no' =>  $this->input->post('purchase_no'),
 					'item_id' => $this->input->post('product')[$x],
 					'item_code' => $this->input->post('code_value')[$x],
 					'item_make' => $this->input->post('make_value')[$x],
@@ -258,7 +259,6 @@ class Model_purchase extends CI_Model
 					'unit' => $this->input->post('unit_value')[$x],
 					'rate' => $this->input->post('rate')[$x],
 					'discount' => $this->input->post('discount')[$x],
-					// 'tax' => $this->input->post('tax')[$x],
 					'financial_year_id' => $financial_year_id,
 					'status' => 1
 
@@ -285,17 +285,17 @@ class Model_purchase extends CI_Model
 
 
 
-	public function remove($id)
+	public function remove($id, $purchase_no)
 	{
 		if($id) {
 			$data = array(
 
 				'status' => 0);
 			
-			$this->db->where('purchase_no', $id);
+			$this->db->where('s_no', $id);
 			$delete = $this->db->update('purchase_master',$data);
 
-			$this->db->where('purchase_no', $id);
+			$this->db->where('purchase_no', $purchase_no);	
 			$delete_item = $this->db->update('purchase_item', $data);
 			return ($delete == true && $delete_item) ? true : false;
 		}

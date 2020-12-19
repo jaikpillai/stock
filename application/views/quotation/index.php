@@ -35,7 +35,7 @@
         <?php endif; ?>
 
         <?php if(in_array('createOrder', $user_permission)): ?>
-          <a href="<?php echo base_url('purchase/create') ?>" class="btn btn-primary">Add Quotation</a>
+          <a href="<?php echo base_url('quotation/create') ?>" class="btn btn-primary">Add Quotation</a>
           <br /> <br />
         <?php endif; ?>
 
@@ -48,12 +48,11 @@
             <table id="manageTable" class="table table-bordered table-striped">
               <thead>
               <tr>
-                <th>Invoice no</th>
+                <th>Quotation no</th>
                 <th>Party Name</th>
-                <th>Party Address</th>
+                <th>Quotation Date</th>
                 <th>Total Products</th>
                 <th>Total Amount</th>
-                <th>Paid status</th>
                 <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
                   <th>Action</th>
                 <?php endif; ?>
@@ -86,7 +85,7 @@
         <h4 class="modal-title">Remove Purchase</h4>
       </div>
 
-      <form role="form" action="<?php echo base_url('purchase/remove') ?>" method="post" id="removeForm">
+      <form role="form" action="<?php echo base_url('quotation/remove') ?>" method="post" id="removeForm">
         <div class="modal-body">
           <p>Do you really want to remove?</p>
         </div>
@@ -115,14 +114,14 @@ $(document).ready(function() {
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({
-    'ajax': base_url + 'purchase/fetchPurchaseData',
+    'ajax': base_url + 'quotation/fetchQuotationData',
     'order': []
   });
 
 });
 
 // remove functions 
-function removeFunc(id)
+function removeFunc(id, quotation_no)
 {
   if(id) {
     $("#removeForm").on('submit', function() {
@@ -135,7 +134,7 @@ function removeFunc(id)
       $.ajax({
         url: form.attr('action'),
         type: form.attr('method'),
-        data: { invoice_no:id }, 
+        data: { s_no:id , quotation_no:quotation_no}, 
         dataType: 'json',
         success:function(response) {
 

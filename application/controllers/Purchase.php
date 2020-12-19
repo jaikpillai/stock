@@ -13,7 +13,7 @@ class Purchase extends Admin_Controller
 		$this->data['page_title'] = 'Purchase Orders';
 
 		$this->load->model('model_purchase');
-		$this->load->model('model_orders');
+		// $this->load->model('model_orders');
 		$this->load->model('model_products');
 		$this->load->model('model_tax');
 		$this->load->model('model_company');
@@ -62,17 +62,18 @@ class Purchase extends Admin_Controller
 			}
 			// button
 			$buttons = '';
+			
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('purchase/printDiv/'.$value['purchase_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a target="__blank" href="'.base_url('purchase/printDiv/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('purchase/update/'.$value['purchase_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a href="'.base_url('purchase/update/'.$value['s_no'].'/'.$value['purchase_no'].'').'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['purchase_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].', '.$value['purchase_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
 			// if($value['is_payment_received'] == 1) {
@@ -120,7 +121,7 @@ class Purchase extends Admin_Controller
         	
         	if($purchase_id) {
         		$this->session->set_flashdata('success', 'Successfully created');
-        		redirect('purchase/update/'.$purchase_id, 'refresh');
+        		redirect('purchase/', 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');
@@ -178,13 +179,13 @@ class Purchase extends Admin_Controller
 	* If the validation is successfully then it updates the data into the database 
 	* and it stores the operation message into the session flashdata and display on the manage group page
 	*/
-	public function update($id)
+	public function update($id, $purchase_no)
 	{
 		if(!in_array('updateOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
 
-		if(!$id) {
+		if(!$id || !$purchase_no) {
 			redirect('dashboard', 'refresh');
 		}
 
@@ -195,15 +196,15 @@ class Purchase extends Admin_Controller
 	
         if ($this->form_validation->run() == TRUE) {        	
         	
-        	$update = $this->model_orders->update($id);
+        	$update = $this->model_purchase->update($id,  $purchase_no);
         	
         	if($update == true) {
         		$this->session->set_flashdata('success', 'Successfully updated');
-        		redirect('purchase/update/'.$id, 'refresh');
+        		redirect('purchase/update/'.$id.'/'.$purchase_no, 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');
-        		redirect('purchase/update/'.$id, 'refresh');
+        		redirect('purchase/update/'.$id.'/'.$purchase_no, 'refresh');
         	}
         }
         else {
@@ -214,16 +215,16 @@ class Purchase extends Admin_Controller
         	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
         	$result = array();
-        	$orders_data = $this->model_orders->getOrdersData($id);
+        	$purchase_data = $this->model_purchase->getPurchaseData($id);
 
-    		$result['invoice_master'] = $orders_data;
-    		$orders_item = $this->model_orders->getOrdersItemData($orders_data['invoice_no']);
+    		$result['purchase_master'] = $purchase_data;
+    		$purchase_item = $this->model_purchase->getPurchaseItemData($purchase_data['purchase_no']);
 			$this->data['party_data'] = $this->model_party->getPartyData();
-    		foreach($orders_item as $k => $v) {
-    			$result['invoice_item'][] = $v;
+    		foreach($purchase_item as $k => $v) {
+    			$result['purchase_item'][] = $v;
     		}
 
-			$this->data['order_data'] = $result;
+			$this->data['purchase_data'] = $result;
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
 			
 
@@ -243,11 +244,14 @@ class Purchase extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
-		$invoice_no = $this->input->post('invoice_no');
+		$s_no = $this->input->post('s_no');
+		$purchase_no = $this->input->post('purchase_no');
+
+
 
         $response = array();
-        if($invoice_no) {
-            $delete = $this->model_orders->remove($invoice_no);
+        if($s_no && $purchase_no) {
+            $delete = $this->model_purchase->remove($s_no, $purchase_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 

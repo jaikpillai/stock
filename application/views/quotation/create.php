@@ -55,11 +55,11 @@
                 <div class="col-md-4 col-xs-12 pull pull-left">
 
                 <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">PO Number</label>
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Quotation Number</label>
                     <div class="col-sm-7">
-                    <?php foreach ($getlastpurchaseid as  $key => $value): 
-                     $new_id =$value['MAX(purchase_no)']+1?>
-                    <input value = "<?php echo $new_id;?>" type="text"  class="form-control" id="purchase_no" name="purchase_no" placeholder="" autocomplete="off" readonly/>
+                    <?php foreach ($getlastquotationid as  $key => $value): 
+                     $new_id =$value['MAX(quotation_no)']+1?>
+                    <input value = "<?php echo $new_id;?>" type="text"  class="form-control" id="quotation_no" name="quotation_no" placeholder="" autocomplete="off" readonly/>
                   <?php endforeach ?>
                   
                       <!-- <input type="text" class="form-control" id="invoice_no" name="invoice_no" disabled autocomplete="off" /> -->
@@ -80,24 +80,16 @@
                     </div>
                   </div>
 
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
-                    <div class="col-sm-7">
-                    <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
-                    <option value="" disabled selected>--Select--</option>
-                   
-                    <option value="cash"  >Cash</option>
-                    <option value="credit"  >Credit</option>
-                    <option value="personally"  >Personally</option>
-                    <option value="cheque"  >Cheque</option>
-                    <option value="upi"  >UPI</option>
-                   
-  
-                        </select>
-                      
-                    </div>
-                </div>  
+           
 
+                <div class="form-group">
+                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Variation %</label>
+                    <div class="col-sm-7">
+                      <input type="number" class="form-control" id="variation" name="variation" placeholder="Enter Variation Percentage" autocomplete="off">
+
+
+                    </div>
+                  </div>
 
                 </div>
 
@@ -124,7 +116,7 @@
                     </div>
                   </div>
                   
-                  
+                
                    
                 </div>
                 
