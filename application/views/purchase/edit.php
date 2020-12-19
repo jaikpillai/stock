@@ -234,8 +234,8 @@
                   <div class="form-group">
                     <label for="other_charge" class="col-sm-5 control-label">Freight/Others</label>
                     <div class="col-sm-7">
-                      <input type="number" class="form-control" id="other_charge" name="other_charge" value="<?php echo $purchase_data['purchase_master']['other_charges'] ?>" onkeyup="subAmount()" onchange="subAmount()"  autocomplete="off">
-                      <input type="hidden" class="form-control" id="other_charge_value" name="other_charge_value" value="<?php echo $purchase_data['purchase_master']['other_charges'] ?>" autocomplete="off">
+                      <input type="number" class="form-control" id="other_charge" name="other_charge" value="<?php echo $purchase_data['purchase_master']['other_charge'] ?>" onkeyup="subAmount()" onchange="subAmount()"  autocomplete="off">
+                      <input type="hidden" class="form-control" id="other_charge_value" name="other_charge_value" value="<?php echo $purchase_data['purchase_master']['other_charge'] ?>" autocomplete="off">
                     </div>
                   </div>
                  
