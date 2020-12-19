@@ -168,7 +168,6 @@
             </li>
           <?php endif; ?>
 
-<<<<<<< HEAD
           <?php if(in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
             <li class="treeview" id="mainPurchaseNav">
               <a href="#">
@@ -188,8 +187,6 @@
               </ul>
             </li>
           <?php endif; ?>
-=======
->>>>>>> ccb95c320581617c6ac1a4436243fa3bb1303151
 
           <?php if(in_array('viewReports', $user_permission)): ?>
             <li id="reportNav">
