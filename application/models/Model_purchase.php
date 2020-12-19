@@ -285,17 +285,17 @@ class Model_purchase extends CI_Model
 
 
 
-	public function remove($id)
+	public function remove($id, $purchase_no)
 	{
 		if($id) {
 			$data = array(
 
 				'status' => 0);
 			
-			$this->db->where('purchase_no', $id);
+			$this->db->where('s_no', $id);
 			$delete = $this->db->update('purchase_master',$data);
 
-			$this->db->where('purchase_no', $id);	
+			$this->db->where('purchase_no', $purchase_no);	
 			$delete_item = $this->db->update('purchase_item', $data);
 			return ($delete == true && $delete_item) ? true : false;
 		}
