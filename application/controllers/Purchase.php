@@ -42,11 +42,11 @@ class Purchase extends Admin_Controller
 	{
 		$result = array('data' => array());
 
-		$data = $this->model_orders->getOrdersData();
+		$data = $this->model_purchase->getPurchaseData();
 		
 		foreach ($data as $key => $value) {
 
-			$count_total_item = $this->model_orders->countOrderItem($value['invoice_no']);
+			$count_total_item = $this->model_purchase->countPurchaseItem($value['purchase_no']);
 			// echo $count_total_item;
 			// $date = date('Y-m-d', $value['invoice_date']);
 			// $time = date('h:i a', $value['date_time']);
@@ -64,33 +64,33 @@ class Purchase extends Admin_Controller
 			$buttons = '';
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('purchase/printDiv/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a target="__blank" href="'.base_url('purchase/printDiv/'.$value['purchase_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('purchase/update/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a href="'.base_url('purchase/update/'.$value['purchase_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['invoice_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['purchase_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
-			if($value['is_payment_received'] == 1) {
-				$paid_status = '<span class="label label-success">Paid</span>';	
-			}
-			else {
-				$paid_status = '<span class="label label-warning">Not Paid</span>';
-			}
+			// if($value['is_payment_received'] == 1) {
+			// 	$paid_status = '<span class="label label-success">Paid</span>';	
+			// }
+			// else {
+			// 	$paid_status = '<span class="label label-warning">Not Paid</span>';
+			// }
 
 		
 
 			$result['data'][$key] = array(
-				$value['invoice_no'],
+				$value['purchase_no'],
 				$party_data['party_name'],
-				$party_data['address'],
+				$value['purchase_date'],
 				$count_total_item,
 				$value['total_amount'],
-				$paid_status,
+				$value['mode_of_payment'],
 				$buttons
 			);
 		} // /foreach
@@ -188,7 +188,7 @@ class Purchase extends Admin_Controller
 			redirect('dashboard', 'refresh');
 		}
 
-		$this->data['page_title'] = 'Update Order';
+		$this->data['page_title'] = 'Update Purchase Order';
 
 		$this->form_validation->set_rules('product[]', 'Product name', 'trim|required');
 		

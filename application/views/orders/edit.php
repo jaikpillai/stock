@@ -98,11 +98,11 @@
                     <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
                     <option value="" disabled selected> <?php echo ucfirst($order_data['invoice_master']['mode_of_payment']) ?></option>
                    
-                    <option value="cash"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cash"): ?> selected <?php endif; ?>>Cash</option>
-                    <option value="credit"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "credit"): ?> selected <?php endif; ?>>Credit</option>
-                      <option value="personally"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "personally"): ?> selected <?php endif; ?>>Personally</option>
-                    <option value="cheque"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cheque"): ?> selected <?php endif; ?>>Cheque</option>
-                      <option value="upi"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "upi"): ?> selected <?php endif; ?>>UPI</option>
+                    <option value="Cash"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cash"): ?> selected <?php endif; ?>>Cash</option>
+                    <option value="Credit"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "credit"): ?> selected <?php endif; ?>>Credit</option>
+                      <option value="Personally"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "personally"): ?> selected <?php endif; ?>>Personally</option>
+                    <option value="Cheque"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "cheque"): ?> selected <?php endif; ?>>Cheque</option>
+                      <option value="UPI"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "upi"): ?> selected <?php endif; ?>>UPI</option>
             
                
                    

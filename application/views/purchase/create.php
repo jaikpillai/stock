@@ -85,12 +85,12 @@
                     <div class="col-sm-7">
                     <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
                     <option value="" disabled selected>--Select--</option>
-                   
-                    <option value="cash"  >Cash</option>
-                    <option value="credit"  >Credit</option>
-                    <option value="personally"  >Personally</option>
-                    <option value="cheque"  >Cheque</option>
-                    <option value="upi"  >UPI</option>
+  
+                    <option value="Cash"  >Cash</option>
+                    <option value="Credit"  >Credit</option>
+                    <option value="Personally"  >Personally</option>
+                    <option value="Cheque"  >Cheque</option>
+                    <option value="UPI"  >UPI</option>
                    
   
                         </select>

@@ -219,15 +219,6 @@
           <?php endif; ?>
 
 
-          <?php if(in_array('viewReports', $user_permission)): ?>
-            <li id="reportNav">
-              <a href="<?php echo base_url('reports/') ?>">
-                <i class="glyphicon glyphicon-stats"></i> <span>Reports</span>
-              </a>
-            </li>
-          <?php endif; ?>
-
-
          
 
           <?php if(in_array('updateCompany', $user_permission)): ?>

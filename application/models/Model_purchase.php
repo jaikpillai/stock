@@ -157,11 +157,11 @@ class Model_purchase extends CI_Model
 
 	}
 
-	public function countOrderItem($order_id)
+	public function countPurchaseItem($purchase_no)
 	{
-		if($order_id) {
-			$sql = "SELECT * FROM purchase_item WHERE purchase_no = ?";
-			$query = $this->db->query($sql, array($order_id));
+		if($purchase_no) {
+			$sql = "SELECT * FROM purchase_item WHERE purchase_no = $purchase_no";
+			$query = $this->db->query($sql, array($purchase_no));
 			return $query->num_rows();
 		}
 	}
@@ -191,26 +191,19 @@ class Model_purchase extends CI_Model
 
 			$data = array(
 
-			'invoice_no' => $this->input->post('invoice_no'),
-    		'invoice_date' => $this->input->post('date'),
-    		'party_id' => $this->input->post('party'),
-    		'total_discount' => $this->input->post('total_discount'),
-			'total_gst' => $this->input->post('total_gst'),
-			'financial_year_id' => $financial_year_id,
-			'order_no' => $this->input->post('challan_number'),
-			'order_date' => $this->input->post('challan_date'),
-			'gr_rr_no' => $this->input->post('gr_rr_no'),
-			'other_charges' => $this->input->post('other_charge'),
-			'dispatched_through' => $this->input->post('dispatch_through'),
-			'mode_of_payment' => $this->input->post('paymode'),
-			'document_through' => $this->input->post('document'),
-			'form_received' => $this->input->post('form_received'),
-			'form_declaration' => $this->input->post('declaration'),
-			'total_amount' => $this->input->post('total_amount_value'),
-			'is_payment_received' => $this->input->post('paid_status'),
-			'status' => 1,
-			'tax_id' => $this->input->post('tax'),
-			'tax_value' => $tax['sValue']
+				'purchase_no' => $this->input->post('purchase_no'),
+				'purchase_date' => $this->input->post('date'),
+				'mode_of_payment' => $this->input->post('paymode'),			
+				'party_id' => $this->input->post('party'),
+				'ref_no' => $this->input->post('ref_no'),
+				'ref_date' => $this->input->post('ref_date'),
+				'status' => 1,
+				'total_discount' => $this->input->post('total_discount'),
+				'total_gst' => $this->input->post('total_gst'),
+				'total_amount' => $this->input->post('total_amount_value'),
+				'tax_id' =>  $this->input->post('tax'),
+				'financial_year_id' => $financial_year_id,
+				'tax_value' => $tax['sValue'],
 
 
 
