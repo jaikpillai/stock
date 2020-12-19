@@ -118,7 +118,7 @@ class Model_purchase extends CI_Model
     	for($x = 0; $x < $count_product; $x++) {
     		$items = array(
 				
-    			'purchase_no' =>  $order_id,
+    			'purchase_no' =>  $this->input->post('purchase_no'),
 				'item_id' => $this->input->post('product')[$x],
 				'item_code' => $this->input->post('code_value')[$x],
 				'item_make' => $this->input->post('make_value')[$x],
