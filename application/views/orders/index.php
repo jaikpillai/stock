@@ -122,7 +122,7 @@ $(document).ready(function() {
 });
 
 // remove functions 
-function removeFunc(id)
+function removeFunc(id, invoice_no)
 {
   if(id) {
     $("#removeForm").on('submit', function() {
@@ -135,7 +135,7 @@ function removeFunc(id)
       $.ajax({
         url: form.attr('action'),
         type: form.attr('method'),
-        data: { invoice_no:id }, 
+        data: { s_no:id, invoice_no:invoice_no }, 
         dataType: 'json',
         success:function(response) {
 

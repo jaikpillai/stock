@@ -181,7 +181,7 @@ class Model_orders extends CI_Model
 		}
 	}
 
-	public function update($id)
+	public function update($id, $invoice_no)
 	{
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
@@ -198,7 +198,6 @@ class Model_orders extends CI_Model
 
 
 		// $is_received = $this->input->post('total_gst');
-		$invoice_no = $this->input->post('invoice_no');
 
 		if($id) {
 			$user_id = $this->session->userdata('id');
@@ -244,7 +243,7 @@ class Model_orders extends CI_Model
 	    		// 'user_id' => $user_id
 	    	);
 
-			$this->db->where('invoice_no', $id);
+			$this->db->where('s_no', $id);
 			$update = $this->db->update('invoice_master', $data);
 
 			// now the order item 
@@ -264,7 +263,7 @@ class Model_orders extends CI_Model
 			}
 
 			// now remove the order item data 
-			$this->db->where('invoice_no', $id);
+			$this->db->where('invoice_no', $invoice_no);
 			$this->db->delete('invoice_item');
 
 			// now decrease the product qty
@@ -307,17 +306,17 @@ class Model_orders extends CI_Model
 
 
 
-	public function remove($id)
+	public function remove($id, $invoice_no)
 	{
 		if($id) {
 			$data = array(
 
 				'status' => 0);
 			
-			$this->db->where('invoice_no', $id);
+			$this->db->where('s_no', $id);
 			$delete = $this->db->update('invoice_master',$data);
 
-			$this->db->where('invoice_no', $id);
+			$this->db->where('invoice_no', $invoice_no);
 			$delete_item = $this->db->update('invoice_item', $data);
 			return ($delete == true && $delete_item) ? true : false;
 		}

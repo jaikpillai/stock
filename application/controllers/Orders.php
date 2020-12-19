@@ -67,11 +67,11 @@ class Orders extends Admin_Controller
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('orders/update/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a href="'.base_url('orders/update/'.$value['s_no'].'/'.$value['invoice_no']).'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].','.$value['invoice_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
 			if($value['is_payment_received'] == 1) {
@@ -177,7 +177,7 @@ class Orders extends Admin_Controller
 	* If the validation is successfully then it updates the data into the database 
 	* and it stores the operation message into the session flashdata and display on the manage group page
 	*/
-	public function update($id)
+	public function update($id, $invoice_no)
 	{
 		if(!in_array('updateOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
@@ -194,15 +194,15 @@ class Orders extends Admin_Controller
 	
         if ($this->form_validation->run() == TRUE) {        	
         	
-        	$update = $this->model_orders->update($id);
+        	$update = $this->model_orders->update($id, $invoice_no);
         	
         	if($update == true) {
         		$this->session->set_flashdata('success', 'Successfully updated');
-        		redirect('orders/update/'.$id, 'refresh');
+        		redirect('orders/update/'.$id.'/'.$invoice_no, 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');
-        		redirect('orders/update/'.$id, 'refresh');
+        		redirect('orders/update/'.$id.'/'.$invoice_no, 'refresh');
         	}
         }
         else {
@@ -242,11 +242,12 @@ class Orders extends Admin_Controller
             redirect('dashboard', 'refresh');
         }
 
+		$s_no = $this->input->post('s_no');
 		$invoice_no = $this->input->post('invoice_no');
 
         $response = array();
-        if($invoice_no) {
-            $delete = $this->model_orders->remove($invoice_no);
+        if($invoice_no && $s_no) {
+            $delete = $this->model_orders->remove($s_no, $invoice_no);
             if($delete == true) {
                 $response['success'] = true;
                 $response['messages'] = "Successfully removed"; 
