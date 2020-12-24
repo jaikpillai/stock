@@ -139,7 +139,7 @@ class Quotation extends Admin_Controller
 			$this->data['products'] = $this->model_products->getActiveProductData(); 
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
 			
-			$this->data['party_data'] =$this->model_party->getPartyData(); 
+			$this->data['party_data'] =$this->model_party->getActiveParty(); 
             $this->data['getlastquotationid'] = $this->model_quotation->getLastQuotationID();
 
 			$this->render_template('quotation/create', $this->data);
@@ -218,7 +218,7 @@ class Quotation extends Admin_Controller
 
     		$result['quotation_master'] = $quotation_data;
     		$quotation_item = $this->model_quotation->getQuotationItemData($quotation_data['quotation_no']);
-			$this->data['party_data'] = $this->model_party->getPartyData();
+			$this->data['party_data'] = $this->model_party->getActiveParty();
     		foreach($quotation_item as $k => $v) {
     			$result['quotation_item'][] = $v;
     		}

@@ -138,7 +138,7 @@ class Orders extends Admin_Controller
 			$this->data['products'] = $this->model_products->getActiveProductData(); 
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
 			
-			$this->data['party_data'] =$this->model_party->getPartyData(); 
+			$this->data['party_data'] =$this->model_party->getActiveParty(); 
             $this->data['getlastinvoiceid'] = $this->model_orders->getLastInvoiceID();
 
 			$this->render_template('orders/create', $this->data);
@@ -217,7 +217,7 @@ class Orders extends Admin_Controller
 
     		$result['invoice_master'] = $orders_data;
     		$orders_item = $this->model_orders->getOrdersItemData($orders_data['invoice_no']);
-			$this->data['party_data'] = $this->model_party->getPartyData();
+			$this->data['party_data'] = $this->model_party->getActiveParty();
     		foreach($orders_item as $k => $v) {
     			$result['invoice_item'][] = $v;
     		}

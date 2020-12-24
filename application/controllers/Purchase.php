@@ -140,7 +140,7 @@ class Purchase extends Admin_Controller
 			$this->data['products'] = $this->model_products->getActiveProductData(); 
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
 			
-			$this->data['party_data'] =$this->model_party->getPartyData(); 
+			$this->data['party_data'] =$this->model_party->getActiveParty(); 
             $this->data['getlastpurchaseid'] = $this->model_purchase->getLastPurchaseID();
 
 			$this->render_template('purchase/create', $this->data);
@@ -219,7 +219,7 @@ class Purchase extends Admin_Controller
 
     		$result['purchase_master'] = $purchase_data;
     		$purchase_item = $this->model_purchase->getPurchaseItemData($purchase_data['purchase_no']);
-			$this->data['party_data'] = $this->model_party->getPartyData();
+			$this->data['party_data'] = $this->model_party->getActiveParty();
     		foreach($purchase_item as $k => $v) {
     			$result['purchase_item'][] = $v;
     		}

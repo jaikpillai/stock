@@ -10,7 +10,7 @@ class Model_party extends CI_Model
 	/* get active brand infromation */
 	public function getActiveParty()
 	{
-		$sql = "SELECT * FROM party_master WHERE active = ?";
+		$sql = "SELECT * FROM party_master WHERE active = 1";
 		$query = $this->db->query($sql, array(1));
 		return $query->result_array();
 	}

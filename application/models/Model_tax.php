@@ -19,7 +19,7 @@ class Model_tax extends CI_Model
 	public function getTaxData($id = null)
 	{
 		if($id) {
-			$sql = "SELECT * FROM tax_master WHERE iTax_ID = ?";
+			$sql = "SELECT * FROM tax_master WHERE iTax_ID = ? and `active` = 1";
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}

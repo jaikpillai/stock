@@ -302,8 +302,8 @@ class Products extends Admin_Controller
 			$this->data['brands'] = $this->model_brands->getActiveBrands();        	
 			$this->data['category'] = $this->model_category->getActiveCategroy();        	
             $this->data['stores'] = $this->model_stores->getActiveStore(); 
-            $this->data['tax_data']= $this->model_tax->getTaxData();
-            $this->data['unit_data']= $this->model_unit->getUnitData();
+            $this->data['tax_data']= $this->model_tax->getActiveTax();
+            $this->data['unit_data']= $this->model_unit->getActiveUnit();
 
             // $lastid =  $this->model_products->getLastID();
 
@@ -476,8 +476,8 @@ class Products extends Admin_Controller
             $product_data = $this->model_products->getProductData($product_id);
             $this->data['product_data'] = $product_data;
             
-            $this->data['unit_data']= $this->model_unit->getUnitData();
-            $this->data['tax_data']= $this->model_tax->getTaxData();
+            $this->data['unit_data']= $this->model_unit->getActiveUnit();
+            $this->data['tax_data']= $this->model_tax->getActiveTax();
 
             $this->data['unit_data_sUnit']= $this->model_unit->getUnitDataFromsUnit($product_data['sUnit']);
 
