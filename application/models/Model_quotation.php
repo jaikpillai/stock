@@ -17,9 +17,35 @@ class Model_quotation extends CI_Model
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM quotation_master WHERE status = 1 AND financial_year_id = $selected_financial_year ORDER BY quotation_no DESC ";
-		$query = $this->db->query($sql);
-		return $query->result_array();
+		
+		if($selected_financial_year){
+			$sql = "SELECT * FROM quotation_master WHERE `status` = 1 AND financial_year_id = $selected_financial_year ORDER BY quotation_no DESC";
+			$query = $this->db->query($sql, array(1));
+			return $query->result_array();
+			}
+			else{
+				$financial_years = $this->model_financialyear->getFinancialYear();
+				$current_date = date("Y-m-d");
+	
+				foreach($financial_years as $k => $v){
+					$start_date = $v['start_date'];
+					$end_date = $v['end_date'];
+	
+	
+	
+					if (($current_date >= $start_date) && ($current_date <= $end_date)){
+						
+						$sql = "SELECT * FROM quotation_master WHERE `status` = 1 ORDER BY quotation_no DESC";
+						$query = $this->db->query($sql, array(1));
+						return $query->result_array();
+	
+	
+					}
+				}
+				
+			}
+
+	
 	}
 
 
