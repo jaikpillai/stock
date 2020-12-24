@@ -29,6 +29,8 @@ class Admin_Controller extends MY_Controller
 			$this->data['user_permission'] = unserialize($group_data['permission']);
 			$this->permission = unserialize($group_data['permission']);
 		}
+
+		$this->data['financial_year'] = $this->load_financial_years();
 	}
 
 	public function logged_in()
@@ -72,6 +74,14 @@ class Admin_Controller extends MY_Controller
 
 		return $currency;
 
+	}
+
+	public function load_financial_years()
+	{
+		$this->load->model('model_financialyear');
+		$financial_year = $this->model_financialyear->getFinancialYear();
+
+		return $financial_year;
 	}
 
 	

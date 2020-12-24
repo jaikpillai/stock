@@ -9,14 +9,18 @@ class Model_purchase extends CI_Model
 
 	/* get the orders data */
 	public function getPurchaseData($id = null)
+
 	{
+
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
 		if($id) {
 			$sql = "SELECT * FROM purchase_master WHERE purchase_no = ? AND status = 1 "  ;
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
 
-	  	$sql = "SELECT * FROM purchase_master WHERE status = 1 ORDER BY purchase_no DESC ";
+	  	$sql = "SELECT * FROM purchase_master WHERE status = 1 AND financial_year_id = $selected_financial_year ORDER BY purchase_no DESC ";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

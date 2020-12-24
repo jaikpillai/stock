@@ -18,6 +18,7 @@ class Quotation extends Admin_Controller
 		$this->load->model('model_tax');
 		$this->load->model('model_company');
 		$this->load->model('model_party');
+
 	}
 
 	/* 

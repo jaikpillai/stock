@@ -10,13 +10,15 @@ class Model_orders extends CI_Model
 	/* get the orders data */
 	public function getOrdersData($id = null)
 	{
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
 		if($id) {
-			$sql = "SELECT * FROM invoice_master WHERE invoice_no = ? AND status = 1 "  ;
+			$sql = "SELECT * FROM invoice_master WHERE invoice_no = ? AND status = 1  " ;
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM invoice_master WHERE status = 1 ORDER BY invoice_no DESC ";
+		$sql = "SELECT * FROM invoice_master WHERE `status` = 1   AND  financial_year_id = $selected_financial_year ORDER BY invoice_no DESC";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

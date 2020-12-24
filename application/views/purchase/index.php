@@ -34,6 +34,8 @@
           </div>
         <?php endif; ?>
 
+
+
         <?php if(in_array('createOrder', $user_permission)): ?>
           <a href="<?php echo base_url('purchase/create') ?>" class="btn btn-primary">Add Purchase</a>
           <br /> <br />
