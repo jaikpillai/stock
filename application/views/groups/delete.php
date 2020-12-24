@@ -56,6 +56,8 @@
   $(document).ready(function() {
     $("#mainGroupNav").addClass('active');
     $("#manageGroupNav").addClass('active');
+    $("#mainAdmin").addClass('active');
+
   });
 </script>
 

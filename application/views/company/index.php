@@ -122,6 +122,7 @@
   $(document).ready(function() {
     $("#companyNav").addClass('active');
     $("#message").wysihtml5();
+    $("#mainAdmin").addClass('active');
   });
 </script>
 

@@ -261,6 +261,8 @@
   $(document).ready(function() {
     $("#mainGroupNav").addClass('active');
     $("#manageGroupNav").addClass('active');
+    $("#mainAdmin").addClass('active');
+
 
     $('input[type="checkbox"].minimal').iCheck({
       checkboxClass: 'icheckbox_minimal-blue',

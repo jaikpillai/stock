@@ -129,6 +129,8 @@ $(document).ready(function() {
 
   $("#mainProductNav").addClass('active');
   $("#manageProductNav").addClass('active');
+  $("#mainMasterForm").addClass('active');
+
 
 
   // initialize the datatable 

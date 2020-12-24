@@ -185,6 +185,9 @@ var manageTable;
 
 $(document).ready(function() {
   $("#categoryNav").addClass('active');
+  $("#mainMasterForm").addClass('active');
+
+  
   
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({

@@ -56,5 +56,7 @@
   $(document).ready(function() {
     $("#mainUserNav").addClass('active');
     $("#manageUserNav").addClass('active');
+    $("#mainAdmin").addClass('active');
+
   });
 </script>

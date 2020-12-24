@@ -111,6 +111,8 @@ $(document).ready(function() {
 
   $("#mainQuotationNav").addClass('active');
   $("#manageQuotationNav").addClass('active');
+  $("#mainOrderManage").addClass('active');
+
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({

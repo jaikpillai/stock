@@ -71,4 +71,13 @@
   </div>
   <!-- /.content-wrapper -->
 
- 
+  <script type="text/javascript">
+    $(document).ready(function() {
+  
+
+
+    $("#manageProfile").addClass('active');
+    $("#mainAdmin").addClass('active');
+
+    });
+  </script>

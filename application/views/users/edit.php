@@ -138,5 +138,7 @@
 
     $("#mainUserNav").addClass('active');
     $("#manageUserNav").addClass('active');
+    $("#mainAdmin").addClass('active');
+
   });
 </script>

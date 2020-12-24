@@ -182,6 +182,8 @@
 
     $("#mainPartyNav").addClass('active');
     $("#managePartyNav").addClass('active');
+  $("#mainMasterForm").addClass('active');
+
     
     var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
         'onclick="alert(\'Call your custom code here.\')">' +

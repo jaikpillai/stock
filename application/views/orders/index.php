@@ -112,6 +112,8 @@ $(document).ready(function() {
 
   $("#mainOrderNav").addClass('active');
   $("#manageOrderNav").addClass('active');
+  $("#mainOrderManage").addClass('active');
+
 
   // initialize the datatable 
   manageTable = $('#manageTable').DataTable({

@@ -356,6 +356,8 @@ var removed_row_count =0;
 
     $("#mainOrderNav").addClass('active');
     $("#addOrderNav").addClass('active');
+    $("#mainOrderManage").addClass('active');
+
     
     var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' + 
         'onclick="alert(\'Call your custom code here.\')">' +

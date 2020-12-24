@@ -370,6 +370,8 @@ var removed_rows_count =0;
 
     $("#mainOrderNav").addClass('active');
     $("#manageOrderNav").addClass('active');
+    $("#mainOrderManage").addClass('active');
+
     var count_table_tbody_tr = $("#product_info_table tbody tr").length;
     var row_id = count_table_tbody_tr + 1;
 
