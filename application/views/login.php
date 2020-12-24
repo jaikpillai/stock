@@ -30,10 +30,10 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background-image: url('https://images.pexels.com/photos/1598366/pexels-photo-1598366.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260')">
 <div class="login-box">
   <div class="login-logo">
-    <a href="<?php echo base_url('auth'); ?>"><b>Login</b></a>
+    <a href="<?php echo base_url('auth'); ?>"><b style="color: white">Login</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
