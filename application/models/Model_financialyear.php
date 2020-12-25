@@ -19,12 +19,12 @@ class Model_financialyear extends CI_Model
 	public function getFinancialYear($id = null)
 	{
 		if($id) {
-			$sql = "SELECT * FROM financial_year WHERE key_value = ?";
+			$sql = "SELECT * FROM financial_year WHERE key_value = ? ORDER BY year_range";
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
 
-		$sql = "SELECT * FROM financial_year";
+		$sql = "SELECT * FROM financial_year ORDER BY year_range";
 		$query = $this->db->query($sql);
 		return $query->result_array();
 	}

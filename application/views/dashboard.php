@@ -55,7 +55,10 @@
                           if (($current_date >= $start_date) ){ ?>
 
                       <option value="<?php echo $v['key_value'] ?>" <?php if (($v['key_value'] == $this->session->userdata("selected_financial_year"))) {
-                                                                      echo 'selected="selected"';
+                         echo 'selected="selected"';
+                      }
+                        else if (($current_date >= $start_date) && $current_date <= $end_date ){ 
+                          echo 'selected="selected"';
                                                                     }}?>><?php echo $v['year_range'] ?></option>
                                                                     
                                                                     
