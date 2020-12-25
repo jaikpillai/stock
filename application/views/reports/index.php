@@ -25,7 +25,7 @@
 
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php echo base_url('reports/printDiv') ?>" method="post" class="form-horizontal">
+          <form role="form" action="<?php echo base_url('reports/printDiv') ?>" method="post" class="form-horizontal" target="_blank">
 
             <div class="box-body">
 
@@ -70,7 +70,7 @@
           </div>
           <div class="box-body">
 
-            <form role="form" action="<?php echo base_url('reports/quotationListing') ?>" method="post" class="form-horizontal">
+            <form role="form" action="<?php echo base_url('reports/quotationListing') ?>" method="post" class="form-horizontal" target="_blank">
 
               <div class="form-group">
                 <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
@@ -123,7 +123,7 @@
             <h3 class="box-title">Item Sold</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php echo base_url('reports/stockLedger') ?>" method="post" class="form-horizontal">
+          <form role="form" action="<?php echo base_url('reports/stockLedger') ?>" method="post" class="form-horizontal" target="_blank">
 
             <div class="box-body">
 
@@ -134,7 +134,7 @@
                   <select class="form-control selectpicker" id="product" name="product" required>
 
                     <?php foreach ($products as $k => $v) : ?>
-                      <option value="<?php echo $v['Item_ID'] ?>" data-tokens="<?php echo $v['Item_Name'] ?>"><?php echo $v['Item_Name'] ?></option>
+                      <option value="<?php echo $v['Item_ID'] ?>" ><?php echo $v['Item_Name'] ?></option>
                     <?php endforeach ?>
                   </select>
 
@@ -183,7 +183,7 @@
           </div>
           <div class="box-body">
 
-            <form role="form" action="<?php echo base_url('reports/purchaseRegister') ?>" method="post" class="form-horizontal">
+            <form role="form" action="<?php echo base_url('reports/purchaseRegister') ?>" method="post" class="form-horizontal" target="_blank">
 
               <div class="form-group">
                 <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>

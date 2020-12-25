@@ -284,12 +284,18 @@ class Reports extends Admin_Controller
     				<div class="jumbotron my-auto">
 					<p> No Invoices found between ' . $date_from . ' and ' . $date_to . ' </p>
 					<form action="' . base_url("reports") . '">
-					<button class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
+					<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
     				</div>
 			 </div>
 			</body>
-			</html>';
+				
+			</html>
+			<script>
+			document.getElementById("closeBtn").addEventListener("click", function() {
+				window.close()
+			});
+			</script>';
 
 				echo $html;
 			}
@@ -313,11 +319,25 @@ class Reports extends Admin_Controller
 			
 			<div class="wrapper" style= "overflow: visible">
 			 
+			<div class="container h-100 d-flex justify-content-center">
+			<div class="jumbotron my-auto">
+			<p> Please provide necessary dates </p>
+			<form action="' . base_url("reports") . '">
+			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
+		</form>
+			</div>
+	 </div>
+
 				  <div class="col-md-12 table-responsive">
-				  <p> Please provide necessary dates </p>
+				
 			       </div>
 			</body>
-			</html>';
+			</html>
+			<script>
+			document.getElementById("closeBtn").addEventListener("click", function() {
+				window.close()
+			});
+			</script>';
 
 			echo $html;;
 		}
@@ -496,14 +516,19 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
 			<div class="jumbotron my-auto">
-			<p><strong> '.$product_data['Item_Name'].'</strong> <br>was not sold between ' . $date_from . ' and ' . $date_to . ' </p>
+			<p><strong> ' . $product_data['Item_Name'] . '</strong> <br>was not sold between ' . $date_from . ' and ' . $date_to . ' </p>
 			<form action="' . base_url("reports") . '">
-			<button class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
+			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 		</form>
 			</div>
 	 </div>
 			</body>
-			</html>';
+			</html>
+			<script>
+			document.getElementById("closeBtn").addEventListener("click", function() {
+				window.close()
+			});
+			</script>';
 
 				echo $html;
 			}
@@ -525,11 +550,13 @@ class Reports extends Admin_Controller
 			</head>
 			<body >
 			
-			<div class="wrapper" style= "overflow: visible">
-			 
-				  <div class="col-md-12 table-responsive">
-				  <p> Please provide necessary dates </p>
-			       </div>
+			<div class="container h-100 d-flex justify-content-center">
+    				<div class="jumbotron my-auto">
+					<p> Please provide necessary dates </p>
+					<form action="' . base_url("reports") . '">
+					<button class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
+				</form>
+    				</div>
 			</body>
 			</html>';
 
@@ -742,7 +769,7 @@ class Reports extends Admin_Controller
     				<div class="jumbotron my-auto">
 					<p> No Quotations found between ' . $date_from . ' and ' . $date_to . ' </p>
 					<form action="' . base_url("reports") . '">
-					<button class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
+					<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
     				</div>
 			 </div>
@@ -752,7 +779,12 @@ class Reports extends Admin_Controller
 			
 			
 			</body>
-			</html>';
+			</html>
+			<script>
+			document.getElementById("closeBtn").addEventListener("click", function() {
+				window.close()
+			});
+			</script>';
 
 				echo $html;
 			}
@@ -994,7 +1026,7 @@ class Reports extends Admin_Controller
     				<div class="jumbotron my-auto">
 					<p> No Purchase Orders found between ' . $date_from . ' and ' . $date_to . ' </p>
 					<form action="' . base_url("reports") . '">
-					<button class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
+					<button id="closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
     				</div>
 			 </div>
@@ -1004,7 +1036,12 @@ class Reports extends Admin_Controller
 			
 			
 			</body>
-			</html>';
+			</html>
+			<script>
+			document.getElementById("closeBtn").addEventListener("click", function() {
+				window.close()
+			});
+			</script>';
 
 				echo $html;
 			}
@@ -1035,7 +1072,12 @@ class Reports extends Admin_Controller
     				</div>
  			</div>
 			</body>
-			</html>';
+			</html>
+			<script>
+			document.getElementById("closeBtn").addEventListener("click", function() {
+				window.close()
+			});
+			</script>';
 
 			echo $html;;
 		}
@@ -1045,5 +1087,12 @@ class Reports extends Admin_Controller
 	public function test($var = null)
 	{
 		echo "ttr";
+	}
+
+	function close_window()
+	{
+		echo  "<script type='text/javascript'>";
+		echo "window.close();";
+		echo "</script>";
 	}
 }

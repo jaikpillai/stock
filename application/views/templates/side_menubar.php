@@ -56,7 +56,7 @@
         <?php if (in_array('createProduct', $user_permission) || in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)) : ?>
           <li class="treeview" id="mainAdmin">
             <a href="#">
-              <i class="fa fa-cube"></i>
+              <i class="fa fa-lock"></i>
               <span>Admin</span>
               <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
@@ -260,7 +260,7 @@
               <?php if (in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
                 <li class="treeview" id="mainPurchaseNav">
                   <a href="#">
-                    <i class="fa fa-inr"></i>
+                    <i class="fa fa-handshake-o"></i>
                     <span>Purchase Transaction</span>
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
@@ -281,7 +281,7 @@
               <?php if (in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
                 <li class="treeview" id="mainQuotationNav">
                   <a href="#">
-                    <i class="fa fa-inr"></i>
+                    <i class="fa fa-briefcase"></i>
                     <span>Quotation Transaction</span>
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
