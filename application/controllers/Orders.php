@@ -286,6 +286,7 @@ class Orders extends Admin_Controller
 			$order_date = strtotime($order_data['invoice_date']);
 			$order_date = date( 'd/m/Y', $order_date );
 			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
+			$freight_other_charge = $order_data['other_charges'];
 
 
 
@@ -404,7 +405,7 @@ class Orders extends Admin_Controller
 						  $total = $total + $amount; 
 						  $index = $k + 1;
 
-						  $freight_other_charge = $order_data['other_charges'];
+						  
 
 						  $discount_amount = $amount - ($amount * $v['discount'])/100;
 						  
