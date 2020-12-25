@@ -45,12 +45,19 @@
 
                   <select class="form-control select_group product" id="financial_year" name="financial_year" style="width:100%;" required>
                     <option value="" disabled>--Select--</option>
-                    <?php foreach ($financial_year as $k => $v) : ?>
+                  
+                    <?php foreach ($financial_year as $k => $v) : 
+                          $current_date = date("Y-m-d");
+                          $start_date = $v['start_date'];
+                          $end_date = $v['end_date'];
+                          $financial_year_id = $financial_year_id = $v['key_value'];
 
+                          if (($current_date >= $start_date) && ($current_date <= $end_date)){ ?>
 
                       <option value="<?php echo $v['key_value'] ?>" <?php if (($v['key_value'] == $this->session->userdata("selected_financial_year"))) {
                                                                       echo 'selected="selected"';
-                                                                    } ?>><?php echo $v['year_range'] ?></option>
+                                                                    } }?>><?php echo $v['year_range'] ?></option>
+                                                                    
                     <?php endforeach ?>
                   </select>
 

@@ -15,7 +15,7 @@ class Model_purchase extends CI_Model
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
 		if($id) {
-			$sql = "SELECT * FROM purchase_master WHERE purchase_no = ? AND status = 1 "  ;
+			$sql = "SELECT * FROM purchase_master WHERE s_no = ? AND status = 1 "  ;
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
@@ -32,12 +32,13 @@ class Model_purchase extends CI_Model
 				foreach($financial_years as $k => $v){
 					$start_date = $v['start_date'];
 					$end_date = $v['end_date'];
+					$financial_year_id = $financial_year_id = $v['key_value'];
 	
 	
 	
 					if (($current_date >= $start_date) && ($current_date <= $end_date)){
 						
-						$sql = "SELECT * FROM purchase_master WHERE `status` = 1 ORDER BY purchase_no DESC";
+						$sql = "SELECT * FROM purchase_master WHERE `status` = 1 AND financial_year_id = $financial_year_id ORDER BY purchase_no DESC";
 						$query = $this->db->query($sql, array(1));
 						return $query->result_array();
 	
@@ -92,11 +93,35 @@ class Model_purchase extends CI_Model
 		$financial_id = $this->getFinancialYearID();
 		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
 
-		foreach ($financial_id as  $key => $value): 
-			// $new_id =$value['MAX(Item_ID)']+1
-			$financial_year_id = $value['key_value'];
-		endforeach;
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
+		if($selected_financial_year){
+
+	
+		
+			$financial_year_id = $selected_financial_year;
+	
+	}
+	else{
+
+	
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$financial_year_id = $v['key_value'];
+				}
+			
+		}
+
+	}
 	
 
 		// $is_received = $this->input->post('total_gst');
@@ -179,11 +204,34 @@ class Model_purchase extends CI_Model
 
 	public function getLastPurchaseID()
 	{
-		$sql = "SELECT  MAX(purchase_no) FROM purchase_master";
-		$query = $this->db->query($sql);
-		// $row = mysql_fetch_array($query);
-		// echo $row['id'];
-		return $query->result_array();
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
+
+		if ($selected_financial_year) {
+			$sql = "SELECT MAX(purchase_no) FROM purchase_master WHERE `status` = 1 AND financial_year_id = $selected_financial_year";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		} else {
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+				$financial_year_id = $v['key_value'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$sql = "SELECT  MAX(purchase_no) FROM purchase_master WHERE financial_year_id = $financial_year_id";
+					$query = $this->db->query($sql);
+					// $row = mysql_fetch_array($query);
+					// echo $row['id'];
+					return $query->result_array();
+				}
+			}
+		}
 
 	}
 
@@ -204,11 +252,35 @@ class Model_purchase extends CI_Model
 		$tax_id = $this->input->post('tax');
 		$tax = $this->model_tax->getTaxData($tax_id);
 
-		foreach ($financial_id as  $key => $value): 
-			// $new_id =$value['MAX(Item_ID)']+1
-			$financial_year_id = $value['key_value'];
-		endforeach;
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
+		if($selected_financial_year){
+
+	
+		
+			$financial_year_id = $selected_financial_year;
+	
+	}
+	else{
+
+	
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$financial_year_id = $v['key_value'];
+				}
+			
+		}
+
+	}
 	
 
 

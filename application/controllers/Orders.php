@@ -115,11 +115,12 @@ class Orders extends Admin_Controller
 	
         if ($this->form_validation->run() == TRUE) {        	
         	
-        	$order_id = $this->model_orders->create();
+			$order_id = $this->model_orders->create();
+			$invoice_no = $this->input->post('invoice_no');
         	
         	if($order_id) {
         		$this->session->set_flashdata('success', 'Successfully created');
-        		redirect('orders/update/'.$order_id, 'refresh');
+        		redirect('orders/update/'.$order_id.'/'.$invoice_no , 'refresh');
         	}
         	else {
         		$this->session->set_flashdata('errors', 'Error occurred!!');

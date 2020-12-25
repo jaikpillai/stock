@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class Model_orders extends CI_Model
 {
@@ -12,38 +12,35 @@ class Model_orders extends CI_Model
 	{
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
-		if($id) {
-			$sql = "SELECT * FROM invoice_master WHERE invoice_no = ? AND status = 1  " ;
+		if ($id) {
+			$sql = "SELECT * FROM invoice_master WHERE s_no = ? AND `status` = 1 ORDER BY invoice_no DESC";
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
 
 
-if($selected_financial_year){
-		$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id = $selected_financial_year";
-		$query = $this->db->query($sql, array(1));
-		return $query->result_array();
-		}
-		else{
+		if ($selected_financial_year) {
+			$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id = $selected_financial_year ORDER BY invoice_no DESC";
+			$query = $this->db->query($sql, array(1));
+			return $query->result_array();
+		} else {
 			$financial_years = $this->model_financialyear->getFinancialYear();
 			$current_date = date("Y-m-d");
 
-			foreach($financial_years as $k => $v){
+			foreach ($financial_years as $k => $v) {
 				$start_date = $v['start_date'];
 				$end_date = $v['end_date'];
+				$financial_year_id = $v['key_value'];
 
 
 
-				if (($current_date >= $start_date) && ($current_date <= $end_date)){
-					
-					$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1";
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id =	$financial_year_id ORDER BY invoice_no DESC"  ;
 					$query = $this->db->query($sql, array(1));
 					return $query->result_array();
-
-
 				}
 			}
-			
 		}
 	}
 
@@ -51,7 +48,7 @@ if($selected_financial_year){
 	// get the orders item data
 	public function getOrdersItemData($order_id = null)
 	{
-		if(!$order_id) {
+		if (!$order_id) {
 			return false;
 		}
 
@@ -62,7 +59,7 @@ if($selected_financial_year){
 
 	public function getFooter($order_id = null)
 	{
-		if(!$order_id) {
+		if (!$order_id) {
 			return false;
 		}
 
@@ -75,7 +72,7 @@ if($selected_financial_year){
 
 	public function getFinancialYearID()
 	{
-		
+
 
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
 		$query = $this->db->query($sql, 1);
@@ -86,29 +83,60 @@ if($selected_financial_year){
 	{
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
+
+	
+
+
+
+		
 		$financial_id = $this->getFinancialYearID();
 		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
 
-		foreach ($financial_id as  $key => $value): 
-			// $new_id =$value['MAX(Item_ID)']+1
-			$financial_year_id = $value['key_value'];
-		endforeach;
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
+		if($selected_financial_year){
 
 	
+		
+			$financial_year_id = $selected_financial_year;
+	
+	}
+	else{
+
+	
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$financial_year_id = $v['key_value'];
+				}
+			
+		}
+
+	}
+
+
 
 		// $is_received = $this->input->post('total_gst');
 		$invoice_no = $this->input->post('invoice_no');
 
 		// $total_discount
 
-		
+
 
 		// $bill_no = 'BILPR-'.strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 4));
-    	$data = array(
+		$data = array(
 			'invoice_no' => $this->input->post('invoice_no'),
-    		'invoice_date' => $this->input->post('date'),
-    		'party_id' => $this->input->post('party'),
-    		'total_discount' => $this->input->post('total_discount'),
+			'invoice_date' => $this->input->post('date'),
+			'party_id' => $this->input->post('party'),
+			'total_discount' => $this->input->post('total_discount'),
 			'total_gst' => $this->input->post('total_gst'),
 			'financial_year_id' => $financial_year_id,
 			'order_no' => $this->input->post('challan_number'),
@@ -126,28 +154,28 @@ if($selected_financial_year){
 			'tax_id' =>  $this->input->post('tax'),
 			'tax_value' => $tax['sValue']
 
-			
-			
-			
-			
-			
 
 
-    		// 'bill_no' => $bill_no,
-    		// 'customer_name' => $this->input->post('customer_name'),
-    		// 'customer_address' => $this->input->post('customer_address'),
-    		// 'customer_phone' => $this->input->post('customer_phone'),
-    		// 'date_time' => strtotime(date('Y-m-d h:i:s a')),
-    		// 'gross_amount' => $this->input->post('gross_amount_value'),
-    		// 'service_charge_rate' => $this->input->post('service_charge_rate'),
-    		// 'service_charge' => ($this->input->post('service_charge_value') > 0) ?$this->input->post('service_charge_value'):0,
-    		// 'vat_charge_rate' => $this->input->post('vat_charge_rate'),
-    		// 'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
-    		// 'net_amount' => $this->input->post('net_amount_value'),
-    		// 'discount' => $this->input->post('discount'),
-    		// 'paid_status' => 2,
-    		// 'user_id' => $user_id
-    	);
+
+
+
+
+
+			// 'bill_no' => $bill_no,
+			// 'customer_name' => $this->input->post('customer_name'),
+			// 'customer_address' => $this->input->post('customer_address'),
+			// 'customer_phone' => $this->input->post('customer_phone'),
+			// 'date_time' => strtotime(date('Y-m-d h:i:s a')),
+			// 'gross_amount' => $this->input->post('gross_amount_value'),
+			// 'service_charge_rate' => $this->input->post('service_charge_rate'),
+			// 'service_charge' => ($this->input->post('service_charge_value') > 0) ?$this->input->post('service_charge_value'):0,
+			// 'vat_charge_rate' => $this->input->post('vat_charge_rate'),
+			// 'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
+			// 'net_amount' => $this->input->post('net_amount_value'),
+			// 'discount' => $this->input->post('discount'),
+			// 'paid_status' => 2,
+			// 'user_id' => $user_id
+		);
 
 		$insert = $this->db->insert('invoice_master', $data);
 		$order_id = $this->db->insert_id();
@@ -155,10 +183,10 @@ if($selected_financial_year){
 		$this->load->model('model_products');
 
 		$count_product = count($this->input->post('product'));
-    	for($x = 0; $x < $count_product; $x++) {
-    		$items = array(
-				
-    			'invoice_no' => $invoice_no,
+		for ($x = 0; $x < $count_product; $x++) {
+			$items = array(
+
+				'invoice_no' => $invoice_no,
 				'item_id' => $this->input->post('product')[$x],
 				'item_code' => $this->input->post('code_value')[$x],
 				'item_make' => $this->input->post('make_value')[$x],
@@ -169,38 +197,69 @@ if($selected_financial_year){
 				// 'tax' => $this->input->post('gst_value')[$x],
 				'financial_year_id' => $financial_year_id,
 				'status' => 1
-				
-				
-    		);
 
-    		$this->db->insert('invoice_item', $items);
-    		// now decrease the stock from the product
+
+			);
+
+			$this->db->insert('invoice_item', $items);
+			// now decrease the stock from the product
 			$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
-			
-    		$qty = (int) $product_data['Max_Suggested_Qty'] - (int) $this->input->post('qty')[$x];
 
-    		$update_product = array('Max_Suggested_Qty' => $qty);
+			$qty = (int) $product_data['Max_Suggested_Qty'] - (int) $this->input->post('qty')[$x];
+
+			$update_product = array('Max_Suggested_Qty' => $qty);
 
 
-    		$this->model_products->update($update_product, $this->input->post('product')[$x]);
-    	}
+			$this->model_products->update($update_product, $this->input->post('product')[$x]);
+		}
 
 		return ($order_id) ? $order_id : false;
 	}
 
 	public function getLastInvoiceID()
 	{
-		$sql = "SELECT  MAX(invoice_no) FROM invoice_master";
-		$query = $this->db->query($sql);
-		// $row = mysql_fetch_array($query);
-		// echo $row['id'];
-		return $query->result_array();
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
+
+		if ($selected_financial_year) {
+			$sql = "SELECT MAX(invoice_no) FROM invoice_master WHERE `status` = 1 AND financial_year_id = $selected_financial_year";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		} else {
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+				$financial_year_id = $v['key_value'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$sql = "SELECT  MAX(invoice_no) FROM invoice_master WHERE financial_year_id = $financial_year_id";
+					$query = $this->db->query($sql);
+					// $row = mysql_fetch_array($query);
+					// echo $row['id'];
+					return $query->result_array();
+				}
+			}
+		}
+
+
+
+		// $sql = "SELECT  MAX(invoice_no) FROM invoice_master";
+		// $query = $this->db->query($sql);
+		// // $row = mysql_fetch_array($query);
+		// // echo $row['id'];
+		// return $query->result_array();
 
 	}
 
 	public function countOrderItem($order_id)
 	{
-		if($order_id) {
+		if ($order_id) {
 			$sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
 			$query = $this->db->query($sql, array($order_id));
 			return $query->num_rows();
@@ -215,59 +274,92 @@ if($selected_financial_year){
 		$tax_id = $this->input->post('tax');
 		$tax = $this->model_tax->getTaxData($tax_id);
 
-		foreach ($financial_id as  $key => $value): 
-			// $new_id =$value['MAX(Item_ID)']+1
-			$financial_year_id = $value['key_value'];
-		endforeach;
+
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
+
+
+		
+		$financial_id = $this->getFinancialYearID();
+		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
+
+
+		if($selected_financial_year){
 
 	
+		
+			$financial_year_id = $selected_financial_year;
+	
+	}
+	else{
+
+	
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$financial_year_id = $v['key_value'];
+				}
+			
+		}
+
+	}
+
+
 
 
 		// $is_received = $this->input->post('total_gst');
 
-		if($id) {
+		if ($id) {
 			$user_id = $this->session->userdata('id');
 			// fetch the order data 
 
 			$data = array(
 
-			'invoice_no' => $this->input->post('invoice_no'),
-    		'invoice_date' => $this->input->post('date'),
-    		'party_id' => $this->input->post('party'),
-    		'total_discount' => $this->input->post('total_discount'),
-			'total_gst' => $this->input->post('total_gst'),
-			'financial_year_id' => $financial_year_id,
-			'order_no' => $this->input->post('challan_number'),
-			'order_date' => $this->input->post('challan_date'),
-			'gr_rr_no' => $this->input->post('gr_rr_no'),
-			'other_charges' => $this->input->post('other_charge'),
-			'dispatched_through' => $this->input->post('dispatch_through'),
-			'mode_of_payment' => $this->input->post('paymode'),
-			'document_through' => $this->input->post('document'),
-			'form_received' => $this->input->post('form_received'),
-			'form_declaration' => $this->input->post('declaration'),
-			'total_amount' => $this->input->post('total_amount_value'),
-			'is_payment_received' => $this->input->post('paid_status'),
-			'status' => 1,
-			'tax_id' => $this->input->post('tax'),
-			'tax_value' => $tax['sValue']
+				'invoice_no' => $this->input->post('invoice_no'),
+				'invoice_date' => $this->input->post('date'),
+				'party_id' => $this->input->post('party'),
+				'total_discount' => $this->input->post('total_discount'),
+				'total_gst' => $this->input->post('total_gst'),
+				'financial_year_id' => $financial_year_id,
+				'order_no' => $this->input->post('challan_number'),
+				'order_date' => $this->input->post('challan_date'),
+				'gr_rr_no' => $this->input->post('gr_rr_no'),
+				'other_charges' => $this->input->post('other_charge'),
+				'dispatched_through' => $this->input->post('dispatch_through'),
+				'mode_of_payment' => $this->input->post('paymode'),
+				'document_through' => $this->input->post('document'),
+				'form_received' => $this->input->post('form_received'),
+				'form_declaration' => $this->input->post('declaration'),
+				'total_amount' => $this->input->post('total_amount_value'),
+				'is_payment_received' => $this->input->post('paid_status'),
+				'status' => 1,
+				'tax_id' => $this->input->post('tax'),
+				'tax_value' => $tax['sValue']
 
 
 
 
 				// 'customer_name' => $this->input->post('customer_name'),
-	    		// 'customer_address' => $this->input->post('customer_address'),
-	    		// 'customer_phone' => $this->input->post('customer_phone'),
-	    		// 'gross_amount' => $this->input->post('gross_amount_value'),
-	    		// 'service_charge_rate' => $this->input->post('service_charge_rate'),
-	    		// 'service_charge' => ($this->input->post('service_charge_value') > 0) ? $this->input->post('service_charge_value'):0,
-	    		// 'vat_charge_rate' => $this->input->post('vat_charge_rate'),
-	    		// 'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
-	    		// 'net_amount' => $this->input->post('net_amount_value'),
-	    		// 'discount' => $this->input->post('discount'),
-	    		// 'is_payment_received' => $this->input->post('paid_status'),
-	    		// 'user_id' => $user_id
-	    	);
+				// 'customer_address' => $this->input->post('customer_address'),
+				// 'customer_phone' => $this->input->post('customer_phone'),
+				// 'gross_amount' => $this->input->post('gross_amount_value'),
+				// 'service_charge_rate' => $this->input->post('service_charge_rate'),
+				// 'service_charge' => ($this->input->post('service_charge_value') > 0) ? $this->input->post('service_charge_value'):0,
+				// 'vat_charge_rate' => $this->input->post('vat_charge_rate'),
+				// 'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
+				// 'net_amount' => $this->input->post('net_amount_value'),
+				// 'discount' => $this->input->post('discount'),
+				// 'is_payment_received' => $this->input->post('paid_status'),
+				// 'user_id' => $user_id
+			);
 
 			$this->db->where('s_no', $id);
 			$update = $this->db->update('invoice_master', $data);
@@ -283,7 +375,7 @@ if($selected_financial_year){
 				$product_data = $this->model_products->getProductData($product_id);
 				$update_qty = $qty + $product_data['Max_Suggested_Qty'];
 				$update_product_data = array('Max_Suggested_Qty' => $update_qty);
-				
+
 				// update the product qty
 				$this->model_products->update($update_product_data, $product_id);
 			}
@@ -294,8 +386,8 @@ if($selected_financial_year){
 
 			// now decrease the product qty
 			$count_product = count($this->input->post('product'));
-	    	for($x = 0; $x < $count_product; $x++) {
-	    		$items = array(
+			for ($x = 0; $x < $count_product; $x++) {
+				$items = array(
 
 					'invoice_no' => $invoice_no,
 					'item_id' => $this->input->post('product')[$x],
@@ -310,21 +402,21 @@ if($selected_financial_year){
 					'status' => 1
 
 
-	    			// 'order_id' => $id,
-	    			// 'product_id' => $this->input->post('product')[$x],
-	    			// 'qty' => $this->input->post('qty')[$x],
-	    			// 'rate' => $this->input->post('rate_value')[$x],
-	    			// 'amount' => $this->input->post('amount_value')[$x],
-	    		);
-	    		$this->db->insert('invoice_item', $items);
+					// 'order_id' => $id,
+					// 'product_id' => $this->input->post('product')[$x],
+					// 'qty' => $this->input->post('qty')[$x],
+					// 'rate' => $this->input->post('rate_value')[$x],
+					// 'amount' => $this->input->post('amount_value')[$x],
+				);
+				$this->db->insert('invoice_item', $items);
 
-	    		// now decrease the stock from the product
-	    		$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
-	    		$qty = (int) $product_data['Max_Suggested_Qty'] - (int) $this->input->post('qty')[$x];
+				// now decrease the stock from the product
+				$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
+				$qty = (int) $product_data['Max_Suggested_Qty'] - (int) $this->input->post('qty')[$x];
 
-	    		$update_product = array('Max_Suggested_Qty' => $qty);
-	    		$this->model_products->update($update_product, $this->input->post('product')[$x]);
-	    	}
+				$update_product = array('Max_Suggested_Qty' => $qty);
+				$this->model_products->update($update_product, $this->input->post('product')[$x]);
+			}
 
 			return true;
 		}
@@ -334,13 +426,14 @@ if($selected_financial_year){
 
 	public function remove($id, $invoice_no)
 	{
-		if($id) {
+		if ($id) {
 			$data = array(
 
-				'status' => 0);
-			
+				'status' => 0
+			);
+
 			$this->db->where('s_no', $id);
-			$delete = $this->db->update('invoice_master',$data);
+			$delete = $this->db->update('invoice_master', $data);
 
 			$this->db->where('invoice_no', $invoice_no);
 			$delete_item = $this->db->update('invoice_item', $data);
@@ -353,32 +446,28 @@ if($selected_financial_year){
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
 
-		if($selected_financial_year){
-		$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id = $selected_financial_year";
-		$query = $this->db->query($sql, array(1));
-		return $query->num_rows();
-		}
-		else{
+		if ($selected_financial_year) {
+			$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id = $selected_financial_year";
+			$query = $this->db->query($sql, array(1));
+			return $query->num_rows();
+		} else {
 			$financial_years = $this->model_financialyear->getFinancialYear();
 			$current_date = date("Y-m-d");
 
-			foreach($financial_years as $k => $v){
+			foreach ($financial_years as $k => $v) {
 				$start_date = $v['start_date'];
 				$end_date = $v['end_date'];
+				$financial_year_id = $financial_year_id = $v['key_value'];
 
 
 
-				if (($current_date >= $start_date) && ($current_date <= $end_date)){
-					
-					$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1";
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+
+					$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id = $financial_year_id ";
 					$query = $this->db->query($sql, array(1));
 					return $query->num_rows();
-
-
 				}
 			}
-			
 		}
 	}
-
 }
