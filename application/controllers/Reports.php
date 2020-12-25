@@ -213,7 +213,7 @@ class Reports extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			    <div class="row">
+			    <!--<div class="row">
 			    
 			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
@@ -222,24 +222,7 @@ class Reports extends Admin_Controller
 			            <tr>
 			              <th style="width:50%">Total Discount:</th>
 			              <td>' . $grand_total_discount . '</td>
-			            </tr>';
-
-				// if($order_data['service_charge'] > 0) {
-				// 	$html .= '<tr>
-				//       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
-				//       <td>'.$order_data['service_charge'].'</td>
-				//     </tr>';
-				// }
-
-				// if($order_data['vat_charge'] > 0) {
-				// 	$html .= '<tr>
-				//       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
-				//       <td>'.$order_data['vat_charge'].'</td>
-				//     </tr>';
-				// }
-
-
-				$html .= '
+			            </tr>
 						<tr>
 			              <th>Total GST:</th>
 			              <td>' . $grand_total_gst . '</td>
@@ -253,7 +236,7 @@ class Reports extends Admin_Controller
 			        </div>
 			      </div>
 			      <!-- /.col -->
-			    </div>
+			    </div>-->
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
@@ -467,7 +450,7 @@ class Reports extends Admin_Controller
 			      <!-- /.col -->
 			    </div>
 			    <!-- /.row -->
-				<div class="row">
+			<!--<div class="row">
 			    
 				<div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
@@ -491,7 +474,7 @@ class Reports extends Admin_Controller
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
-			</div>
+			</div>-->
 			</body>
 			</html>';
 
@@ -698,7 +681,7 @@ class Reports extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			    <div class="row">
+			    <!--<div class="row">
 			    
 			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
@@ -707,24 +690,7 @@ class Reports extends Admin_Controller
 			            <tr>
 			              <th style="width:50%">Total Discount:</th>
 			              <td>' . $grand_total_discount . '</td>
-			            </tr>';
-
-				// if($order_data['service_charge'] > 0) {
-				// 	$html .= '<tr>
-				//       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
-				//       <td>'.$order_data['service_charge'].'</td>
-				//     </tr>';
-				// }
-
-				// if($order_data['vat_charge'] > 0) {
-				// 	$html .= '<tr>
-				//       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
-				//       <td>'.$order_data['vat_charge'].'</td>
-				//     </tr>';
-				// }
-
-
-				$html .= '
+			            </tr>
 						<tr>
 			              <th>Total GST:</th>
 			              <td>' . $grand_total_gst . '</td>
@@ -738,7 +704,7 @@ class Reports extends Admin_Controller
 			        </div>
 			      </div>
 			      <!-- /.col -->
-			    </div>
+			    </div>-->
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
@@ -955,7 +921,7 @@ class Reports extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			    <div class="row">
+			   <!-- <div class="row">
 			    
 			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
@@ -964,24 +930,7 @@ class Reports extends Admin_Controller
 			            <tr>
 			              <th style="width:50%">Total Discount:</th>
 			              <td>' . $grand_total_discount . '</td>
-			            </tr>';
-
-				// if($order_data['service_charge'] > 0) {
-				// 	$html .= '<tr>
-				//       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
-				//       <td>'.$order_data['service_charge'].'</td>
-				//     </tr>';
-				// }
-
-				// if($order_data['vat_charge'] > 0) {
-				// 	$html .= '<tr>
-				//       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
-				//       <td>'.$order_data['vat_charge'].'</td>
-				//     </tr>';
-				// }
-
-
-				$html .= '
+			            </tr>
 						<tr>
 			              <th>Total GST:</th>
 			              <td>' . $grand_total_gst . '</td>
@@ -995,7 +944,7 @@ class Reports extends Admin_Controller
 			        </div>
 			      </div>
 			      <!-- /.col -->
-			    </div>
+			    </div> -->
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
