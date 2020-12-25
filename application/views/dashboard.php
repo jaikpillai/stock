@@ -45,24 +45,56 @@
 
                   <select class="form-control select_group product" id="financial_year" name="financial_year" style="width:100%;" required>
                     <option value="" disabled>--Select--</option>
-                  
-                    <?php foreach ($financial_year as $k => $v) : 
-                          $current_date = date("Y-m-d");
-                          $start_date = $v['start_date'];
-                          $end_date = $v['end_date'];
-                          $financial_year_id = $v['key_value'];
 
-                          if (($current_date >= $start_date) ){ ?>
+                    <?php $selected_financial_year = $this->session->userdata("selected_financial_year"); ?>
 
-                      <option value="<?php echo $v['key_value'] ?>" <?php if (($v['key_value'] == $this->session->userdata("selected_financial_year"))) {
-                         echo 'selected="selected"';
-                      }
-                        else if (($current_date >= $start_date) && $current_date <= $end_date ){ 
-                          echo 'selected="selected"';
-                                                                    }}?>><?php echo $v['year_range'] ?></option>
-                                                                    
-                                                                    
-                    <?php endforeach ?>
+
+                    <?php if($selected_financial_year) {?>
+                    <?php foreach ($financial_year as $k => $v):
+                      $current_date = date("Y-m-d");
+                      $start_date = $v['start_date'];
+                      $end_date = $v['end_date'];
+                      $financial_year_id = $v['key_value'];
+
+
+                      if (($current_date >= $start_date)) { ?>
+                        <option value="<?php echo $v['key_value'] ?>" 
+                        
+                        <?php if ($selected_financial_year == $v['key_value']) { ?> 
+                          
+                          <?php echo 'selected="selected"'; ?>><?php echo $v['year_range'] ?></option>
+                        <?php } 
+                        
+                         else { ?>
+                        <option value="<?php echo $v['key_value'] ?>"><?php echo $v['year_range'] ?></option>
+
+                         <?php }
+                      
+                    } endforeach;
+                    }
+
+                    else {
+                      foreach ($financial_year as $k => $v) :
+                        $current_date = date("Y-m-d");
+                        $start_date = $v['start_date'];
+                        $end_date = $v['end_date'];
+                        $financial_year_id = $v['key_value'];
+
+
+
+                      if (($current_date >= $start_date)) { ?>
+                      <option value="<?php echo $v['key_value'] ?>"
+                      <?php if($current_date >= $start_date && $current_date <= $end_date){
+                        echo 'selected="selected"'; }?>><?php echo $v['year_range'] ?></option>
+                     <?php 
+
+                    } endforeach;}?>
+
+
+
+
+
+                 
                   </select>
 
 
