@@ -15,7 +15,7 @@
   <!-- Invoice Lisiting -->
   <section class="content">
     <div class="row">
-      <div class="col-md-4 col-xs-12 pull pull-left">
+      <div class="col-md-6 col-xs-12 pull pull-left">
 
 
 
@@ -63,7 +63,7 @@
 
       </div>
 
-      <div class="col-md-4 col-xs-12">
+      <div class="col-md-6 col-xs-12">
         <div class="box">
           <div class="box-header">
             <h3 class=" box-title">Quotation Listing</h3>
@@ -116,67 +116,60 @@
 
 
     <div class="row">
-      <div class="col-md-4 col-xs-12 ">
 
-        <div class="box">
-          <div class="box-header">
-            <h3 class="box-title">Item Sold</h3>
-          </div>
-          <!-- /.box-header -->
-          <form role="form" action="<?php echo base_url('reports/stockLedger') ?>" method="post" class="form-horizontal" target="_blank">
+          <div class="col-md-6 col-xs-12 ">
 
-            <div class="box-body">
+            <div class="box">
+              <div class="box-header">
+                <h3 class="box-title">Price List</h3>
+              </div>
+              <!-- /.box-header -->
+              <form role="form" action="<?php echo base_url('reports/priceList') ?>" method="post" class="form-horizontal" target="_blank">
+
+                <div class="box-body">
 
 
-              <div class="form-group">
-                <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Item</label>
-                <div class="col-sm-9">
-                  <select class="form-control selectpicker" id="product" name="product" required>
+                  <div class="form-group">
+                    <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Make</label>
+                    <div class="col-sm-9">
+                      <select class="form-control selectpicker" id="itemMake" name="itemMake" required>
 
-                    <?php foreach ($products as $k => $v) : ?>
-                      <option value="<?php echo $v['Item_ID'] ?>" ><?php echo $v['Item_Name'] ?></option>
-                    <?php endforeach ?>
-                  </select>
+                        <?php foreach ($item_make as $k => $v) : ?>
+                          <option value="<?php echo $v['item_make'] ?>" ><?php echo $v['item_make'] ?></option>
+                        <?php endforeach ?>
+                      </select>
+
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">Variation %</label>
+                    <div class="col-sm-9">
+                      <input type="number" value=0 class="form-control" id="variation" name="variation" autocomplete="off" />
+                    </div>
+                  </div>
+
+
+                  <div class="form-group">
+                    <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
+                    <div class="col-sm-9">
+                      <button type="submit" class="btn btn-primary">Generate Report</button>
+                    </div>
+                  </div>
+
 
 
                 </div>
-              </div>
 
-
-              <div class="form-group">
-                <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
-                <div class="col-sm-9">
-                  <input type="date" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="date_from_stock" name="date_from_stock" autocomplete="off" />
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">To</label>
-                <div class="col-sm-9">
-                  <input type="date" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="date_to_stock" name="date_to_stock" autocomplete="off" />
-                </div>
-              </div>
-
-
-              <div class="form-group">
-                <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
-                <div class="col-sm-9">
-                  <button type="submit" class="btn btn-primary">Generate Report</button>
-                </div>
-              </div>
-
-
+              </form>
 
             </div>
 
-          </form>
 
-        </div>
+          </div>
 
-
-      </div>
-
-      <div class="col-md-4 col-xs-12">
+      <div class="col-md-6 col-xs-12">
         <div class="box">
           <div class="box-header">
             <h3 class=" box-title">Purchase Register</h3>
@@ -222,6 +215,129 @@
   </section>
 
 
+
+  <!-- PRICE LIST -->
+  <section class="content">
+
+
+    <div class="row">
+
+    
+      <div class="col-md-6 col-xs-12 ">
+
+        <div class="box">
+          <div class="box-header">
+          <h3 class="box-title">Item Sold</h3>
+          </div>
+          <!-- /.box-header -->
+          <form role="form" action="<?php echo base_url('reports/stockLedger') ?>" method="post" class="form-horizontal" target="_blank">
+
+          <div class="box-body">
+            <div class="form-group">
+              <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Item</label>
+              <div class="col-sm-9">
+                <select class="form-control selectpicker" id="product" name="product" required>
+
+                  <?php foreach ($products as $k => $v) : ?>
+                    <option value="<?php echo $v['Item_ID'] ?>" ><?php echo $v['Item_Name'] ?></option>
+                  <?php endforeach ?>
+                </select>
+
+
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
+              <div class="col-sm-9">
+                <input type="date" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="date_from_stock" name="date_from_stock" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">To</label>
+              <div class="col-sm-9">
+                <input type="date" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="date_to_stock" name="date_to_stock" autocomplete="off" />
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
+              <div class="col-sm-9">
+                <button type="submit" class="btn btn-primary">Generate Report</button>
+              </div>
+            </div>
+
+
+
+          </div>
+
+          </form>
+
+          </div>
+
+
+        </div>
+     
+      <div class="col-md-6 col-xs-12">
+        <div class="box">
+          <div class="box-header">
+            <h3 class=" box-title">Customer Ledger</h3>
+          </div>
+          <div class="box-body">
+
+            <form role="form" action="<?php echo base_url('reports/customerLedger') ?>" method="post" class="form-horizontal" target="_blank">
+
+            <div class="form-group">
+                <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Customer</label>
+                <div class="col-sm-9">
+                  <select class="form-control selectpicker" id="partyid" name="partyid" required>
+
+                    <?php foreach ($customer as $k => $v) : ?>
+                      <option value="<?php echo $v['party_id'] ?>" ><?php echo $v['party_name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
+                <div class="col-sm-9">
+                  <input type="date" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="date_from_customer" name="date_from_customer" autocomplete="off" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">To</label>
+                <div class="col-sm-9">
+                  <input type="date" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="date_to_customer" name="date_to_customer" autocomplete="off" />
+                </div>
+              </div>    
+
+
+
+
+              <div class="form-group">
+                <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
+                <div class="col-sm-9">
+                  <button type="submit" class="btn btn-primary">Generate Report</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+  </section>
 
   <!-- Test -->
 

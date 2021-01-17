@@ -31,6 +31,31 @@ class Model_reports extends CI_Model
 		return $return_data;
 	}
 
+
+	public function getItemMake(){
+
+			$sql = "SELECT DISTINCT item_make FROM item_master";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+	}
+
+	public function getItemListFromMake($make){
+
+		$sql = "SELECT * FROM item_master WHERE Item_Make = '$make'";
+		$query = $this->db->query($sql);
+		return $query->result_array();
+	}
+
+	public function getPartyInvoiceList($party_id,$date_from, $date_to){
+
+		if($date_from && $date_to) {
+			$sql = "SELECT * FROM invoice_master where party_id = '$party_id' AND invoice_date BETWEEN '$date_from' and '$date_to'";
+			$query = $this->db->query($sql);
+			return $query->result_array();
+		}
+	}
+	
+
 	// getting the order reports based on the year and moths
 	public function getOrderData($year)
 	{	
