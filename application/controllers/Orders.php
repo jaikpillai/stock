@@ -484,9 +484,9 @@ class Orders extends Admin_Controller
 		
 						$html .= '<tr>
 						  <td>'.$tax_array[$tax_data['sTax_Description']].'</td>
-						  <td>'.$cgst_percent.'</td>
+						  <td>'.number_format($cgst_percent, 2, '.', '');.'</td>
 						  <td>'.$cgst.'</td>
-						  <td>'.$cgst_percent.'</td>
+						  <td>'.number_format($cgst_percent, 2, '.', '');.'</td>
 						  <td>'.$cgst.'</td>
 						</tr>';
 					}
