@@ -326,8 +326,6 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <!-- <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
-                <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off"> -->
                 <button type="submit" class="btn btn-primary">Create Order</button>
                 <a href="<?php echo base_url('orders/') ?>" class="btn btn-warning">Back</a>
               </div>
@@ -375,16 +373,16 @@ var removed_row_count =0;
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
       var row_id = count_table_tbody_tr + 1 + Number(removed_row_count);
-      var tax_data;
+      // var tax_data;
 
-      $.ajax({
-          url: base_url + '/orders/getTableTaxData/',
-          type: 'post',
-          dataType: 'json',
-          success:function(response) {
-            tax_data=response;
-          }
-        });
+      // $.ajax({
+      //     url: base_url + '/orders/getTableTaxData/',
+      //     type: 'post',
+      //     dataType: 'json',
+      //     success:function(response) {
+      //       tax_data=response;
+      //     }
+      //   });
 
       $.ajax({
           url: base_url + '/orders/getTableProductRow/',
@@ -432,7 +430,7 @@ var removed_row_count =0;
                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                        '<option value=""></option>';
-                       $.each(tax_data, function(index, value) {
+                       $.each(response['tax_data'], function(index, value) {
                          html += '<option value="'+value.iTax_ID+'" data-tax-value="'+value.sValue+'">'+value.sTax_Description+'</option>';
 
                        });
@@ -590,9 +588,7 @@ var removed_row_count =0;
 
   // calculate the total amount of the order
   function subAmount() {
-    // var service_charge = <?php echo ($company_data['service_charge_value'] > 0) ? $company_data['service_charge_value']:0; ?>;
-    // var vat_charge = <?php echo ($company_data['vat_charge_value'] > 0) ? $company_data['vat_charge_value']:0; ?>;
-
+    
     var tableProductLength = $("#product_info_table tbody tr").length;
     var totalSubAmount = 0;
     var total_discount=0;

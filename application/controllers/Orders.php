@@ -169,6 +169,7 @@ class Orders extends Admin_Controller
 	public function getTableProductRow()
 	{
 		$products = $this->model_products->getActiveProductData();
+		$products['tax_data']=$this->model_tax->getTaxData();
 
 		echo json_encode($products);
 	}
@@ -512,7 +513,7 @@ class Orders extends Admin_Controller
 				  </table>
 				</div>
 			  </div>
-			 <div class="col-xs-4" style="page-break-inside: avoid">
+			 <div class="col-xs-4">
 
 			        <div class="table-responsive" >
 			          <table class="table table-bordered" >

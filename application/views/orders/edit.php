@@ -358,16 +358,16 @@ var removed_rows_count =0;
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
       var row_id = count_table_tbody_tr + 1 +Number(removed_rows_count);
-      var tax_data;
+      // var tax_data;
 
-      $.ajax({
-          url: base_url + '/orders/getTableTaxData/',
-          type: 'post',
-          dataType: 'json',
-          success:function(response) {
-            tax_data=response;
-          }
-        });
+      // $.ajax({
+      //     url: base_url + '/orders/getTableTaxData/',
+      //     type: 'post',
+      //     dataType: 'json',
+      //     success:function(response) {
+      //       tax_data=response;
+      //     }
+      //   });
 
       $.ajax({
           url: base_url + '/orders/getTableProductRow/',
@@ -416,7 +416,7 @@ var removed_rows_count =0;
                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                        '<option value=""></option>';
-                       $.each(tax_data, function(index, value) {
+                       $.each(response['tax_data'], function(index, value) {
                          html += '<option value="'+value.iTax_ID+'" data-tax-value="'+value.sValue+'">'+value.sTax_Description+'</option>';
 
                        });
