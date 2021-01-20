@@ -379,7 +379,7 @@ class Orders extends Admin_Controller
 					<div class="col-sm-6 invoice-col padding-0">
 					<b>GR No.</b> '.$order_data['gr_rr_no'].' </div>
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Freight Paid.:</b>'.$order_data['invoice_date'].' </div>
+					<b>Freight Paid.:</b></div>
 
 			      </div>
 
