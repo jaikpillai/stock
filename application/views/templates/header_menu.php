@@ -15,6 +15,9 @@
       <span class="sr-only">Toggle navigation</span>
     </a>
 
+    <ul class="nav navbar-nav navbar-right" style="margin-right:20px;margin-left:50px;float:right;width:60%">
+      <li style="float:right"><a href="<?php echo base_url('auth/logout') ?>"><i class="glyphicon glyphicon-log-out"></i> <span>Logout</span></a></li>
+    </ul>
 
 
   </nav>

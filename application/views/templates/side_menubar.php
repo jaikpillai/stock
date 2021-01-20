@@ -167,8 +167,15 @@
               </a>
             </li>
 
+            <li id="mainProductNav">
+            <?php if (in_array('updateProduct', $user_permission) || in_array('viewProduct', $user_permission) || in_array('deleteProduct', $user_permission)) : ?>
+                  <a href="<?php echo base_url('products') ?>"><i class="fa fa-cube"></i> <span>Item master</span></a>
+                <?php endif; ?>
+              </a>
+            </li>
 
-            <li class="treeview" id="mainProductNav">
+
+            <!-- <li class="treeview" id="mainProductNav">
               <a href="#">
                 <i class="fa fa-cube"></i>
                 <span>Item Master</span>
@@ -186,27 +193,18 @@
                 <?php endif; ?>
               </ul>
 
-            </li>
+            </li> -->
 
             <!-- Party Master -->
             <?php if (in_array('createOrder', $user_permission) || in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
-              <li class="treeview" id="mainPartyNav">
-                <a href="#">
-                  <i class="fa fa-user"></i>
-                  <span>Party Master</span>
-                  <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </span>
-                </a>
-                <ul class="treeview-menu">
-                  <?php if (in_array('createOrder', $user_permission)) : ?>
-                    <li id="addPartyNav"><a href="<?php echo base_url('party/create') ?>"><i class="fa fa-circle-o"></i> Add Party</a></li>
+              <li id="mainPartyNav">
+              <?php if (in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
+                    <a href="<?php echo base_url('party') ?>"><i class="fa fa-user"></i>Party Master</a>
                   <?php endif; ?>
-                  <?php if (in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
-                    <li id="managePartyNav"><a href="<?php echo base_url('party') ?>"><i class="fa fa-circle-o"></i> Manage Party</a></li>
-                  <?php endif; ?>
-                </ul>
-              </li>
+              </a>
+            </li>
+              
+              
             <?php endif; ?>
 
             <?php if (in_array('createCategory', $user_permission) || in_array('updateCategory', $user_permission) || in_array('viewCategory', $user_permission) || in_array('deleteCategory', $user_permission)) : ?>
@@ -329,7 +327,6 @@
 
       <?php endif; ?>
       <!-- user permission info -->
-      <li><a href="<?php echo base_url('auth/logout') ?>"><i class="glyphicon glyphicon-log-out"></i> <span>Logout</span></a></li>
 
     </ul>
   </section>

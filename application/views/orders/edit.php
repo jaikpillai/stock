@@ -40,7 +40,7 @@
             <h3 class="box-title">Edit Order</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('purchase/create') ?>" method="post" class="form-horizontal">
+          <form role="form" action="<?php base_url('orders/update') ?>" method="post" class="form-horizontal">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>
@@ -141,20 +141,6 @@
     </div>
   </div>
 
-
-
-  <div class="form-group">
-    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Form Received</label>
-    <div class="col-sm-7">
-    <select class="form-control select_group product" id="form_received" name="form_received" style="width:100%;" required>
-          <option value="" disabled selected>--Select--</option>
-            <option value=""></option>
-          
-            <option value="1"  <?php if ($order_data['invoice_master']['form_received'] == 1): ?> selected <?php endif; ?>>Yes</option>
-            <option value="0"  <?php if ($order_data['invoice_master']['form_received'] == 0): ?> selected <?php endif; ?>>No</option>
-          </select>
-    </div>
-  </div> 
 </div>
 
 
@@ -162,15 +148,15 @@
                 <br /> <br/>
                 <table class="table table-bordered" id="product_info_table">
                   <thead>
-                    <tr>                   
+                    <tr>        
+                      <th style="width:10%">Code</th>           
                       <th style="width:20%">Description</th>
-                      <th style="width:10%">Code</th>
                       <th style="width:10%">Make</th>
                       <th style="width:5%">Qty</th>
                       <th style="width:10%">Unit</th>
                       <th style="width:10%">Rate</th>
                       <th style="width:10%">Disc. %</th>
-                      <!-- <th style="width:5%">Tax %</th> -->
+                      <th style="width:5%">GST</th>
                       <th style="width:20%">Amount</th>      
                       <th style="width:10%"><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
                     </tr>
@@ -183,6 +169,15 @@
                       <?php foreach ($order_data['invoice_item'] as $key => $val): ?>
                         <?php //print_r($v); ?>
                        <tr id="row_<?php echo $x; ?>">
+                       <td>
+                          <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="code_<?php echo $x; ?>" name="code[]" style="width:100%;" onchange="getProductDataFromCode(<?php echo $x; ?>)" required>
+                              <option value=""></option>
+                              <?php foreach ($products as $k => $v): ?>
+                                <option value="<?php echo $v['Item_Code'] ?>" data-code-id="<?php echo $v['Item_ID'] ?>" <?php if($val['item_code'] == $v['Item_Code']) { echo "selected='selected'"; } ?>><?php echo $v['Item_Code'] ?></option>
+                                <?php endforeach ?>
+             
+                            </select>
+                          </td>
                          <td>
                           <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
                               <option value=""></option>
@@ -192,11 +187,7 @@
              
                             </select>
                           </td>
-                          <td>
-                    
-                          <input type="text" name="code[]" id="code_<?php echo $x; ?>" value="<?php echo $val['item_code']?>"  class="form-control" disabled  autocomplete="off"  autocomplete="off" >
-                          <input type="hidden" name="code_value[]" id="code_value_<?php echo $x; ?>" value="<?php echo $val['item_code']?>"  class="form-control" autocomplete="off">
-                        </td>
+                         
                         <td>
                           <input type="text" name="make[]" id="make_<?php echo $x; ?>"  value="<?php echo $val['item_make']?>" class="form-control" disabled autocomplete="off">
                           <input type="hidden" name="make_value[]" id="make_value_<?php echo $x; ?>" value="<?php echo $val['item_make']?>"  class="form-control" autocomplete="off">
@@ -214,10 +205,15 @@
                           <input type="number" name="discount[]"  id="discount_<?php echo $x; ?>" class="form-control" value = "<?php echo $val['discount'] ?>" onchange="getTotal(<?php echo $x; ?>)" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off">
                          
                         </td>
-                        <!-- <td>
-                          <input type="number" name="gst[]" id="gst_<?php echo $x; ?>" class="form-control"value = "<?php echo $val['tax'] ?>"  disabled autocomplete="off">
-                          <input type="hidden" name="gst_value[]" id="gst_value_<?php echo $x; ?>" class="form-control" value = "<?php echo $val['tax'] ?>" autocomplete="off">
-                        </td> -->
+                        <td>
+                          <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="gst_<?php echo $x; ?>" name="gst[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
+                              <option value=""></option>
+                              <?php foreach ($tax_data as $k => $v): ?>
+                              <option value="<?php echo $v['iTax_ID'] ?>" data-tax-value = "<?php echo $v['sValue'] ?>" <?php if($val['tax_id'] == $v['iTax_ID']) { echo "selected='selected'"; } ?>><?php echo $v['sTax_Description'] ?></option>
+                            <?php endforeach ?>
+             
+                            </select>
+                          </td>
                           <td>
                             <input type="text" name="amount[]" id="amount_<?php echo $x; ?>" class="form-control" disabled value="<?php  ?>" autocomplete="off">
                             <input type="hidden" name="amount_value[]" id="amount_value_<?php echo $x; ?>" class="form-control" value="<?php  ?>" autocomplete="off">
@@ -246,23 +242,6 @@
                     </div>
                   </div>
                 
-                  <div class="form-group">
-                    <label for="other_charge" class="col-sm-5 control-label">Tax</label>
-                    <div class="col-sm-7">
-                    <select class="form-control select_group product" data-row-id="row_1" id="tax" name = "tax" style="width:100%;" onchange="subAmount()" required>
-                            <!-- <option value=""></option> -->
-                          
-                          <?php   echo $order_data['invoice_master']['tax_id'] ?>
-                            <option value="" selected disabled>--Select--</option>
-
-                            <?php foreach ($tax_data as $k => $v): ?>
-                              <option value="<?php echo $v['iTax_ID'] ?>" data-tax-value = "<?php echo $v['sValue'] ?>" <?php if($order_data['invoice_master']['tax_id'] == $v['iTax_ID']) { echo "selected='selected'"; } ?>><?php echo $v['sTax_Description'] ?></option>
-
-                              <!-- <option value="<?php echo $v['iTax_ID'] ?>"><?php echo $v['sTax_Description'] ?></option> -->
-                            <?php endforeach ?>
-                          </select>
-                    </div>
-                  </div>
 
                   <div class="form-group">
                     <label for="other_charge" class="col-sm-5 control-label">Freight/Others</label>
@@ -306,9 +285,6 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-
-                <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
-                <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
 
                 <a  onclick="printOrder(<?php echo $order_data['invoice_master']['invoice_no'] ?>)" class="btn btn-default" >Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
@@ -382,7 +358,16 @@ var removed_rows_count =0;
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
       var row_id = count_table_tbody_tr + 1 +Number(removed_rows_count);
-      
+      var tax_data;
+
+      $.ajax({
+          url: base_url + '/orders/getTableTaxData/',
+          type: 'post',
+          dataType: 'json',
+          success:function(response) {
+            tax_data=response;
+          }
+        });
 
       $.ajax({
           url: base_url + '/orders/getTableProductRow/',
@@ -392,9 +377,23 @@ var removed_rows_count =0;
             
 
               // console.log(reponse.x);
-               var html = '<tr id="row_'+row_id+'">'+
+              var html = '<tr id="row_'+row_id+'">'+
+              
+              //  '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
+              '<td>'+ 
+                   
+                   '<select class="form-control select_group product" data-row-id="'+row_id+'" id="code_'+row_id+'" name="code[]" style="width:100%;" onchange="getProductDataFromCode('+row_id+')">'+
 
+                       '<option value=""></option>';
+                       $.each(response, function(index, value) {
+                         html += '<option value="'+value.Item_Code+'" data-code-id="'+value.Item_ID+'">'+value.Item_Code+'</option>';             
+                       });
+                       
+                     html += '</select>'+
+                   '</td>'+ 
+                       
                    '<td>'+ 
+                   
                     '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                         '<option value=""></option>';
@@ -404,13 +403,29 @@ var removed_rows_count =0;
                         
                       html += '</select>'+
                     '</td>'+ 
-                    '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
+
                     '<td><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></td>'+
                     '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
                     '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"  class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
-                    // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
+                    
+
+                    '<td>'+ 
+                   
+                   '<select class="form-control select_group product" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+
+                       '<option value=""></option>';
+                       $.each(tax_data, function(index, value) {
+                         html += '<option value="'+value.iTax_ID+'" data-tax-value="'+value.sValue+'">'+value.sTax_Description+'</option>';
+
+                       });
+                       
+                     html += '</select>'+
+                   '</td>'+ 
+
+                    // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control"><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
+                    
                     '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
                     '<td><button type="button" class="btn btn-default" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
@@ -524,7 +539,7 @@ var removed_rows_count =0;
          
           
           $("#code_"+row_id).val(response.Item_Code);
-          $("#code_value_"+row_id).val(response.Item_Code);
+          $("#code_"+row_id).trigger('change');
 
           $("#make_"+row_id).val(response.Item_Make);
           $("#make_value_"+row_id).val(response.Item_Make);
@@ -532,8 +547,8 @@ var removed_rows_count =0;
           $("#unit_"+row_id).val(response.sUnit);
           $("#unit_value_"+row_id).val(response.sUnit);
 
-          $("#gst_"+row_id).val(response.Tax);
-          $("#gst_value_"+row_id).val(response.Tax);
+          // $("#gst_"+row_id).val(response.Tax);
+          // $("#gst_value_"+row_id).val(response.Tax);
 
           $("#rate_"+row_id).val(response.Price);
           $("#rate_value_"+row_id).val(response.Price);
@@ -553,9 +568,19 @@ var removed_rows_count =0;
     }
   }
 
+
+  function getProductDataFromCode(row_id)
+  {
+
+    // var product_id = $("#code_"+row_id).val();    
+    var product_id = $("#code_"+row_id).find(':selected').attr('data-code-id');    
+
+    // $('select[id=product_'+row_id+']').find('option[value='+product_id+']').attr("selected",true);
+    $("#product_"+row_id).val(product_id);
+    // $("#product_"+row_id).trigger('change');
+  }
+
    function subAmount() {
-    // var service_charge = <?php echo ($company_data['service_charge_value'] > 0) ? $company_data['service_charge_value']:0; ?>;
-    // var vat_charge = <?php echo ($company_data['vat_charge_value'] > 0) ? $company_data['vat_charge_value']:0; ?>;
 
     var tableProductLength = $("#product_info_table tbody tr").length;
     var totalSubAmount = 0;
@@ -568,6 +593,14 @@ var removed_rows_count =0;
       var tr = $("#product_info_table tbody tr")[i];
       var count = $(tr).attr('id');
       count = count.substring(4);
+
+      var gst= $("#gst_"+count).find(':selected').attr('data-tax-value');
+      if(!gst){
+        gst=0;
+      }
+      console.log(gst);
+      var item_amount=$("#amount_"+count).val();
+      total_gst=Number(total_gst)+(Number(item_amount)*Number(gst))/100;
 
       x = Number($("#rate_"+count).val()) * Number($("#qty_"+count).val());
       x  = x.toFixed(2);
@@ -586,7 +619,7 @@ var removed_rows_count =0;
     var tax = $("#tax").find(':selected').attr('data-tax-value');
     console.log(tax);
 
-    total_gst = Number(totalSubAmount) * Number(tax) /100 
+    // total_gst = Number(totalSubAmount) * Number(tax) /100 
     // total_gst = total_gst.toFixed(2);
 
     console.log("tgst",total_gst.toFixed(2),"tdsic", total_discount.toFixed(2))
@@ -643,8 +676,6 @@ var removed_rows_count =0;
   //purana sub amount
   // calculate the total amount of the order
   // function subAmount() {
-  //   var service_charge = <?php echo ($company_data['service_charge_value'] > 0) ? $company_data['service_charge_value']:0; ?>;
-  //   var vat_charge = <?php echo ($company_data['vat_charge_value'] > 0) ? $company_data['vat_charge_value']:0; ?>;
 
   //   var tableProductLength = $("#product_info_table tbody tr").length;
   //   var totalSubAmount = 0;

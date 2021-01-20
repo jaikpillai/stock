@@ -38,13 +38,13 @@ class Company extends Admin_Controller
 
         	$data = array(
         		'company_name' => $this->input->post('company_name'),
-        		'service_charge_value' => $this->input->post('service_charge_value'),
-        		'vat_charge_value' => $this->input->post('vat_charge_value'),
         		'address' => $this->input->post('address'),
         		'phone' => $this->input->post('phone'),
         		'country' => $this->input->post('country'),
         		'message' => $this->input->post('message'),
-                'currency' => $this->input->post('currency')
+				'currency' => $this->input->post('currency'),
+				'gst_no' => $this->input->post('gst_number_value')
+				
         	);
 
 
@@ -66,7 +66,9 @@ class Company extends Admin_Controller
             
             $this->data['currency_symbols'] = $this->currency();
         	$this->data['company_data'] = $this->model_company->getCompanyData(1);
+        	$this->data['bank_details'] = $this->model_company->getBankDetails();
 			$this->render_template('company/index', $this->data);			
+
         }	
 
 		

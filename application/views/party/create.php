@@ -120,19 +120,21 @@
                 </div>
 
                 <div class="form-group">
+                <input type="checkbox" name="is_vendor" id="is_vendor" value="1" >
                   <label for="is_vendor">Is Vender</label>
-                  <select class="form-control select_group" name="is_vendor" id="is_vendor" class="form-control">
+                  <!-- <select class="form-control select_group" name="is_vendor" id="is_vendor" class="form-control">
                       <option value="1">Yes</option>
                       <option value="0">No</option>
-                      </select>
+                      </select> -->
                 </div>
 
                 <div class="form-group">
+                <input type="checkbox" name="is_customer" id="is_customer" value="1" >
                   <label for="is_customer">Is Customer</label>
-                  <select class="form-control select_group" name="is_customer" id="is_customer" class="form-control">
+                  <!-- <select class="form-control select_group" name="is_customer" id="is_customer" class="form-control">
                       <option value="1">Yes</option>
                       <option value="0">No</option>
-                      </select>
+                      </select> -->
                 </div>
 
                 <div class="form-group">
@@ -198,4 +200,7 @@
     });
 
   });
+
+
+  
 </script>

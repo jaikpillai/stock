@@ -132,7 +132,7 @@
                   <div class="form-group">
                     <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Make</label>
                     <div class="col-sm-9">
-                      <select class="form-control selectpicker" id="itemMake" name="itemMake" required>
+                      <select class="form-control select_group product" id="itemMake" name="itemMake" required>
 
                         <?php foreach ($item_make as $k => $v) : ?>
                           <option value="<?php echo $v['item_make'] ?>" ><?php echo $v['item_make'] ?></option>
@@ -236,7 +236,7 @@
             <div class="form-group">
               <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Item</label>
               <div class="col-sm-9">
-                <select class="form-control selectpicker" id="product" name="product" required>
+                <select class="form-control select_group product" id="product" name="product" required>
 
                   <?php foreach ($products as $k => $v) : ?>
                     <option value="<?php echo $v['Item_ID'] ?>" ><?php echo $v['Item_Name'] ?></option>
@@ -293,7 +293,7 @@
             <div class="form-group">
                 <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Customer</label>
                 <div class="col-sm-9">
-                  <select class="form-control selectpicker" id="partyid" name="partyid" required>
+                  <select class="form-control select_group product" id="partyid" name="partyid"  required>
 
                     <?php foreach ($customer as $k => $v) : ?>
                       <option value="<?php echo $v['party_id'] ?>" ><?php echo $v['party_name'] ?></option>
@@ -412,4 +412,8 @@
     barChartOptions.datasetFill = false
     barChart.Bar(barChartData, barChartOptions)
   })
+
+  $(document).ready(function() {
+    $(".select_group").select2();
+  });
 </script>

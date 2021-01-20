@@ -257,10 +257,6 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-
-                <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
-                <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
-
                 <a  onclick="printOrder(<?php echo$quotation_data['quotation_master']['s_no'] ?>)" class="btn btn-default" >Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
@@ -505,9 +501,7 @@ var removed_rows_count =0;
   }
 
    function subAmount() {
-    // var service_charge = <?php echo ($company_data['service_charge_value'] > 0) ? $company_data['service_charge_value']:0; ?>;
-    // var vat_charge = <?php echo ($company_data['vat_charge_value'] > 0) ? $company_data['vat_charge_value']:0; ?>;
-
+    
     var tableProductLength = $("#product_info_table tbody tr").length;
     var totalSubAmount = 0;
     var total_discount=0;
@@ -594,9 +588,7 @@ var removed_rows_count =0;
   //purana sub amount
   // calculate the total amount of the order
   // function subAmount() {
-  //   var service_charge = <?php echo ($company_data['service_charge_value'] > 0) ? $company_data['service_charge_value']:0; ?>;
-  //   var vat_charge = <?php echo ($company_data['vat_charge_value'] > 0) ? $company_data['vat_charge_value']:0; ?>;
-
+  
   //   var tableProductLength = $("#product_info_table tbody tr").length;
   //   var totalSubAmount = 0;
   //   for(x = 0; x < tableProductLength; x++) {

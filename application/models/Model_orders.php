@@ -151,8 +151,6 @@ class Model_orders extends CI_Model
 			'total_amount' => $this->input->post('total_amount_value'),
 			'is_payment_received' => 1,
 			'status' => 1,
-			'tax_id' =>  $this->input->post('tax'),
-			'tax_value' => $tax['sValue']
 
 
 
@@ -188,12 +186,13 @@ class Model_orders extends CI_Model
 
 				'invoice_no' => $invoice_no,
 				'item_id' => $this->input->post('product')[$x],
-				'item_code' => $this->input->post('code_value')[$x],
+				'item_code' => $this->input->post('code')[$x],
 				'item_make' => $this->input->post('make_value')[$x],
 				'qty' => $this->input->post('qty')[$x],
 				'unit' => $this->input->post('unit_value')[$x],
 				'rate' => $this->input->post('rate')[$x],
 				'discount' => $this->input->post('discount')[$x],
+				'tax_id' => $this->input->post('gst')[$x],
 				// 'tax' => $this->input->post('gst_value')[$x],
 				'financial_year_id' => $financial_year_id,
 				'status' => 1
@@ -341,9 +340,6 @@ class Model_orders extends CI_Model
 				'total_amount' => $this->input->post('total_amount_value'),
 				'is_payment_received' => $this->input->post('paid_status'),
 				'status' => 1,
-				'tax_id' => $this->input->post('tax'),
-				'tax_value' => $tax['sValue']
-
 
 
 
@@ -391,13 +387,13 @@ class Model_orders extends CI_Model
 
 					'invoice_no' => $invoice_no,
 					'item_id' => $this->input->post('product')[$x],
-					'item_code' => $this->input->post('code_value')[$x],
+					'item_code' => $this->input->post('code')[$x],
 					'item_make' => $this->input->post('make_value')[$x],
 					'qty' => $this->input->post('qty')[$x],
 					'unit' => $this->input->post('unit_value')[$x],
 					'rate' => $this->input->post('rate')[$x],
 					'discount' => $this->input->post('discount')[$x],
-					// 'tax' => $this->input->post('tax')[$x],
+					'tax_id' => $this->input->post('gst')[$x],
 					'financial_year_id' => $financial_year_id,
 					'status' => 1
 

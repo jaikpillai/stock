@@ -120,20 +120,22 @@
                 </div>
 
                 <div class="form-group">
+                <input type="checkbox" name="is_vendor" id="is_vendor" value="1" <?php echo ($party_data['is_vendor'] == 1) ?  "checked" : "" ;  ?>>
                   <label for="is_vendor">Is Vender</label>
-                  <select class="form-control select_group" name="is_vendor" id="is_vendor" class="form-control">
+                  <!-- <select class="form-control select_group" name="is_vendor" id="is_vendor" class="form-control">
                         <option value="1"  <?php if ($party_data['is_vendor'] == 1): ?> selected <?php endif; ?>>Yes</option>
                         <option value="0"  <?php if ($party_data['is_vendor'] == 0): ?> selected <?php endif; ?>>No</option>
 
-                      </select>
+                      </select> -->
                 </div>
 
                 <div class="form-group">
+                <input type="checkbox" name="is_customer" id="is_customer" value="1" <?php echo ($party_data['is_customer'] == 1) ?  "checked" : "" ;  ?>>
                   <label for="is_customer">Is Customer</label>
-                  <select class="form-control select_group" name="is_customer" id="is_customer" class="form-control">
+                  <!-- <select class="form-control select_group" name="is_customer" id="is_customer" class="form-control">
                   <option value="1"  <?php if ($party_data['is_customer'] == 1): ?> selected <?php endif; ?>>Yes</option>
                         <option value="0"  <?php if ($party_data['is_customer'] == 0): ?> selected <?php endif; ?>>No</option>
-                      </select>
+                      </select> -->
                 </div>
 
                 <div class="form-group">

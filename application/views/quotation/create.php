@@ -269,8 +269,6 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <input type="hidden" name="service_charge_rate" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
-                <input type="hidden" name="vat_charge_rate" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
                 <button type="submit" class="btn btn-primary">Create Purchase</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
               </div>
@@ -478,9 +476,7 @@ var removed_row_count =0;
 
   // calculate the total amount of the order
   function subAmount() {
-    // var service_charge = <?php echo ($company_data['service_charge_value'] > 0) ? $company_data['service_charge_value']:0; ?>;
-    // var vat_charge = <?php echo ($company_data['vat_charge_value'] > 0) ? $company_data['vat_charge_value']:0; ?>;
-
+    
     var tableProductLength = $("#product_info_table tbody tr").length;
     var totalSubAmount = 0;
     var total_discount=0;

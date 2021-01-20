@@ -1310,12 +1310,12 @@ class Reports extends Admin_Controller
 				  <h6 class="invoice-title-address">
 					'.$company_info['address'].'
 				  </h6>
-				  <div class="display-flex">
-				  <h6 class="invoice-title-address">
+				  <div class="display-flex" >
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
 				  Phone No:'.$company_info['phone'].'
 				  </h6>
-				  <h6 class="invoice-title-address">
-					Email:'.$company_info['address'].'
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+					Email:'.$company_info['email'].'
 				  </h6>
 				  </div>
 				  <br>

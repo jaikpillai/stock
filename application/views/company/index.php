@@ -58,14 +58,53 @@
                       
                  
                   </div> -->
-                <!-- <div class="form-group">
-                  <label for="service_charge_value">Charge Amount (%)</label>
-                  <input type="text" class="form-control" id="service_charge_value" name="service_charge_value" placeholder="Enter charge amount %" value="<?php echo $company_data['service_charge_value'] ?>" autocomplete="off">
-                </div>
                 <div class="form-group">
-                  <label for="vat_charge_value">Vat Charge (%)</label>
-                  <input type="text" class="form-control" id="vat_charge_value" name="vat_charge_value" placeholder="Enter vat charge %" value="<?php echo $company_data['vat_charge_value'] ?>" autocomplete="off">
-                </div> -->
+                  <label for="gst_number">GST Number</label>
+                  <input type="text" class="form-control" id="gst_number_value" name="gst_number_value" placeholder="Enter charge amount %" value="<?php echo $company_data['gst_no'] ?>" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                  <label for="gst_number">Bank Details</label>
+                  <table class="table table-bordered" id="bank_info_table">
+                  <thead>
+                    <tr>
+                      <th>S.No.</th>
+                      <th>Bank Name</th>
+                      <th>Bank Address</th>
+                      <th>Account Number</th>
+                      <th>IFSC Code</th>
+                      <th><button type="button" id="add_row" class="btn btn-primary">Add +</button></th>
+                    </tr>
+                  </thead>
+
+                   <tbody>
+                   <?php $x = 1; ?>
+                   <?php foreach ($bank_details as $k => $v): ?>
+                     <tr id="row_<?php echo $x; ?>">
+                        <td>
+                          <h6><?php echo $k+1 ?></h6>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="bank_name_'<?php echo $x; ?>'" name="bank_name[]" placeholder="Bank Name" value="<?php echo $v['bank_name'] ?>" autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="bank_address_'<?php echo $x; ?>'" name="bank_address[]" placeholder="Address" value="<?php echo $v['bank_address'] ?>" autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" id="bank_account_number_'<?php echo $x; ?>'" name="bank_account_number[]" placeholder="Account Number" value="<?php echo $v['acc_no'] ?>" autocomplete="off">
+                        </td>
+                        <td>
+                          <input type="text" class="form-control " id="bank_ifsc_'<?php echo $x; ?>'" name="bank_ifsc[]" placeholder="IFSC" value="<?php echo $v['ifsc'] ?>" autocomplete="off">
+                        </td>
+                        
+                        <td><button type="button" class="btn btn-danger" onclick="removeRow('<?php echo $x; ?>')"><i class="fa fa-close"></i></button></td>
+                     </tr>
+                     <?php $x++; ?>
+                     <?php endforeach ?>
+                   </tbody>
+                </table>
+                </div>
+
                 <div class="form-group">
                   <label for="address">Address</label>
                   <input type="text" class="form-control" id="address" name="address" placeholder="Enter address" value="<?php echo $company_data['address'] ?>" autocomplete="off">
@@ -118,11 +157,61 @@
   </div>
   <!-- /.content-wrapper -->
 
+
+  
+<script type="text/javascript">
+var removed_rows_count =0;
+</script>
+
 <script type="text/javascript">
   $(document).ready(function() {
     $("#companyNav").addClass('active');
     $("#message").wysihtml5();
     $("#mainAdmin").addClass('active');
   });
+
 </script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    var count_table_tbody_tr = $("#bank_info_table tbody tr").length;
+    var row_id = count_table_tbody_tr + 1;
+
+    $("#add_row").unbind('click').bind('click', function() {
+      var table = $("#bank_info_table");
+      var count_table_tbody_tr = $("#bank_info_table tbody tr").length;
+      var row_id = count_table_tbody_tr + 1 +Number(removed_rows_count);
+      var s_no=row_id-removed_rows_count;
+
+      var html = '<tr id="row_'+row_id+'">'+
+                      '  <td><h6>'+s_no+'</h6></td>'+
+                        '<td><input type="text" class="form-control col" id="bank_name_'+row_id+'" name="bank_name[]" placeholder="Bank Name"  autocomplete="off"></td>'+
+                        '<td><input type="text" class="form-control col" id="bank_address_'+row_id+'" name="bank_address[]" placeholder="Address"  autocomplete="off"></td>'+
+                        '<td><input type="text" class="form-control col" id="bank_account_number_'+row_id+'" name="bank_account_number[]" placeholder="Account Number"  autocomplete="off"></td>'+
+                        '<td><input type="text" class="form-control col" id="bank_ifsc_'+row_id+'" name="bank_ifsc[]" placeholder="IFSC" autocomplete="off"></td>'+
+                        '<td><button type="button" class="btn btn-danger" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
+                     '</tr>';
+
+          if(count_table_tbody_tr >= 1) {
+            $("#bank_info_table tbody tr:last").after(html);  
+          }
+          else {
+            $("#bank_info_table tbody").html(html);
+          }
+
+          // $(".product").select2();
+    });
+  });
+
+
+
+  function removeRow(tr_id)
+  {
+    $("#bank_info_table tbody tr#row_"+tr_id).remove();
+   removed_rows_count =  Number(removed_rows_count) + 1;
+  }
+</script>
+
+
 

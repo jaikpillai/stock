@@ -131,8 +131,8 @@ class Orders extends Admin_Controller
             // false case
         	$company = $this->model_company->getCompanyData(1);
         	$this->data['company_data'] = $company;
-        	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
-        	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
+        	// $this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
+        	// $this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
 
 		
@@ -173,6 +173,14 @@ class Orders extends Admin_Controller
 		echo json_encode($products);
 	}
 
+
+	public function getTableTaxData()
+	{
+		$tax = $this->model_tax->getTaxData();
+
+		echo json_encode($tax);
+	}
+
 	/*
 	* If the validation is not valid, then it redirects to the edit orders page 
 	* If the validation is successfully then it updates the data into the database 
@@ -210,8 +218,8 @@ class Orders extends Admin_Controller
             // false case
         	$company = $this->model_company->getCompanyData(1);
         	$this->data['company_data'] = $company;
-        	$this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
-        	$this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
+        	// $this->data['is_vat_enabled'] = ($company['vat_charge_value'] > 0) ? true : false;
+        	// $this->data['is_service_enabled'] = ($company['service_charge_value'] > 0) ? true : false;
 
         	$result = array();
         	$orders_data = $this->model_orders->getOrdersData($id);
@@ -282,6 +290,7 @@ class Orders extends Admin_Controller
 			$footer_items = $this->model_orders->getFooter($id);
 			$company_info = $this->model_company->getCompanyData(1);
 			$party_data = $this->model_party->getPartyData($order_data['party_id']);
+			$bank_details=$this->model_company->getBankDetails();
 
 			$order_date = strtotime($order_data['invoice_date']);
 			$order_date = date( 'd/m/Y', $order_date );
@@ -321,11 +330,11 @@ class Orders extends Admin_Controller
 			          '.$company_info['address'].'
 					</h6>
 					<div class="display-flex">
-					<h6 class="invoice-title-address">
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
 					Phone No:'.$company_info['phone'].'
 					</h6>
-					<h6 class="invoice-title-address">
-			          Email:'.$company_info['address'].'
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+			          Email:'.$company_info['email'].'
 					</h6>
 					</div>
 			      </div>
@@ -352,25 +361,25 @@ class Orders extends Admin_Controller
 				  <!-- /.col -->
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
 				  <div class="padding-5" style="text-align: center;background: lightgray;">
-					<b>Credit Memo</b><br>
+					<b>'.ucfirst($order_data['mode_of_payment']).' Memo</b><br>
 					</div>
 					<div class="invoice-boxes padding-5">
 					<b>Invoice No.:</b> '.$order_data['invoice_no'].'
 
 				  </div>
 				  <div class="invoice-boxes padding-5">
-					<b>Date.:</b> '.$order_data['invoice_date'].'
+					<b>Date.:</b> '.date('d-m-Y', strtotime($order_data['invoice_date'])).'
 
 				  </div>
 				  <div class="invoice-boxes padding-5">
-					<b>Dispatch Through.:</b> 
+					<b>Dispatch Through.:</b> '.$order_data['dispatched_through'].'
 				  </div>
 				  
 				  <div class="invoice-boxes padding-5">
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>GR No. & Date:</b> '.$order_data['gr_rr_no'].' </div>
+					<b>GR No.</b> '.$order_data['gr_rr_no'].' </div>
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Freight Paid.:</b> </div>
+					<b>Freight Paid.:</b>'.$order_data['invoice_date'].' </div>
 
 			      </div>
 
@@ -391,12 +400,16 @@ class Orders extends Admin_Controller
 			            <th>Qty</th>
 						<th>Unit</th>
 						<th>Rate</th>
-			            <th>Disc. %</th>
+						<th>Disc. %</th>
+						<th>GST</th>
 			            <th>Amount</th>
 			          </tr>
 			          </thead>
 			          <tbody>'; 
 					  $total = 0;
+					  $tax_per_item=0;
+					//   $tax_array;
+					  $unique_tax=array();
 					  
 			          foreach ($orders_items as $k => $v) {
 						
@@ -405,11 +418,15 @@ class Orders extends Admin_Controller
 						  $total = $total + $amount; 
 						  $index = $k + 1;
 
-						  
-
 						  $discount_amount = $amount - ($amount * $v['discount'])/100;
+						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
 						  
-						  
+						  if(!in_array($v['tax_id'],$unique_tax)){
+							array_push($unique_tax,$v['tax_id']);
+							$tax_array[$tax_data['sTax_Description']]=0;
+						  }
+
+						  $tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;
 			          	
 						  $html .= '<tr>
 							<td>'.$index.'</td>
@@ -420,6 +437,7 @@ class Orders extends Admin_Controller
 							<td>'.$v['unit'].'</td>
 							<td>'.$v['rate'].'</td>
 							<td>'.$v['discount'].'</td>
+							<td>'.$tax_data['sValue'].'</td>
 				            <td>'.$discount_amount.'</td>
 			          	</tr>';
 					  }
@@ -429,11 +447,6 @@ class Orders extends Admin_Controller
 					$total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
 					$final_total = $total_after_tax + $freight_other_charge;
 
-					
-					$rounded_total_amount = round($final_total);
-					$round_off =  ($rounded_total_amount - $final_total);
-					$round_off = round($round_off, 2);
-
 			          $html .= '</tbody>
 			        </table>
 			      </div>
@@ -442,8 +455,63 @@ class Orders extends Admin_Controller
 			    <!-- /.row -->
 
 			    <div class="row">
-			    
-			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
+				<div class="col-xs-8" style="page-break-inside: avoid">
+
+				<div class="table-responsive" >
+				  <table class="table table-bordered" >
+				  <thead>
+				  <tr>
+						<th>Amount</th>
+						<th>CGST%</th>
+			            <th>CGST</th>
+						<th>SGST%</th>
+			            <th>SGST</th>
+					</tr>
+					</thead>
+					<tbody>';
+
+					$total_amount_gst=0;
+					$cgst_total=0;
+			
+					
+					for($i = 0; $i < sizeof($unique_tax); $i++) {
+
+						$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 
+						$cgst_percent=$tax_data['sValue']/2;
+						$cgst=$tax_array[$tax_data['sTax_Description']]*$cgst_percent/100;
+						$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
+						$cgst_total=$cgst_total+$cgst;
+		
+						$html .= '<tr>
+						  <td>'.$tax_array[$tax_data['sTax_Description']].'</td>
+						  <td>'.$cgst_percent.'</td>
+						  <td>'.$cgst.'</td>
+						  <td>'.$cgst_percent.'</td>
+						  <td>'.$cgst.'</td>
+						</tr>';
+					}
+
+					$total_with_gst=$final_total+$cgst_total+$cgst_total;
+
+					$rounded_total_amount = round($total_with_gst);
+					$round_off =  ($rounded_total_amount - $total_with_gst);
+					$round_off = round($round_off, 2);
+
+					$html .= '<tr>
+						  <td><b>'.$total_amount_gst.'</b></td>
+						  <td></td>
+						  <td><b>'.$cgst_total.'</b></td>
+						  <td></td>
+						  <td><b>'.$cgst_total.'</b></td>
+						</tr>';
+		
+					  $html .='
+					  
+					  </tbody>
+				  </table>
+				</div>
+			  </div>
+			 <div class="col-xs-4" style="page-break-inside: avoid">
 
 			        <div class="table-responsive" >
 			          <table class="table table-bordered" >
@@ -467,11 +535,12 @@ class Orders extends Admin_Controller
 			            // }
 			            
 			            
+						// $html .='
+						// // <tr>
+			            // //   <th>GST ('. $order_data['tax_value'].'%)</th>
+			            // //   <td>'.$order_data['total_gst'].'</td>
+						// // </tr>
 						$html .='
-						<tr>
-			              <th>GST ('. $order_data['tax_value'].'%)</th>
-			              <td>'.$order_data['total_gst'].'</td>
-						</tr>
 						<tr>
 						<th>Freight/Others</th>
 						<td>'.$order_data['other_charges'].'</td>
@@ -490,19 +559,29 @@ class Orders extends Admin_Controller
 			            </tr>
 			          </table>
 			        </div>
-			      </div>
+				  </div>
 			      <!-- /.col -->
 			    </div>
 				<!-- /.row -->
+				<footer>
 				<div style=" border-top: 2px solid;padding: 10px;">
 				<div class="row">
 				
 				<div>
-
-				<b>GST R.No. :</b><br>
-				<b>Our Bank Detail :</b><br><br>
-
-
+				<div>
+				<b>GST R.No. :'.$company_info['gst_no'].'</b><br></div>
+				<div class="row">
+				<div class="col-xs-2">
+				<b>Our Bank Detail :</b></div>';
+				foreach ($bank_details as $k => $v) {
+					
+					$html .= '<div class="col-xs-4">  <b>'.$v['bank_name'].',</b> '.$v['bank_address'].'<br>
+					<b>A/c No.: '.$v['acc_no'].'</b> <br>					
+					<b>IFSC Code: '.$v['ifsc'].'</b></div>';
+				}
+				$html.='
+				</div>
+				<div>
 				  <b>Terms & Conditions</b><br>
 
 				';
@@ -512,13 +591,13 @@ class Orders extends Admin_Controller
 					$html .= '  <b>'.$index.'.</b> '.$v['description'].'<br>';
 				}
 					
-					$html.='
+					$html.='</div>
 					<br><br><br><br><br>
 					<b>Receiver\'s Signature</b><br>
 			      </div>
 			      <!-- /.col -->
 			      
-			      <div class="col-sm-2 invoice-footer">
+			      <div class="col invoice-footer">
 				  <b>For '.$company_info['company_name'].'</b>
 				  <br><br><br>
 				  <b>Authorised Signatory</b><br>
@@ -529,6 +608,7 @@ class Orders extends Admin_Controller
 			    </div>
 			    <!-- /.row -->	
 				</div>
+				</footer>
 				<!-- /.border -->
 			  </section>
 			  <!-- /.content -->
