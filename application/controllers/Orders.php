@@ -454,8 +454,8 @@ class Orders extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			    <div class="row">
-				<div class="col-xs-8" style="page-break-inside: avoid;overflow: hidden; ">
+			    <div class="row" style="page-break-inside: avoid;overflow: hidden; ">
+				<div class="col-xs-8">
 
 				<div class="table-responsive" >
 				  <table class="table table-bordered" >
