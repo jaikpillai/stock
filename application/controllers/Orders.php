@@ -582,7 +582,7 @@ class Orders extends Admin_Controller
 				}
 				$html.='
 				</div>
-				<div>
+				<div style="page-break-inside: avoid">
 				  <b>Terms & Conditions</b><br>
 
 				';
@@ -598,7 +598,7 @@ class Orders extends Admin_Controller
 			      </div>
 			      <!-- /.col -->
 			      
-			      <div class="col invoice-footer">
+			      <div class="col invoice-footer" style="page-break-inside: avoid">
 				  <b>For '.$company_info['company_name'].'</b>
 				  <br><br><br>
 				  <b>Authorised Signatory</b><br>
