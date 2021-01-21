@@ -95,19 +95,19 @@ class Model_reports extends CI_Model
 		}
 	}
 	
-	public function getQuotationListing($date_from, $date_to){
+	public function getQuotationListing($date_from, $date_to ,$party){
 
 		if($date_from && $date_to) {
-			$sql = "SELECT * FROM quotation_master where quotation_date >= '$date_from' and quotation_date <= '$date_to' and `status` = 1 ";
+			$sql = "SELECT * FROM quotation_master where party_id='$party' and quotation_date >= '$date_from' and quotation_date <= '$date_to' and `status` = 1 ";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}
 	}
 
-	public function getPurchaseListing($date_from, $date_to){
+	public function getPurchaseListing($date_from, $date_to,$party){
 
 		if($date_from && $date_to) {
-			$sql = "SELECT * FROM purchase_master where purchase_date >= '$date_from' and purchase_date <= '$date_to' and `status` = 1 ";
+			$sql = "SELECT * FROM purchase_master where party_id='$party' and purchase_date >= '$date_from' and purchase_date <= '$date_to' and `status` = 1 ";
 			$query = $this->db->query($sql);
 			return $query->result_array();
 		}

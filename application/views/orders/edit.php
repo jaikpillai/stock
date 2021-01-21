@@ -146,6 +146,8 @@
 
 
                 <br /> <br/>
+
+                <div class="col-xs-12 table-responsive">
                 <table class="table table-bordered" id="product_info_table">
                   <thead>
                     <tr>        
@@ -179,6 +181,7 @@
                             </select>
                           </td>
                          <td>
+                           <div style="max-width:200px">
                           <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
                               <option value=""></option>
                               <?php foreach ($products as $k => $v): ?>
@@ -186,24 +189,38 @@
                                 <?php endforeach ?>
              
                             </select>
+                              </div>
                           </td>
                          
                         <td>
+                        <div style="min-width:60px">
                           <input type="text" name="make[]" id="make_<?php echo $x; ?>"  value="<?php echo $val['item_make']?>" class="form-control" disabled autocomplete="off">
                           <input type="hidden" name="make_value[]" id="make_value_<?php echo $x; ?>" value="<?php echo $val['item_make']?>"  class="form-control" autocomplete="off">
+                              </div>
                         </td>
-                          <td><input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control" required onkeyup="getTotal(<?php echo $x; ?>)" value="<?php echo $val['qty'] ?>" autocomplete="off"></td>
+
                           <td>
-                          <input type="text" name="unit[]" id="unit_<?php echo $x; ?>" class="form-control" value="<?php echo $val['unit']?>" disabled autocomplete="off">
-                          <input type="hidden" name="unit_value[]" id="unit_value_<?php echo $x; ?>"  value="<?php echo $val['unit']?>" class="form-control" autocomplete="off">
+                          <div style="min-width:60px">
+                            <input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control" required onkeyup="getTotal(<?php echo $x; ?>)" value="<?php echo $val['qty'] ?>" autocomplete="off">
+                            </div>
+                          </td>
+
+                            <td>
+                              <div style="min-width:60px">
+                              <input type="text" name="unit[]" id="unit_<?php echo $x; ?>" class="form-control" value="<?php echo $val['unit']?>" disabled autocomplete="off">
+                              <input type="hidden" name="unit_value[]" id="unit_value_<?php echo $x; ?>"  value="<?php echo $val['unit']?>" class="form-control" autocomplete="off">
+                              </div>
                         </td>
                           <td>
+                          <div style="min-width:100px">
                             <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control"   value="<?php echo $val['rate'] ?>" onchange= "getTotal(<?php echo $x; ?>)" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off">
                             <input type="hidden" name="rate_value[]" id="rate_value_<?php echo $x; ?>" class="form-control" value="<?php echo $val['rate'] ?>" autocomplete="off">
+                              </div>
                           </td>
                           <td>
+                          <div style="min-width:60px">
                           <input type="number" name="discount[]"  id="discount_<?php echo $x; ?>" class="form-control" value = "<?php echo $val['discount'] ?>" onchange="getTotal(<?php echo $x; ?>)" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off">
-                         
+                              </div>
                         </td>
                         <td>
                           <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="gst_<?php echo $x; ?>" name="gst[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
@@ -215,8 +232,10 @@
                             </select>
                           </td>
                           <td>
+                          <div style="min-width:100px">
                             <input type="text" name="amount[]" id="amount_<?php echo $x; ?>" class="form-control" disabled value="<?php  ?>" autocomplete="off">
                             <input type="hidden" name="amount_value[]" id="amount_value_<?php echo $x; ?>" class="form-control" value="<?php  ?>" autocomplete="off">
+                              </div>
                           </td>
                           <td><button type="button" class="btn btn-default" onclick="removeRow('<?php echo $x; ?>')"><i class="fa fa-close"></i></button></td>
                        </tr>
@@ -225,6 +244,7 @@
                    <?php endif; ?>
                    </tbody>
                 </table>
+                </div>
 
                 <br /> <br/>
 
@@ -392,7 +412,7 @@ var removed_rows_count =0;
                      html += '</select>'+
                    '</td>'+ 
                        
-                   '<td>'+ 
+                   '<td> <div style="max-width:200px">'+ 
                    
                     '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
@@ -402,13 +422,13 @@ var removed_rows_count =0;
                         });
                         
                       html += '</select>'+
-                    '</td>'+ 
+                    '</div></td>'+ 
 
-                    '<td><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></td>'+
-                    '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
-                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><div style="min-width:60px"><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></div></td>'+
+                    '<td><div style="min-width:60px"><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></div></td>'+
+                    '<td><div style="min-width:60px"><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></div></td>'+                    
+                    '<td><div style="min-width:80px"><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></div></td>'+
+                    '<td><div style="min-width:60px"><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></div></td>'+
                     
 
                     '<td>'+ 
@@ -426,7 +446,7 @@ var removed_rows_count =0;
 
                     // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control"><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                     
-                    '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><div style="min-width:100px"><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></div></td>'+
                     '<td><button type="button" class="btn btn-default" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
 

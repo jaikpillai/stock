@@ -25,7 +25,7 @@
 
           </div>
           <!-- /.box-header -->
-          <form role="form" target="print_popup"  action="<?php echo base_url('reports/printDiv') ?>" method="post" class="form-horizontal" onsubmit="window.open('about:blank','print_popup','width=1000,height=800');">
+          <form role="form" action="<?php echo base_url('reports/printDiv') ?>" method="post" class="form-horizontal" target="_blank">
 
             <div class="box-body">
 
@@ -62,8 +62,73 @@
         </div>
 
       </div>
+      <div class="col-md-6 col-xs-12 ">
 
-      <div class="col-md-6 col-xs-12">
+<div class="box">
+  <div class="box-header">
+    <h3 class="box-title">Price List</h3>
+  </div>
+  <!-- /.box-header -->
+  <form role="form" action="<?php echo base_url('reports/priceList') ?>" method="post" class="form-horizontal" target="_blank">
+
+    <div class="box-body">
+
+
+      <div class="form-group">
+        <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Make</label>
+        <div class="col-sm-9">
+          <select class="form-control select_group product" id="itemMake" name="itemMake" required>
+
+            <?php foreach ($item_make as $k => $v) : ?>
+              <option value="<?php echo $v['item_make'] ?>" ><?php echo $v['item_make'] ?></option>
+            <?php endforeach ?>
+          </select>
+
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">Variation %</label>
+        <div class="col-sm-9">
+          <input type="number" value=0 class="form-control" id="variation" name="variation" autocomplete="off" />
+        </div>
+      </div>
+
+
+      <div class="form-group">
+        <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
+        <div class="col-sm-9">
+          <button type="submit" class="btn btn-primary">Generate Report</button>
+        </div>
+      </div>
+
+
+
+    </div>
+
+  </form>
+
+</div>
+
+
+</div>
+    
+
+
+    </div>
+
+  </section>
+
+
+
+  <!-- Items Sold -->
+  <section class="content">
+
+
+    <div class="row">
+
+    <div class="col-md-6 col-xs-12">
         <div class="box">
           <div class="box-header">
             <h3 class=" box-title">Quotation Listing</h3>
@@ -72,6 +137,18 @@
 
             <form role="form" action="<?php echo base_url('reports/quotationListing') ?>" method="post" class="form-horizontal" target="_blank">
 
+            <div class="form-group">
+                <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Customer</label>
+                <div class="col-sm-9">
+                  <select class="form-control select_group product" id="quotation_partyid" name="quotation_partyid"  required>
+
+                    <?php foreach ($customer as $k => $v) : ?>
+                      <option value="<?php echo $v['party_id'] ?>" ><?php echo $v['party_name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+
+                </div>
+              </div>
               <div class="form-group">
                 <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
                 <div class="col-sm-9">
@@ -102,73 +179,6 @@
 
       </div>
 
-
-
-
-    </div>
-
-  </section>
-
-
-
-  <!-- Items Sold -->
-  <section class="content">
-
-
-    <div class="row">
-
-          <div class="col-md-6 col-xs-12 ">
-
-            <div class="box">
-              <div class="box-header">
-                <h3 class="box-title">Price List</h3>
-              </div>
-              <!-- /.box-header -->
-              <form role="form" action="<?php echo base_url('reports/priceList') ?>" method="post" class="form-horizontal" target="_blank">
-
-                <div class="box-body">
-
-
-                  <div class="form-group">
-                    <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Make</label>
-                    <div class="col-sm-9">
-                      <select class="form-control select_group product" id="itemMake" name="itemMake" required>
-
-                        <?php foreach ($item_make as $k => $v) : ?>
-                          <option value="<?php echo $v['item_make'] ?>" ><?php echo $v['item_make'] ?></option>
-                        <?php endforeach ?>
-                      </select>
-
-                    </div>
-                  </div>
-
-
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">Variation %</label>
-                    <div class="col-sm-9">
-                      <input type="number" value=0 class="form-control" id="variation" name="variation" autocomplete="off" />
-                    </div>
-                  </div>
-
-
-                  <div class="form-group">
-                    <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;"></label>
-                    <div class="col-sm-9">
-                      <button type="submit" class="btn btn-primary">Generate Report</button>
-                    </div>
-                  </div>
-
-
-
-                </div>
-
-              </form>
-
-            </div>
-
-
-          </div>
-
       <div class="col-md-6 col-xs-12">
         <div class="box">
           <div class="box-header">
@@ -178,6 +188,18 @@
 
             <form role="form" action="<?php echo base_url('reports/purchaseRegister') ?>" method="post" class="form-horizontal" target="_blank">
 
+            <div class="form-group">
+                <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Customer</label>
+                <div class="col-sm-9">
+                  <select class="form-control select_group product" id="purchase_partyid" name="purchase_partyid"  required>
+
+                    <?php foreach ($customer as $k => $v) : ?>
+                      <option value="<?php echo $v['party_id'] ?>" ><?php echo $v['party_name'] ?></option>
+                    <?php endforeach ?>
+                  </select>
+
+                </div>
+              </div>
               <div class="form-group">
                 <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">From</label>
                 <div class="col-sm-9">

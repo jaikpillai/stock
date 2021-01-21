@@ -443,10 +443,10 @@ class Orders extends Admin_Controller
 			          	</tr>';
 					  }
 
-					$tax_value = $order_data['tax_value'];
+					// $tax_value = $order_data['tax_value'];
 					$gross_total = $total - $order_data['total_discount'];
-					$total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
-					$final_total = $total_after_tax + $freight_other_charge;
+					// $total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
+					$final_total = $gross_total + $freight_other_charge;
 
 			          $html .= '</tbody>
 			        </table>
@@ -574,7 +574,7 @@ class Orders extends Admin_Controller
 				<b>GST R.No. :'.$company_info['gst_no'].'</b><br></div>
 				<div class="row">
 				<div class="col-xs-2">
-				<b>Our Bank Detail :</b></div>';
+				<b>Our Bank Details :</b></div>';
 				foreach ($bank_details as $k => $v) {
 					
 					$html .= '<div class="col-xs-4">  <b>'.$v['bank_name'].',</b> '.$v['bank_address'].'<br>

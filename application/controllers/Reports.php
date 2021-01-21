@@ -16,6 +16,7 @@ class Reports extends Admin_Controller
 		$this->load->model('model_party');
 		$this->load->model('model_products');
 		$this->load->model('model_stores');
+		$this->load->model('model_tax');
 	}
 
 	/* 
@@ -101,8 +102,9 @@ class Reports extends Admin_Controller
 			$invoice_data = $this->model_reports->getInvoiceListing($date_from, $date_to);
 			$company_info = $this->model_company->getCompanyData(1);
 			$grand_total_discount = 0;
-			$grand_total_gst = 0;
+			$grand_total_gst = array();
 			$grand_total_amount = 0;
+			$unique_tax=array();
 
 
 			setlocale(LC_MONETARY, "en_US");
@@ -150,26 +152,43 @@ class Reports extends Admin_Controller
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
 			        <table class="table table-bordered" >
-			          <thead>
+					  <thead>';
+					  foreach ($invoice_data as $k => $v) {
+						$orders_items = $this->model_orders->getOrdersItemData($v['invoice_no']);
+						foreach ($orders_items as $k => $v) {
+							$tax_data=$this->model_tax->getTaxData($v['tax_id']);
+							if(!in_array($v['tax_id'],$unique_tax)){
+								array_push($unique_tax,$v['tax_id']);
+								$grand_total_gst[$tax_data['sTax_Description']]=0;
+								// $tax_array[$tax_data['sTax_Description']]=0;
+							  }
+						  }
+					  }
+
+					  $html .= '
 					  <tr>
 						<th>S.N.</th>
 						<th>Invoice No</th>
 						<th>Invoice Date</th>
 						<th>Customer</th>
-						<th>Amount</th>
-						<th>Discount</th>
-						<th>GST</th>
+						<th>Amount</th>';
+						for($i = 0; $i < sizeof($unique_tax); $i++) {
+							$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 	
+							$html .= '<th>'.$tax_data['sTax_Description'].'</td>';
+						}
+					// 	<th>Discount</th>
+					// 	<th>GST</th>
 						
-						<th>Payment Received</th>
+					// 	<th>Payment Received</th>
 			        
-			          </tr>
-			          </thead>
+			        //   </tr>
+					  $html .= ' </thead>
 			          <tbody>';
 
 				foreach ($invoice_data as $k => $v) {
 
 					$grand_total_discount = $v['total_discount'] + $grand_total_discount;
-					$grand_total_gst = $v['total_gst'] + $grand_total_gst;
+					// $grand_total_gst = $v['total_gst'] + $grand_total_gst;
 					$grand_total_amount = $v['total_amount'] + $grand_total_amount;
 
 
@@ -188,18 +207,51 @@ class Reports extends Admin_Controller
 					} else {
 						$payment = 'No';
 					}
+					$unique_tax_temp=array();
+					$tax_array=array();
+					
+
+					$orders_items_details = $this->model_orders->getOrdersItemData($v['invoice_no']);
+						foreach ($orders_items_details as $t => $f) {
+							$tax_data=$this->model_tax->getTaxData($f['tax_id']); 
+							if(!in_array($f['tax_id'],$unique_tax_temp)){
+								array_push($unique_tax_temp,$f['tax_id']);
+								$tax_array[$tax_data['sTax_Description']]=0;
+						  }
+						  $amount = $f['qty']*$f['rate'];
+						  $discount_amount = $amount - ($amount * $f['discount'])/100;
+
+						  $tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;
+					}
 
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['invoice_no'] . '</td>
 							<td>' . $v['invoice_date'] . '</td>
 							<td>' . $party_data['party_name'] . '</td>
-							<td>' . $v['total_amount'] . '</td>
-							<td>' . $v['total_discount'] . '</td>
-							<td>' . $v['total_gst'] . '</td>
+							<td>' . $v['total_amount'] . '</td>';
 							
-							<td>' . $payment . '</td>
-			          	</tr>';
+						$total_amount_gst=0;
+						  for($i = 0; $i < sizeof($unique_tax); $i++) {
+							if(in_array($unique_tax[$i],$unique_tax_temp)){
+							for($j = 0; $j < sizeof($unique_tax_temp); $j++) {
+								if($unique_tax[$i]==$unique_tax_temp[$j]){
+									$cgst_total=0;
+								$tax_data=$this->model_tax->getTaxData($unique_tax_temp[$j]); 
+								$cgst_percent=$tax_data['sValue'];
+								$cgst=$tax_array[$tax_data['sTax_Description']]*$cgst_percent/100;
+								$cgst=number_format($cgst, 2, '.', '');
+								$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
+								$cgst_total=$cgst_total+$cgst;
+								$grand_total_gst[$tax_data['sTax_Description']]=$grand_total_gst[$tax_data['sTax_Description']]+$cgst_total;
+								$html .= '<td>'.$cgst_total.'</td>';
+							}
+						}
+						}else{
+							$html .= '<td>0</td>';
+						}
+						}	
+						$html .= ' </tr>';
 				}
 
 				$html .= '<tr style="border-style:inset hidden">
@@ -207,16 +259,17 @@ class Reports extends Admin_Controller
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><b>' . $grand_total_amount. '</b></td>
-							<td><b>' . $grand_total_discount. '</b></td>
-							<td><b>' . $grand_total_gst . '</b></td>
+							<td><b>' . $grand_total_amount. '</b></td>';
 							
-							<td></td>
-			          	</tr>';
+							for($i = 0; $i < sizeof($unique_tax); $i++) {
 
+								$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 
+								$html .= '<td>'.$grand_total_gst[$tax_data['sTax_Description']].'</td>';
+							}
+							
 
-
-				$html .= '</tbody>
+							$html .= '	</tr>
+							</tbody>
 			        </table>
 			      </div>
 			      <!-- /.col -->
@@ -540,7 +593,7 @@ class Reports extends Admin_Controller
 
 		$date_from = $this->input->post('date_from_quotation');
 		$date_to = $this->input->post('date_to_quotation');
-
+		$party=$this->input->post('quotation_partyid');
 
 
 
@@ -548,7 +601,7 @@ class Reports extends Admin_Controller
 
 		if ($date_from && $date_to) {
 
-			$quotation_data = $this->model_reports->getQuotationListing($date_from, $date_to);
+			$quotation_data = $this->model_reports->getQuotationListing($date_from, $date_to ,$party);
 			$company_info = $this->model_company->getCompanyData(1);
 			$grand_total_discount = 0;
 			$grand_total_gst = 0;
@@ -610,6 +663,7 @@ class Reports extends Admin_Controller
 						<th>S.N.</th>
 						<th>Quotation No</th>
 						<th>Quotation Date</th>
+						<th>Party Name</th>
 						<th>Total Products</th>
 						<th>Discount</th>
 						<th>GST</th>
@@ -632,7 +686,7 @@ class Reports extends Admin_Controller
 
 
 
-					//   $product_data = $this->model_products->getProductData($v['item_id']); 
+					  $party_data = $this->model_party->getPartyData($v['party_id']); 
 					//   $amount = $v['qty']*$v['rate'];
 					//   $total = $total + $amount; 
 					$index = $k + 1;
@@ -647,6 +701,7 @@ class Reports extends Admin_Controller
 							<td>' . $index . '</td>
 							<td>' . $v['quotation_no'] . '</td>
 							<td>' . $v['quotation_date'] . '</td>
+							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $total_products . '</td>
 							<td>' . $v['total_discount'] . '</td>
 							<td>' . $v['total_gst'] . '</td>
@@ -780,7 +835,7 @@ class Reports extends Admin_Controller
 
 		$date_from = $this->input->post('date_from_purchase');
 		$date_to = $this->input->post('date_to_purchase');
-
+		$party=$this->input->post('purchase_partyid');
 
 
 
@@ -788,7 +843,7 @@ class Reports extends Admin_Controller
 
 		if ($date_from && $date_to) {
 
-			$purchase_data = $this->model_reports->getPurchaseListing($date_from, $date_to);
+			$purchase_data = $this->model_reports->getPurchaseListing($date_from, $date_to ,$party);
 			$company_info = $this->model_company->getCompanyData(1);
 			$grand_total_discount = 0;
 			$grand_total_gst = 0;
@@ -805,7 +860,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>From ' . $date_from . ' to ' . $date_to . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -850,15 +905,9 @@ class Reports extends Admin_Controller
 						<th>S.N.</th>
 						<th>Purchase No</th>
 						<th>Purchase Date</th>
+						<th>Party Name</th>
 						<th>Total Products</th>
-						<th>Discount</th>
-						<th>GST</th>
 						<th>Amount</th>
-
-
-
-
-			        
 			          </tr>
 			          </thead>
 			          <tbody>';
@@ -869,8 +918,13 @@ class Reports extends Admin_Controller
 					$grand_total_gst = $v['total_gst'] + $grand_total_gst;
 					$grand_total_amount = $v['total_amount'] + $grand_total_amount;
 					$total_products = $this->model_purchase->countPurchaseItem($v['purchase_no']);
+					$party_data = $this->model_party->getPartydata($v['party_id']);
+					$purchase_item_data=$this->model_purchase->getPurchaseItemData($v['purchase_no']);
 
-
+					$total_purchase_amount=0;
+					foreach ($purchase_item_data as $f => $t) {
+						$total_purchase_amount=$total_purchase_amount+$t['rate'];
+					}
 
 					//   $product_data = $this->model_products->getProductData($v['item_id']); 
 					//   $amount = $v['qty']*$v['rate'];
@@ -887,10 +941,9 @@ class Reports extends Admin_Controller
 							<td>' . $index . '</td>
 							<td>' . $v['purchase_no'] . '</td>
 							<td>' . $v['purchase_date'] . '</td>
+							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $total_products . '</td>
-							<td>' . $v['total_discount'] . '</td>
-							<td>' . $v['total_gst'] . '</td>
-							<td>' . $v['total_amount'] . '</td>
+							<td>' . $total_purchase_amount . '</td>
 					
 			          	</tr>';
 				}
