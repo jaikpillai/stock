@@ -114,7 +114,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Sale Tax Registe from ' . $date_from . ' to ' . $date_to . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -122,6 +122,7 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
@@ -130,12 +131,7 @@ class Reports extends Admin_Controller
 			    <!-- title row -->
 			    <div class="row">
 			      <div class="col-xs-12">
-			        <h2 class="page-header">
-			          ' . $company_info['company_name'] . '
-
-					</h2>
-			  <h5>Invoice Report from. ' . $date_from . ' to ' . $date_to . '</h5>
-			
+				  <h4 class="invoice-title-address">Sale Tax Register</h4>
 			      </div>
 			      <!-- /.col -->
 			    </div>
@@ -159,14 +155,12 @@ class Reports extends Admin_Controller
 						<th>S.N.</th>
 						<th>Invoice No</th>
 						<th>Invoice Date</th>
+						<th>Customer</th>
+						<th>Amount</th>
 						<th>Discount</th>
 						<th>GST</th>
-						<th>Amount</th>
+						
 						<th>Payment Received</th>
-
-
-
-
 			        
 			          </tr>
 			          </thead>
@@ -180,7 +174,7 @@ class Reports extends Admin_Controller
 
 
 
-					//   $product_data = $this->model_products->getProductData($v['item_id']); 
+					  $party_data = $this->model_party->getPartyData($v['party_id']); 
 					//   $amount = $v['qty']*$v['rate'];
 					//   $total = $total + $amount; 
 					$index = $k + 1;
@@ -199,13 +193,26 @@ class Reports extends Admin_Controller
 							<td>' . $index . '</td>
 							<td>' . $v['invoice_no'] . '</td>
 							<td>' . $v['invoice_date'] . '</td>
+							<td>' . $party_data['party_name'] . '</td>
+							<td>' . $v['total_amount'] . '</td>
 							<td>' . $v['total_discount'] . '</td>
 							<td>' . $v['total_gst'] . '</td>
-							<td>' . $v['total_amount'] . '</td>
+							
 							<td>' . $payment . '</td>
 			          	</tr>';
 				}
 
+				$html .= '<tr style="border-style:inset hidden">
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><b>' . $grand_total_amount. '</b></td>
+							<td><b>' . $grand_total_discount. '</b></td>
+							<td><b>' . $grand_total_gst . '</b></td>
+							
+							<td></td>
+			          	</tr>';
 
 
 
@@ -214,32 +221,6 @@ class Reports extends Admin_Controller
 			      </div>
 			      <!-- /.col -->
 			    </div>
-			    <!-- /.row -->
-
-			    <!--<div class="row">
-			    
-			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
-
-			        <div class="table-responsive" >
-			          <table class="table table-bordered" >
-			            <tr>
-			              <th style="width:50%">Total Discount:</th>
-			              <td>' . $grand_total_discount . '</td>
-			            </tr>
-						<tr>
-			              <th>Total GST:</th>
-			              <td>' . $grand_total_gst . '</td>
-						</tr>
-						<tr>
-						<th>Total Amount:</th>
-						<td>' . $grand_total_amount . '</td>
-					  </tr>
-					 
-			          </table>
-			        </div>
-			      </div>
-			      <!-- /.col -->
-			    </div>-->
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->

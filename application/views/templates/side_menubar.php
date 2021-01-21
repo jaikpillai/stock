@@ -244,10 +244,10 @@
                   </a>
                   <ul class="treeview-menu">
                     <?php if (in_array('createOrder', $user_permission)) : ?>
-                      <li id="addOrderNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Add Order</a></li>
+                      <li id="addOrderNav"><a href="<?php echo base_url('orders/create') ?>"><i class="fa fa-circle-o"></i> Create Invoice</a></li>
                     <?php endif; ?>
                     <?php if (in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
-                      <li id="manageOrderNav"><a href="<?php echo base_url('orders/') ?>"><i class="fa fa-circle-o"></i> Manage Orders</a></li>
+                      <li id="manageOrderNav"><a href="<?php echo base_url('orders/') ?>"><i class="fa fa-circle-o"></i> Manage Invoice</a></li>
                     <?php endif; ?>
                   </ul>
                 </li>
@@ -259,14 +259,14 @@
                 <li class="treeview" id="mainPurchaseNav">
                   <a href="#">
                     <i class="fa fa-handshake-o"></i>
-                    <span>Purchase Transaction</span>
+                    <span>Purchase Order</span>
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
                   </a>
                   <ul class="treeview-menu">
                     <?php if (in_array('createOrder', $user_permission)) : ?>
-                      <li id="addPurchaseNav"><a href="<?php echo base_url('purchase/create') ?>"><i class="fa fa-circle-o"></i> Add Purchase</a></li>
+                      <li id="addPurchaseNav"><a href="<?php echo base_url('purchase/create') ?>"><i class="fa fa-circle-o"></i> Create Purchase</a></li>
                     <?php endif; ?>
                     <?php if (in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
                       <li id="managePurchaseNav"><a href="<?php echo base_url('purchase') ?>"><i class="fa fa-circle-o"></i> Manage Purchase</a></li>
@@ -280,14 +280,14 @@
                 <li class="treeview" id="mainQuotationNav">
                   <a href="#">
                     <i class="fa fa-briefcase"></i>
-                    <span>Quotation Transaction</span>
+                    <span>Quotation</span>
                     <span class="pull-right-container">
                       <i class="fa fa-angle-left pull-right"></i>
                     </span>
                   </a>
                   <ul class="treeview-menu">
                     <?php if (in_array('createOrder', $user_permission)) : ?>
-                      <li id="addQuotationNav"><a href="<?php echo base_url('quotation/create') ?>"><i class="fa fa-circle-o"></i> Add Quotation</a></li>
+                      <li id="addQuotationNav"><a href="<?php echo base_url('quotation/create') ?>"><i class="fa fa-circle-o"></i> Create Quotation</a></li>
                     <?php endif; ?>
                     <?php if (in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)) : ?>
                       <li id="manageQuotationNav"><a href="<?php echo base_url('quotation') ?>"><i class="fa fa-circle-o"></i> Manage Quotations</a></li>

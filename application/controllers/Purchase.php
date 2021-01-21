@@ -90,8 +90,8 @@ class Purchase extends Admin_Controller
 				$party_data['party_name'],
 				$value['purchase_date'],
 				$count_total_item,
-				$value['total_amount'],
-				$value['mode_of_payment'],
+				// $value['total_amount'],
+				// $value['mode_of_payment'],
 				$buttons
 			);
 		} // /foreach
@@ -323,11 +323,11 @@ class Purchase extends Admin_Controller
 			          '.$company_info['address'].'
 					</h6>
 					<div class="display-flex">
-					<h6 class="invoice-title-address">
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
 					Phone No:'.$company_info['phone'].'
 					</h6>
-					<h6 class="invoice-title-address">
-			          Email:'.$company_info['address'].'
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+			          Email:'.$company_info['email'].'
 					</h6>
 					</div>
 			      </div>
@@ -342,17 +342,16 @@ class Purchase extends Admin_Controller
 					<b>To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
 					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
 					</div>
-					<div class="invoice-boxes padding-10">
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Purchase No.:</b> '.$order_data['purchase_no'].' </div>
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Date.:</b> '.$order_data['purchase_date'].' </div><br>
-
-			      </div>
 
 			      </div>
 				  <!-- /.col -->
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
+				  <div class="padding-5">
+				  <b>Purchase No.:</b> '.$order_data['purchase_no'].'
+					</div>
+					<div class="invoice-boxes padding-5" >
+					<b>Date.:</b> '.$order_data['purchase_date'].' 
+					</div>
 					<div class="invoice-boxes padding-5">
 					<b>Ref. No.:</b> '.$order_data['ref_no'].'
 
@@ -361,14 +360,6 @@ class Purchase extends Admin_Controller
 					<b>Ref. Date.:</b> '.$order_data['ref_date'].'
 
 				  </div>
-				  
-				  <div class="invoice-boxes padding-5">
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Payment Mode:</b> '.$order_data['mode_of_payment'].' </div>
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Freight Paid.:</b> </div>
-
-			      </div>
 
 			      </div>
 				  <!-- /.col -->
@@ -387,8 +378,6 @@ class Purchase extends Admin_Controller
 			            <th>Qty</th>
 						<th>Unit</th>
 						<th>Rate</th>
-			            <th>Disc. %</th>
-			            <th>Amount</th>
 			          </tr>
 			          </thead>
 			          <tbody>'; 
@@ -415,8 +404,6 @@ class Purchase extends Admin_Controller
 							<td>'.$v['qty'].'</td>
 							<td>'.$v['unit'].'</td>
 							<td>'.$v['rate'].'</td>
-							<td>'.$v['discount'].'</td>
-				            <td>'.$discount_amount.'</td>
 			          	</tr>';
 					  }
 
@@ -437,55 +424,7 @@ class Purchase extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			    <div class="row">
-			    
-			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
-
-			        <div class="table-responsive" >
-			          <table class="table table-bordered" >
-			            <tr>
-			              <th style="width:50%">Total:</th>
-			              <td>'.$gross_total.'</td>
-			            </tr>';
-
-			            // if($order_data['service_charge'] > 0) {
-			            // 	$html .= '<tr>
-				        //       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
-				        //       <td>'.$order_data['service_charge'].'</td>
-				        //     </tr>';
-			            // }
-
-			            // if($order_data['vat_charge'] > 0) {
-			            // 	$html .= '<tr>
-				        //       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
-				        //       <td>'.$order_data['vat_charge'].'</td>
-				        //     </tr>';
-			            // }
-			            
-			            
-						$html .='
-						<tr>
-			              <th>GST ('. $order_data['tax_value'].'%)</th>
-			              <td>'.$order_data['total_gst'].'</td>
-						</tr>
-						<tr>
-						<th>Freight/Others</th>
-						<td>'.$order_data['other_charges'].'</td>
-					  </tr>
-					  <tr>
-						<th>Round off</th>
-						<td>'.$round_off.'</td>
-					  </tr>
-					  <tr>
-					  <th>Total Amount:</th>
-					  <td>'.$rounded_total_amount.'</td>
-					</tr>
-			          </table>
-			        </div>
-			      </div>
-			      <!-- /.col -->
-			    </div>
-				<!-- /.row -->
+			   
 				<!-- /.border -->
 			  </section>
 			  <!-- /.content -->

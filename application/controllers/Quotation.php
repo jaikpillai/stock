@@ -316,6 +316,7 @@ class Quotation extends Admin_Controller
 			    <!-- title row -->
 			    <div class="row">
 				  <div class="col-xs-12 ">
+				  <h5 class="invoice-title-address">QUOTATION CUM PROFORMA INVOICE</h5>
 			        <h1 class="invoice-title-name">
 			          '.$company_info['company_name'].'
 					</h1>
@@ -323,11 +324,11 @@ class Quotation extends Admin_Controller
 			          '.$company_info['address'].'
 					</h6>
 					<div class="display-flex">
-					<h6 class="invoice-title-address">
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
 					Phone No:'.$company_info['phone'].'
 					</h6>
-					<h6 class="invoice-title-address">
-			          Email:'.$company_info['address'].'
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+			          Email:'.$company_info['email'].'
 					</h6>
 					</div>
 			      </div>
@@ -339,36 +340,32 @@ class Quotation extends Admin_Controller
 			      
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
 				  <div class="padding-10">
-					<b>Sold To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
+					<b>To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
 					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
 					</div>
-					<div class="invoice-boxes padding-10">
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Quotation No.:</b> '.$order_data['quotation_no'].' </div>
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Date.:</b> '.$order_data['quotation_date'].' </div><br>
-
-			      </div>
-
 			      </div>
 				  <!-- /.col -->
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
-				  <div class="padding-5" style="text-align: center;background: lightgray;">
-					<b>Credit Memo</b><br>
+				  <div class="padding-5">
+				  <b>Quotation No.:</b> '.$order_data['quotation_no'].'<br>
+					</div>
+					<div class="invoice-boxes padding-5" >
+				  <b>Date.:</b> '.$order_data['quotation_date'].'<br>
 					</div>
 					<div class="invoice-boxes padding-5">
-					<b>Ref. No.:</b> '.$order_data['ref_no'].'
-
-				  </div>
-				  <div class="invoice-boxes padding-5">
+					<b>Ref. No.:</b> '.$order_data['ref_no'].'<br>
 					<b>Ref. Date.:</b> '.$order_data['ref_date'].'
 
 				  </div>
 				  
 
-			      </div>
+				  </div>
+				  
 				  <!-- /.col -->
-			    </div>
+				</div>
+				<div class="row invoice-boxes padding-10">
+				<p><b>Dear Sir/Ma\'am <br> We thank you for the above inquiry and are pleased to quote our rates as follows:</b></p>
+				</div>
 			    <!-- /.row -->	
 			    <!-- Table row -->
 			    <div class="row" style="margin-right: -15px;">
@@ -481,37 +478,38 @@ class Quotation extends Admin_Controller
 			      </div>
 			      <!-- /.col -->
 			    </div>
-				<!-- /.row -->
-				<div style=" border-top: 2px solid;padding: 10px;">
-				<div class="row">
+				<!-- /.row -->';
+				// <div style=" border-top: 2px solid;padding: 10px;">
+				// <div class="row">
 				
-				<div>
+				// <div>
 
-				<b>GST R.No. :</b><br>
-				<b>Our Bank Detail :</b><br><br>
+				// <b>GST R.No. :</b><br>
+				// <b>Our Bank Detail :</b><br><br>
 
 
-				  <b>Terms & Conditions</b><br>
+				//   <b>Terms & Conditions</b><br>
 
-				';
-				foreach ($footer_items as $k => $v) {
+				// ';
+				// foreach ($footer_items as $k => $v) {
 					
-					$index = $k + 1;
-					$html .= '  <b>'.$index.'.</b> '.$v['description'].'<br>';
-				}
+				// 	$index = $k + 1;
+				// 	$html .= '  <b>'.$index.'.</b> '.$v['description'].'<br>';
+				// }
 					
-					$html.='
-					<br><br><br><br><br>
-					<b>Receiver\'s Signature</b><br>
-			      </div>
-			      <!-- /.col -->
+				// 	$html.='
+				// 	<br><br><br><br><br>
+				// 	<b>Receiver\'s Signature</b><br>
+			    //   </div>
+			    //   <!-- /.col -->
 	
-			      <div class="col-sm-2 invoice-footer">
-				  <b>For '.$company_info['company_name'].'</b>
-				  <br><br><br>
-				  <b>Authorised Signatory</b><br>
+			    //   <div class="col-sm-2 invoice-footer">
+				//   <b>For '.$company_info['company_name'].'</b>
+				//   <br><br><br>
+				//   <b>Authorised Signatory</b><br>
 
-			      </div>
+				//   </div>
+				$html.='
 				  <!-- /.col -->
 				  
 			    </div>

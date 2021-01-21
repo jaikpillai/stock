@@ -21,11 +21,11 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Listing of Invoices</h3>
+            <h3 class="box-title">Sale Tax Register</h3>
 
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php echo base_url('reports/printDiv') ?>" method="post" class="form-horizontal" target="_blank">
+          <form role="form" target="print_popup"  action="<?php echo base_url('reports/printDiv') ?>" method="post" class="form-horizontal" onsubmit="window.open('about:blank','print_popup','width=1000,height=800');">
 
             <div class="box-body">
 

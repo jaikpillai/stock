@@ -54,8 +54,8 @@
                 <th>Party Name</th>
                 <th>Purchase Date</th>
                 <th>Total Products</th>
-                <th>Total Amount</th>
-                <th>Payment Mode</th>
+                <!-- <th>Total Amount</th>
+                <th>Payment Mode</th> -->
                 <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
                   <th>Action</th>
                 <?php endif; ?>

@@ -145,7 +145,7 @@ class Model_purchase extends CI_Model
 			'total_amount' => $this->input->post('total_amount_value'),
 			'tax_id' =>  $this->input->post('tax'),
 			'financial_year_id' => $financial_year_id,
-			'tax_value' => $tax['sValue'],
+			// 'tax_value' => $tax['sValue'],
 			'other_charges' => $this->input->post('other_charge'),
     		// 'bill_no' => $bill_no,
     		// 'customer_name' => $this->input->post('customer_name'),
@@ -305,7 +305,7 @@ class Model_purchase extends CI_Model
 				'total_amount' => $this->input->post('total_amount_value'),
 				'tax_id' =>  $this->input->post('tax'),
 				'financial_year_id' => $financial_year_id,
-				'tax_value' => $tax['sValue'],
+				// 'tax_value' => $tax['sValue'],
 				'other_charges' => $this->input->post('other_charge'),
 
 
