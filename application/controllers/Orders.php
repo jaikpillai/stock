@@ -275,12 +275,15 @@ class Orders extends Admin_Controller
         echo json_encode($response); 
 	}
 
+
 	/*
 	* It gets the product id and fetch the order data. 
 	* The order print logic is done here 
 	*/
 	public function printDiv($id)
 	{
+
+		
 		if(!in_array('viewOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
         }
@@ -297,8 +300,7 @@ class Orders extends Admin_Controller
 			$order_date = date( 'd/m/Y', $order_date );
 			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 			$freight_other_charge = $order_data['other_charges'];
-
-
+			
 
 			$html = '<!-- Main content -->
 			<!DOCTYPE html>
@@ -408,6 +410,7 @@ class Orders extends Admin_Controller
 			          </thead>
 			          <tbody>'; 
 					  $total = 0;
+					  $less_discount=0;
 					  $tax_per_item=0;
 					//   $tax_array;
 					  $unique_tax=array();
@@ -417,9 +420,11 @@ class Orders extends Admin_Controller
 						  $product_data = $this->model_products->getProductData($v['item_id']); 
 						  $amount = $v['qty']*$v['rate'];
 						  $total = $total + $amount; 
+						 
 						  $index = $k + 1;
 
 						  $discount_amount = $amount - ($amount * $v['discount'])/100;
+						  $less_discount=$less_discount+($amount * $v['discount'])/100;
 						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
 						  
 						  if(!in_array($v['tax_id'],$unique_tax)){
@@ -493,11 +498,14 @@ class Orders extends Admin_Controller
 						</tr>';
 					}
 
+					$gst_total_amount=$cgst_total+$cgst_total;
+
 					$total_with_gst=$final_total+$cgst_total+$cgst_total;
 
 					$rounded_total_amount = round($total_with_gst);
 					$round_off =  ($rounded_total_amount - $total_with_gst);
 					$round_off = round($round_off, 2);
+					// $amount_in_words=getIndianCurrency(floatval($rounded_total_amount));
 
 					$html .= '<tr>
 						  <td><b>'.$total_amount_gst.'</b></td>
@@ -512,37 +520,32 @@ class Orders extends Admin_Controller
 					  </tbody>
 				  </table>
 				</div>
+				<p><b>'.strtoupper(getIndianCurrency(floatval($rounded_total_amount))).'</b></p>
+				<div>
+
+				</div>
 			  </div>
 			 <div class="col-xs-4">
 
 			        <div class="table-responsive" >
-			          <table class="table table-bordered" >
+					  <table class="table table-bordered" >
+					  <tbody style="font-size:small">
 			            <tr>
 			              <th style="width:50%">Total:</th>
+			              <td>'.$total.'</td>
+						</tr>
+						<tr>
+			              <th style="width:50%">Less Discount:</th>
+			              <td>'.$less_discount.'</td>
+						</tr>
+						<tr>
+			              <th style="width:50%">Net Amount:</th>
 			              <td>'.$gross_total.'</td>
-			            </tr>';
-
-			            // if($order_data['service_charge'] > 0) {
-			            // 	$html .= '<tr>
-				        //       <th>Service Charge ('.$order_data['service_charge_rate'].'%)</th>
-				        //       <td>'.$order_data['service_charge'].'</td>
-				        //     </tr>';
-			            // }
-
-			            // if($order_data['vat_charge'] > 0) {
-			            // 	$html .= '<tr>
-				        //       <th>Vat Charge ('.$order_data['vat_charge_rate'].'%)</th>
-				        //       <td>'.$order_data['vat_charge'].'</td>
-				        //     </tr>';
-			            // }
-			            
-			            
-						// $html .='
-						// // <tr>
-			            // //   <th>GST ('. $order_data['tax_value'].'%)</th>
-			            // //   <td>'.$order_data['total_gst'].'</td>
-						// // </tr>
-						$html .='
+						</tr>
+						<tr>
+			              <th style="width:50%">GST Amount:</th>
+			              <td>'.$gst_total_amount.'</td>
+						</tr>
 						<tr>
 						<th>Freight/Others</th>
 						<td>'.$order_data['other_charges'].'</td>
@@ -552,13 +555,14 @@ class Orders extends Admin_Controller
 						<td>'.$round_off.'</td>
 					  </tr>
 					  <tr>
-					  <th>Total Amount:</th>
-					  <td>'.$rounded_total_amount.'</td>
+					  <th><b>Total Amount:</b></th>
+					  <td><b>'.$rounded_total_amount.'</b></td>
 					</tr>
-			            <tr>
+					<!-- /.<tr>
 			              <th>Paid Status:</th>
 			              <td>'.$paid_status.'</td>
-			            </tr>
+						</tr> -->
+						</tbody>
 			          </table>
 			        </div>
 				  </div>
@@ -622,4 +626,39 @@ class Orders extends Admin_Controller
 		}
 	}
 
+}
+
+
+// Calculate number into words
+function getIndianCurrency(float $number)
+{
+	$decimal = round($number - ($no = floor($number)), 2) * 100;
+	$hundred = null;
+	$digits_length = strlen($no);
+	$i = 0;
+	$str = array();
+	$words = array(0 => '', 1 => 'one', 2 => 'two',
+		3 => 'three', 4 => 'four', 5 => 'five', 6 => 'six',
+		7 => 'seven', 8 => 'eight', 9 => 'nine',
+		10 => 'ten', 11 => 'eleven', 12 => 'twelve',
+		13 => 'thirteen', 14 => 'fourteen', 15 => 'fifteen',
+		16 => 'sixteen', 17 => 'seventeen', 18 => 'eighteen',
+		19 => 'nineteen', 20 => 'twenty', 30 => 'thirty',
+		40 => 'forty', 50 => 'fifty', 60 => 'sixty',
+		70 => 'seventy', 80 => 'eighty', 90 => 'ninety');
+	$digits = array('', 'hundred','thousand','lakh', 'crore');
+	while( $i < $digits_length ) {
+		$divider = ($i == 2) ? 10 : 100;
+		$number = floor($no % $divider);
+		$no = floor($no / $divider);
+		$i += $divider == 10 ? 1 : 2;
+		if ($number) {
+			$plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+			$hundred = ($counter == 1 && $str[0]) ? '' : null;
+			$str [] = ($number < 21) ? $words[$number].' '. $digits[$counter]. $plural.' '.$hundred:$words[floor($number / 10) * 10].' '.$words[$number % 10]. ' '.$digits[$counter].$plural.' '.$hundred;
+		} else $str[] = null;
+	}
+	$Rupees = implode('', array_reverse($str));
+	$paise = ($decimal > 0) ? "." . ($words[$decimal / 10] . " " . $words[$decimal % 10]) . ' Paise' : '';
+	return 'Rupees '.($Rupees ? $Rupees . 'Only ' : '') . $paise;
 }

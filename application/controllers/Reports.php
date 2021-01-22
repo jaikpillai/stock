@@ -1388,6 +1388,7 @@ class Reports extends Admin_Controller
 					// $total_qty_sold = $total_qty_sold + 1;
 
 					$price=$v['Price']+($v['Price']*$variation)/100;
+					$price=round($price);
 
 					//   $product_data = $this->model_products->getProductData($v['item_id']); 
 					//   $amount = $v['qty']*$v['rate'];
