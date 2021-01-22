@@ -130,16 +130,16 @@
                 <table class="table table-bordered" id="product_info_table">
                   <thead>
                     <tr>                   
-                      <th style="width:20%">Description</th>
-                      <th style="width:10%">Code</th>
+                      <th style="width:20%">Item Name</th>
+                      <!-- <th style="width:10%">Code</th> -->
                       <th style="width:10%">Make</th>
-                      <th style="width:5%">Qty</th>
+                      <th style="width:10%">Qty</th>
                       <th style="width:10%">Unit</th>
                       <th style="width:10%">Rate</th>
                       <!-- <th style="width:10%">Disc. %</th> -->
                       <!-- <th style="width:5%">Tax %</th> -->
                       <!-- <th style="width:20%">Amount</th>       -->
-                      <th style="width:10%"><button type="button" id="add_row" class="btn btn-default"><i class="fa fa-plus"></i></button></th>
+                      <th style="width:10%"><button type="button" id="add_row" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button></th>
                     </tr>
                   </thead>
 
@@ -150,20 +150,21 @@
                       <?php foreach ($purchase_data['purchase_item'] as $key => $val): ?>
                         <?php //print_r($v); ?>
                        <tr id="row_<?php echo $x; ?>">
-                         <td>
+                       <td>
+                        <input type="hidden" name="code[]" id="code_<?php echo $x; ?>" class="form-control" value="<?php echo $val['item_code'] ?>" autocomplete="off">
                           <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
                               <option value=""></option>
                               <?php foreach ($products as $k => $v): ?>
-                                <option value="<?php echo $v['Item_ID'] ?>" <?php if($val['item_id'] == $v['Item_ID']) { echo "selected='selected'"; } ?>><?php echo $v['Item_Name'] ?></option>
+                                <option value="<?php echo $v['Item_ID'] ?>" <?php if($val['item_id'] == $v['Item_ID']) { echo "selected='selected'"; } ?>><?php echo $v['Item_Code'].' , '.$v['Item_Name'] ?></option>
                                 <?php endforeach ?>
              
                             </select>
                           </td>
-                          <td>
+                          <!-- <td>
                     
                           <input type="text" name="code[]" id="code_<?php echo $x; ?>" value="<?php echo $val['item_code']?>"  class="form-control" disabled  autocomplete="off"  autocomplete="off" >
                           <input type="hidden" name="code_value[]" id="code_value_<?php echo $x; ?>" value="<?php echo $val['item_code']?>"  class="form-control" autocomplete="off">
-                        </td>
+                        </td> -->
                         <td>
                           <input type="text" name="make[]" id="make_<?php echo $x; ?>"  value="<?php echo $val['item_make']?>" class="form-control" disabled autocomplete="off">
                           <input type="hidden" name="make_value[]" id="make_value_<?php echo $x; ?>" value="<?php echo $val['item_make']?>"  class="form-control" autocomplete="off">
@@ -191,7 +192,7 @@
                             <input type="text" name="amount[]" id="amount_<?php echo $x; ?>" class="form-control" disabled value="<?php  ?>" autocomplete="off">
                             <input type="hidden" name="amount_value[]" id="amount_value_<?php echo $x; ?>" class="form-control" value="<?php  ?>" autocomplete="off">
                           </td> -->
-                          <td><button type="button" class="btn btn-default" onclick="removeRow('<?php echo $x; ?>')"><i class="fa fa-close"></i></button></td>
+                          <td><button type="button" class="btn btn-danger" onclick="removeRow('<?php echo $x; ?>')"><i class="fa fa-close"></i></button></td>
                        </tr>
                        <?php $x++; ?>
                      <?php endforeach; ?>
@@ -289,17 +290,17 @@ var removed_rows_count =0;
               // console.log(reponse.x);
                var html = '<tr id="row_'+row_id+'">'+
 
-                   '<td>'+ 
+                   '<td><input type="hidden" name="code[]" id="code_1" class="form-control" autocomplete="off">'+ 
                     '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                         '<option value=""></option>';
                         $.each(response, function(index, value) {
-                          html += '<option value="'+value.Item_ID+'">'+value.Item_Name+'</option>';             
+                          html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
                         });
                         
                       html += '</select>'+
                     '</td>'+ 
-                    '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
+                    // '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></td>'+
                     '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
@@ -307,7 +308,7 @@ var removed_rows_count =0;
                     // '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"  class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><button type="button" class="btn btn-default" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
+                    '<td><button type="button" class="btn btn-danger" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
 
                 if(count_table_tbody_tr >= 1) {

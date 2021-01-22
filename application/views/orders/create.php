@@ -181,8 +181,8 @@
                 <table class="table table-bordered" id="product_info_table">
                   <thead>
                     <tr>
-                      <th style="width:10%">Code</th>
-                      <th style="width:20%">Description</th>
+                      <!-- <th style="width:10%">Code</th> -->
+                      <th style="width:20%">Item Name</th>
                       <th style="width:10%">Make</th>
                       <th style="width:10%">Qty</th>
                       <th style="width:5%">Unit</th>
@@ -190,7 +190,7 @@
                       <th style="width:10%">Disc. %</th>
                       <th style="width:10%">GST</th>
                       <th style="width:20%">Amount</th>      
-                      <th style="width:10%"><button type="button" id="add_row" class="btn btn-primary">Add Item</button></th>
+                      <th style="width:10%"><button type="button" id="add_row" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button></th>
                     </tr>
                   </thead>
 
@@ -203,20 +203,21 @@
                           <input type="text" name="code[]" id="code_1" class="form-control" disabled autocomplete="off">
                           <input type="hidden" name="code_value[]" id="code_value_1" class="form-control" autocomplete="off">
                         </td> -->
-                        <td>
+                        <!-- <td>
                         <select class="form-control select_group product" data-row-id="row_1" name="code[]" id="code_1" style="width:100%;" onchange="getProductDataFromCode(1)" required>
                             <option value=""></option>
                             <?php foreach ($products as $k => $v): ?>
                               <option value="<?php echo $v['Item_Code'] ?>" data-code-id="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Code'] ?></option>
                             <?php endforeach ?>
                           </select>
-                        </td>
+                        </td> -->
                         <td>
-                        <div style="max-width:200px">
+                        <input type="hidden" name="code[]" id="code_1" class="form-control" autocomplete="off">
+                        <div style="max-width:300px">
                         <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
                             <option value=""></option>
                             <?php foreach ($products as $k => $v): ?>
-                              <option value="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Name'] ?></option>
+                              <option value="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Code'].' , '.$v['Item_Name'] ?></option>
                             <?php endforeach ?>
                           </select>
                             </div>
@@ -408,25 +409,25 @@ var removed_row_count =0;
             var html = '<tr id="row_'+row_id+'">'+
             
             //  '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
-            '<td>'+ 
+            // '<td>'+ 
                  
-                 '<select class="form-control select_group product" data-row-id="'+row_id+'" id="code_'+row_id+'" name="code[]" style="width:100%;" onchange="getProductDataFromCode('+row_id+')">'+
+                //  '<select class="form-control select_group product" data-row-id="'+row_id+'" id="code_'+row_id+'" name="code[]" style="width:100%;" onchange="getProductDataFromCode('+row_id+')">'+
 
-                     '<option value=""></option>';
-                     $.each(response, function(index, value) {
-                       html += '<option value="'+value.Item_Code+'" data-code-id="'+value.Item_ID+'">'+value.Item_Code+'</option>';             
-                     });
+                //      '<option value=""></option>';
+                //      $.each(response, function(index, value) {
+                //        html += '<option value="'+value.Item_Code+'" data-code-id="'+value.Item_ID+'">'+value.Item_Code+'</option>';             
+                //      });
                      
-                   html += '</select>'+
-                 '</td>'+ 
+                //    html += '</select>'+
+                //  '</td>'+ 
                      
-                 '<td> <div style="max-width:200px">'+ 
+                 '<td><input type="hidden" name="code[]" id="code_'+row_id+'" class="form-control" autocomplete="off"> <div style="max-width:300px">'+ 
                  
                   '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                       '<option value=""></option>';
                       $.each(response, function(index, value) {
-                        html += '<option value="'+value.Item_ID+'">'+value.Item_Name+'</option>';             
+                        html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
                       });
                       
                     html += '</select>'+
@@ -455,7 +456,7 @@ var removed_row_count =0;
                   // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control"><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                   
                   '<td><div style="min-width:100px"><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></div></td>'+
-                  '<td><button type="button" class="btn btn-default" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
+                  '<td><button type="button" class="btn btn-danger" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
                   '</tr>';
 
               if(count_table_tbody_tr >= 1) {
@@ -547,7 +548,7 @@ var removed_row_count =0;
           $("#rate_value_"+row_id).val(response.Price);
 
           $("#code_"+row_id).val(response.Item_Code);
-          $("#code_"+row_id).trigger('change');
+          // $("#code_"+row_id).trigger('change');
           // $("#code_value_"+row_id).val(response.Item_Code);
 
           $("#make_"+row_id).val(response.Item_Make);
@@ -589,16 +590,22 @@ var removed_row_count =0;
     }
   }
 
-  function getProductDataFromCode(row_id)
-  {
+  // function getProductDataFromCode(row_id)
+  // {
 
-    // var product_id = $("#code_"+row_id).val();    
-    var product_id = $("#code_"+row_id).find(':selected').attr('data-code-id');    
+  //   // var product_id = $("#code_"+row_id).val();    
+  //   var product_id = $("#code_"+row_id).find(':selected').attr('data-code-id');    
 
-    // $('select[id=product_'+row_id+']').find('option[value='+product_id+']').attr("selected",true);
-    $("#product_"+row_id).val(product_id);
-    // $("#product_"+row_id).trigger('change');
-  }
+  //   // $('select[id=product_'+row_id+']').find('option[value='+product_id+']').attr("selected",true);
+  //   // $("#product_"+row_id+" > [value=" + product_id + "]").attr("selected", "true");
+
+  //   $("#product_"+row_id).val('');
+  //   $("#product_"+row_id).val(product_id);
+  //   $("#product_"+row_id).trigger('change');
+
+  //   console.log(""+product_id,""+$("#product_"+row_id).val());
+
+  // }
 
   // calculate the total amount of the order
   function subAmount() {

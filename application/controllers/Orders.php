@@ -488,14 +488,15 @@ class Orders extends Admin_Controller
 						$cgst=number_format($cgst, 2, '.', '');
 						$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
 						$cgst_total=$cgst_total+$cgst;
-		
+
+						if($cgst>0){
 						$html .= '<tr>
 						  <td>'.$tax_array[$tax_data['sTax_Description']].'</td>
 						  <td>'.$cgst_percent.'</td>
 						  <td>'.$cgst.'</td>
 						  <td>'.$cgst_percent.'</td>
 						  <td>'.$cgst.'</td>
-						</tr>';
+						</tr>';}
 					}
 
 					$gst_total_amount=$cgst_total+$cgst_total;
