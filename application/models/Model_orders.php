@@ -150,29 +150,7 @@ class Model_orders extends CI_Model
 			'form_declaration' => $this->input->post('declaration'),
 			'total_amount' => $this->input->post('total_amount_value'),
 			'is_payment_received' => 1,
-			'status' => 1,
-
-
-
-
-
-
-
-
-			// 'bill_no' => $bill_no,
-			// 'customer_name' => $this->input->post('customer_name'),
-			// 'customer_address' => $this->input->post('customer_address'),
-			// 'customer_phone' => $this->input->post('customer_phone'),
-			// 'date_time' => strtotime(date('Y-m-d h:i:s a')),
-			// 'gross_amount' => $this->input->post('gross_amount_value'),
-			// 'service_charge_rate' => $this->input->post('service_charge_rate'),
-			// 'service_charge' => ($this->input->post('service_charge_value') > 0) ?$this->input->post('service_charge_value'):0,
-			// 'vat_charge_rate' => $this->input->post('vat_charge_rate'),
-			// 'vat_charge' => ($this->input->post('vat_charge_value') > 0) ? $this->input->post('vat_charge_value') : 0,
-			// 'net_amount' => $this->input->post('net_amount_value'),
-			// 'discount' => $this->input->post('discount'),
-			// 'paid_status' => 2,
-			// 'user_id' => $user_id
+			'status' => 1
 		);
 
 		$insert = $this->db->insert('invoice_master', $data);
@@ -182,6 +160,7 @@ class Model_orders extends CI_Model
 
 		$count_product = count($this->input->post('product'));
 		for ($x = 0; $x < $count_product; $x++) {
+
 			$items = array(
 
 				'invoice_no' => $invoice_no,
@@ -192,7 +171,7 @@ class Model_orders extends CI_Model
 				'unit' => $this->input->post('unit_value')[$x],
 				'rate' => $this->input->post('rate')[$x],
 				'discount' => $this->input->post('discount')[$x],
-				'tax_id' => $this->input->post('gst')[$x],
+				'tax_id' =>  $this->input->post('gst')[$x],
 				// 'tax' => $this->input->post('gst_value')[$x],
 				'financial_year_id' => $financial_year_id,
 				'status' => 1
@@ -201,6 +180,17 @@ class Model_orders extends CI_Model
 			);
 
 			$this->db->insert('invoice_item', $items);
+
+
+			$count_terms = count($this->input->post('terms'));
+			for ($z = 0; $z < $count_terms; $z++) {
+
+				$footer = array(
+					'invoice_id' => $invoice_no,
+					't_and_c' => $this->input->post('terms')[$z]
+				);
+			}
+			$this->db->insert('invoice_footer', $footer);
 			// now decrease the stock from the product
 			$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
 
@@ -383,6 +373,7 @@ class Model_orders extends CI_Model
 			// now decrease the product qty
 			$count_product = count($this->input->post('product'));
 			for ($x = 0; $x < $count_product; $x++) {
+			
 				$items = array(
 
 					'invoice_no' => $invoice_no,
@@ -393,7 +384,7 @@ class Model_orders extends CI_Model
 					'unit' => $this->input->post('unit_value')[$x],
 					'rate' => $this->input->post('rate')[$x],
 					'discount' => $this->input->post('discount')[$x],
-					'tax_id' => $this->input->post('gst')[$x],
+					'tax_id' =>  $this->input->post('gst')[$x],
 					'financial_year_id' => $financial_year_id,
 					'status' => 1
 
@@ -405,6 +396,19 @@ class Model_orders extends CI_Model
 					// 'amount' => $this->input->post('amount_value')[$x],
 				);
 				$this->db->insert('invoice_item', $items);
+
+				$this->db->where('invoice_id', $invoice_no);
+				$this->db->delete('invoice_footer');
+
+				$count_terms = count($this->input->post('terms'));
+				for ($z = 0; $z < $count_terms; $z++) {
+
+					$footer = array(
+						'invoice_id' => $invoice_no,
+						't_and_c' => $this->input->post('terms')[$z]
+					);
+				}
+				$this->db->insert('invoice_footer', $footer);
 
 				// now decrease the stock from the product
 				$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);

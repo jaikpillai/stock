@@ -119,6 +119,9 @@
           <li id="companyNav"><a href="<?php echo base_url('company/') ?>"><i class="fa fa-files-o"></i> <span>Company</span></a></li>
         <?php endif; ?>
 
+        <?php if (in_array('viewCategory', $user_permission)) : ?>
+          <li id = "manageTerms"><a href="<?php echo base_url('terms/') ?>"><i class="fa fa-user-o"></i> <span>Terms and Conditions</span></a></li>
+        <?php endif; ?>
 
 
         <!-- <li class="header">Settings</li> -->

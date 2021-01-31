@@ -236,7 +236,7 @@
 
                         <td>
                         <div style="min-width:60px">
-                        <input type="number" name="qty[]" id="qty_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)">
+                        <input type="number" name="qty[]" id="qty_1" min="0" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)">
                             </div>
                         </td>
 
@@ -255,7 +255,7 @@
                         </td>
                         <td>
                         <div style="min-width:60px">
-                          <input type="number" name="discount[]"  id="discount_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
+                          <input type="number" name="discount[]"  id="discount_1" min="0" max="100" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off">
                             </div>
                         </td>
                         <td>
@@ -316,6 +316,17 @@
                       <input type="hidden" class="form-control" id="other_charge_value" name="other_charge_value" autocomplete="off">
                     </div>
                   </div>
+
+                   
+                  <div class="form-group">
+                    <label for="paid_status" class="col-sm-5 control-label">Freight Paid</label>
+                    <div class="col-sm-7">
+                      <select type="text" class="form-control" id="paid_status" name="paid_status">
+                      <option value="1" >Yes</option>
+                      <option value="0" selected >No</option>
+                      </select>
+                    </div>
+                  </div>
                  
              
                   <div class="form-group">
@@ -337,7 +348,40 @@
 
                 </div>
               </div>
+
+              <div class="col-md-12 col-xs-12 pull pull-right">
+                <table class="table table-bordered" id="terms_info_table">
+                    <thead>
+                      <tr>
+                        <th style="width:80%">Terms and Conditions</th>      
+                        <th style="width:10%"><button type="button" id="add_terms" class="btn btn-primary"><i class="fa fa-plus"></i> Add</button></th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                    <?php $n = 1; ?>
+                      <?php foreach ($terms as $key => $val): ?>
+                        <?php //print_r($v); ?>
+                       <tr id="terms_<?php echo $n; ?>">
+                      <td>
+
+                            <select type="text" class="form-control terms" terms_row_id="<?php echo $n; ?>" id="terms_<?php echo $n; ?>" name="terms[]">
+                            <option value="" ></option>
+                            <?php foreach ($terms_data as $k => $v): ?>
+                              <option value="<?php echo $v['s_no'] ?> " <?php if ($val['s_no'] == $v['s_no']): ?> selected <?php endif; ?>> <?php echo $v['description'] ?> </option>
+                            <?php endforeach ?>
+                            </select>
+                        
+                      </td>
+                      <td><button type="button" class="btn btn-danger" onclick="removeTerms('<?php echo $n; ?>')"><i class="fa fa-close"></i></button></td>
+                      </tr>
+                      <?php $n++; ?>
+                     <?php endforeach; ?>
+                    </tbody>
+                    </table>
+              </div>
               <!-- /.box-body -->
+
 
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Create Order</button>
@@ -361,6 +405,7 @@
 
 <script type="text/javascript">
 var removed_row_count =0;
+var removed_row_count_terms=0;
 </script>
 
 <script type="text/javascript">
@@ -380,7 +425,50 @@ var removed_row_count =0;
         '<i class="glyphicon glyphicon-tag"></i>' +
         '</button>'; 
 
+    
+      // Add new row in the table 
+    $("#add_terms").unbind('click').bind('click', function() {
+      var table = $("#terms_info_table");
+      var count_table_tbody_tr_terms = $("#terms_info_table tbody tr").length;
+      var row_id = count_table_tbody_tr_terms + 1 + Number(removed_row_count_terms);
 
+      $.ajax({
+          url: base_url + '/terms/getTableTermsRow/',
+          type: 'post',
+          dataType: 'json',
+          success:function(response) {
+            
+
+            // console.log(reponse.x);
+            var html = '<tr id="terms_'+row_id+'">'+
+            '<td>'+
+                  '<select class="form-control terms" terms-row-id="'+row_id+'" id="terms_'+row_id+'" name="terms[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+
+                      '<option value=""></option>';
+                      $.each(response, function(index, value) {
+                        html += '<option value="'+value.s_no+'">'+value.description+'</option>';             
+                      });
+                      
+                    html += '</select>'+
+                  '</td>'+ 
+
+                  '<td><button type="button" class="btn btn-danger" onclick="removeTerms('+row_id+')"><i class="fa fa-close"></i></button></td>'+
+                  '</tr>';
+
+              if(count_table_tbody_tr_terms >= 1) {
+              $("#terms_info_table tbody tr:last").after(html);  
+            }
+            else {
+              $("#terms_info_table tbody").html(html);
+            }
+
+            $(".terms").select2();
+
+        }
+        });
+
+      return false;
+    });
   
     // Add new row in the table 
     $("#add_row").unbind('click').bind('click', function() {
@@ -625,7 +713,7 @@ var removed_row_count =0;
       if(!gst){
         gst=0;
       }
-      console.log(gst);
+      // console.log(gst);
       var item_amount=$("#amount_"+count).val();
       total_gst=Number(total_gst)+(Number(item_amount)*Number(gst))/100;
 
@@ -677,7 +765,14 @@ var removed_row_count =0;
     // $("#service_charge_value").val(service);
     
     // total amount
-    var totalAmount = (Number(totalSubAmount) + Number($("#other_charge").val()));
+    var freight=$("#paid_status").find(':selected').val();
+    // console.log(freight);
+    var totalAmount=0;
+    if(freight==0){
+    totalAmount = (Number(totalSubAmount) + Number($("#other_charge").val()));}
+    else{
+      totalAmount = Number(totalSubAmount);
+    }
     totalAmount = totalAmount + total_gst;
     totalAmount = totalAmount.toFixed(2);
     // $("#net_amount").val(totalAmount);
@@ -710,6 +805,13 @@ var removed_row_count =0;
     removed_row_count = Number(removed_row_count) + 1;
     subAmount();
 
+  }
+
+  function removeTerms(tr_id)
+  {
+
+    $("#terms_info_table tbody tr#terms_"+tr_id).remove();
+    removed_row_count_terms = Number(removed_row_count_terms) + 1;
   }
 
 // Block future dates 

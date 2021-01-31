@@ -10,9 +10,9 @@ class Terms extends Admin_Controller
 
 		$this->not_logged_in();
 
-		$this->data['page_title'] = 'tax';
+		$this->data['page_title'] = 'Terms and Conditions';
 
-		$this->load->model('model_tax');
+		$this->load->model('model_terms');
 	}
 
 	/* 
@@ -25,7 +25,7 @@ class Terms extends Admin_Controller
 			redirect('dashboard', 'refresh');
 		}
 
-		$this->render_template('tax/index', $this->data);	
+		$this->render_template('terms/index', $this->data);	
 	}	
 
 	/*
@@ -34,10 +34,10 @@ class Terms extends Admin_Controller
 	* returns the data into json format. 
 	* This function is invoked from the view page.
 	*/
-	public function fetchTaxDataById($id) 
+	public function fetchTermsDataById($id) 
 	{
 		if($id) {
-			$data = $this->model_tax->getTaxData($id);
+			$data = $this->model_terms->getTermsData($id);
 			echo json_encode($data);
 		}
 
@@ -48,11 +48,11 @@ class Terms extends Admin_Controller
 	* Fetches the category value from the category table 
 	* this function is called from the datatable ajax function
 	*/
-	public function fetchTaxData()
+	public function fetchTermsData()
 	{
 		$result = array('data' => array());
 
-		$data = $this->model_tax->getActiveTax();
+		$data = $this->model_terms->getTermsData();
 
 		foreach ($data as $key => $value) {
 
@@ -62,20 +62,19 @@ class Terms extends Admin_Controller
 			//Buttons according to permission
 
 			if(in_array('updateCategory', $this->permission)) {
-				$buttons .= '<button type="button" class="btn btn-default" onclick="editFunc('.$value['iTax_ID'].')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
+				$buttons .= '<button type="button" class="btn btn-default" onclick="editFunc('.$value['s_no'].')" data-toggle="modal" data-target="#editModal"><i class="fa fa-pencil"></i></button>';
 			}
 
 			if(in_array('deleteCategory', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['iTax_ID'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 				
 
-			$status = ($value['active'] == 1) ? '<span class="label label-success">Active</span>' : '<span class="label label-warning">Inactive</span>';
+			$status = ($value['is_default'] == 1) ? '<span class="label label-success">Default</span>' : '<span class="label label-warning">Not Default</span>';
 
 			$result['data'][$key] = array(
-				$value['iTax_ID'],
-				$value['sTax_Description'],
-				$value['sValue'],
+				$value['s_no'],
+				$value['description'],
 				$status,
 				$buttons
 			);
@@ -84,6 +83,13 @@ class Terms extends Admin_Controller
 		echo json_encode($result);
 	}
 
+
+	public function getTableTermsRow()
+	{
+		$products = $this->model_terms->getActiveTerms();
+
+		echo json_encode($products);
+	}
 	/*
 	* Its checks the category form validation 
 	* and if the validation is successfully then it inserts the data into the database 
@@ -97,19 +103,19 @@ class Terms extends Admin_Controller
 
 		$response = array();
 
-		$this->form_validation->set_rules('tax_description', 'Category name', 'trim|required');
+		$this->form_validation->set_rules('terms_description', 'Category name', 'trim|required');
 		$this->form_validation->set_rules('active', 'Active', 'trim|required');
 
 		$this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 
         if ($this->form_validation->run() == TRUE) {
         	$data = array(
-        		'sTax_Description' => $this->input->post('tax_description'),
-        		'sValue' => $this->input->post('tax_value'),
-				'active' => $this->input->post('active'),	
+				'description' => $this->input->post('terms_description'),
+				'is_default' => $this->input->post('active'),
+				'active' => 1,	
         	);
 
-        	$create = $this->model_tax->create($data);
+        	$create = $this->model_terms->create($data);
         	if($create == true) {
         		$response['success'] = true;
         		$response['messages'] = 'Succesfully created';
@@ -144,19 +150,19 @@ class Terms extends Admin_Controller
 		$response = array();
 
 		if($id) {
-			$this->form_validation->set_rules('edit_tax_description', 'Category name', 'trim|required');
+			$this->form_validation->set_rules('edit_terms_description', 'Category name', 'trim|required');
 			$this->form_validation->set_rules('edit_active', 'Active', 'trim|required');
 
 			$this->form_validation->set_error_delimiters('<p class="text-danger">','</p>');
 
 	        if ($this->form_validation->run() == TRUE) {
 	        	$data = array(
-	        	'sTax_Description' => $this->input->post('edit_tax_description'),
-        		'sValue' => $this->input->post('edit_tax_value'),
-				'active' => $this->input->post('edit_active'),	
+	        	'description' => $this->input->post('edit_terms_description'),
+				'is_default' => $this->input->post('edit_active'),	
+				'active' => 1,	
 	        	);
 
-	        	$update = $this->model_tax->update($data, $id);
+	        	$update = $this->model_terms->update($data, $id);
 	        	if($update == true) {
 	        		$response['success'] = true;
 	        		$response['messages'] = 'Succesfully updated';
@@ -191,14 +197,14 @@ class Terms extends Admin_Controller
 			redirect('dashboard', 'refresh');
 		}
 		
-		$category_id = $this->input->post('tax_id');
+		$category_id = $this->input->post('terms_id');
 
 		$response = array();
 		if($category_id) {
 			$data = array(
 				'active' => 0	
 	        	);
-			$delete = $this->model_tax->update($data, $category_id);
+			$delete = $this->model_terms->update($data, $category_id);
 			if($delete == true) {
 				$response['success'] = true;
 				$response['messages'] = "Successfully removed";	

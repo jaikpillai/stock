@@ -17,6 +17,7 @@ class Orders extends Admin_Controller
 		$this->load->model('model_tax');
 		$this->load->model('model_company');
 		$this->load->model('model_party');
+		$this->load->model('model_terms');
 	}
 
 	/* 
@@ -138,6 +139,9 @@ class Orders extends Admin_Controller
 		
 			$this->data['products'] = $this->model_products->getActiveProductData(); 
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
+			$this->data['terms'] = $this->model_terms->getActiveTerms(); 
+			$this->data['terms_data'] = $this->model_terms->getTermsData(); 
+			
 			
 			$this->data['party_data'] =$this->model_party->getActiveParty(); 
             $this->data['getlastinvoiceid'] = $this->model_orders->getLastInvoiceID();
@@ -234,6 +238,9 @@ class Orders extends Admin_Controller
 
 			$this->data['order_data'] = $result;
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
+			$this->data['terms_data'] = $this->model_terms->getActiveTerms(); 
+			$this->data['terms'] = $this->model_terms->getTermsDataInOrder($orders_data['invoice_no']); 
+			
 			
 
         	$this->data['products'] = $this->model_products->getActiveProductData();      	
@@ -291,7 +298,7 @@ class Orders extends Admin_Controller
 		if($id) {
 			$order_data = $this->model_orders->getOrdersData($id);
 			$orders_items = $this->model_orders->getOrdersItemData($id);
-			$footer_items = $this->model_orders->getFooter($id);
+			$footer_items = $this->model_terms->getTermsDataInOrder($id);
 			$company_info = $this->model_company->getCompanyData(1);
 			$party_data = $this->model_party->getPartyData($order_data['party_id']);
 			$bank_details=$this->model_company->getBankDetails();
@@ -412,6 +419,7 @@ class Orders extends Admin_Controller
 					  $total = 0;
 					  $less_discount=0;
 					  $tax_per_item=0;
+					  $total_with_gst=0;
 					//   $tax_array;
 					  $unique_tax=array();
 					  
@@ -425,14 +433,20 @@ class Orders extends Admin_Controller
 
 						  $discount_amount = $amount - ($amount * $v['discount'])/100;
 						  $less_discount=$less_discount+($amount * $v['discount'])/100;
-						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
 						  
-						  if(!in_array($v['tax_id'],$unique_tax)){
-							array_push($unique_tax,$v['tax_id']);
-							$tax_array[$tax_data['sTax_Description']]=0;
+						 if($v['tax_id']>0){
+							$tax_data=$this->model_tax->getTaxData($v['tax_id']); 
+							
+							if(!in_array($v['tax_id'],$unique_tax)){
+							  array_push($unique_tax,$v['tax_id']);
+							  $tax_array[$tax_data['sTax_Description']]=0;
+							}
+  
+							$tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;
+						  }else{
+							  $tax_data['sValue']=0;
 						  }
-
-						  $tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;
+							
 			          	
 						  $html .= '<tr>
 							<td>'.$index.'</td>
@@ -452,6 +466,9 @@ class Orders extends Admin_Controller
 					$gross_total = $total - $order_data['total_discount'];
 					// $total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
 					$final_total = $gross_total + $freight_other_charge;
+					$rounded_total_amount = round($final_total);
+					$round_off =  ($rounded_total_amount - $total_with_gst);
+					$round_off = round($round_off, 2);
 
 			          $html .= '</tbody>
 			        </table>
@@ -460,72 +477,73 @@ class Orders extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			    <div class="row" style="page-break-inside: avoid;overflow: hidden; ">
-				<div class="col-xs-8">
-
-				<div class="table-responsive" >
-				  <table class="table table-bordered" >
-				  <thead>
-				  <tr>
-						<th>Amount</th>
-						<th>CGST%</th>
-			            <th>CGST</th>
-						<th>SGST%</th>
-			            <th>SGST</th>
-					</tr>
-					</thead>
-					<tbody>';
-
-					$total_amount_gst=0;
-					$cgst_total=0;
+			<div class="row" style="page-break-inside: avoid;overflow: hidden; ">
+			<div class="col-xs-8">';
+			$gst_total_amount=0;
 			
-					
-					for($i = 0; $i < sizeof($unique_tax); $i++) {
+			if(!empty($unique_tax))
+			{$html .='
+			<div class="table-responsive" >
+			  <table class="table table-bordered" >
+			  <thead>
+			  <tr>
+					<th>Amount</th>
+					<th>CGST%</th>
+					<th>CGST</th>
+					<th>SGST%</th>
+					<th>SGST</th>
+				</tr>
+				</thead>
+				<tbody>';
 
-						$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 
-						$cgst_percent=$tax_data['sValue']/2;
-						$cgst=$tax_array[$tax_data['sTax_Description']]*$cgst_percent/100;
-						$cgst=number_format($cgst, 2, '.', '');
-						$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
-						$cgst_total=$cgst_total+$cgst;
+				$total_amount_gst=0;
+				$cgst_total=0;
+				
+				for($i = 0; $i < sizeof($unique_tax); $i++) {
 
-						if($cgst>0){
-						$html .= '<tr>
-						  <td>'.$tax_array[$tax_data['sTax_Description']].'</td>
-						  <td>'.$cgst_percent.'</td>
-						  <td>'.$cgst.'</td>
-						  <td>'.$cgst_percent.'</td>
-						  <td>'.$cgst.'</td>
-						</tr>';}
-					}
+					$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 
+					$cgst_percent=$tax_data['sValue']/2;
+					$cgst=$tax_array[$tax_data['sTax_Description']]*$cgst_percent/100;
+					$cgst=number_format($cgst, 2, '.', '');
+					$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
+					$cgst_total=$cgst_total+$cgst;
 
-					$gst_total_amount=$cgst_total+$cgst_total;
-
-					$total_with_gst=$final_total+$cgst_total+$cgst_total;
-
-					$rounded_total_amount = round($total_with_gst);
-					$round_off =  ($rounded_total_amount - $total_with_gst);
-					$round_off = round($round_off, 2);
-					// $amount_in_words=getIndianCurrency(floatval($rounded_total_amount));
-
+					if($cgst>0){
 					$html .= '<tr>
-						  <td><b>'.$total_amount_gst.'</b></td>
-						  <td></td>
-						  <td><b>'.$cgst_total.'</b></td>
-						  <td></td>
-						  <td><b>'.$cgst_total.'</b></td>
-						</tr>';
-		
-					  $html .='
-					  
-					  </tbody>
-				  </table>
-				</div>
-				<p><b>'.strtoupper(getIndianCurrency(floatval($rounded_total_amount))).'</b></p>
-				<div>
+					  <td>'.$tax_array[$tax_data['sTax_Description']].'</td>
+					  <td>'.$cgst_percent.'</td>
+					  <td>'.$cgst.'</td>
+					  <td>'.$cgst_percent.'</td>
+					  <td>'.$cgst.'</td>
+					</tr>';}
+				}
 
-				</div>
-			  </div>
+				$gst_total_amount=$cgst_total+$cgst_total;
+
+				$total_with_gst=$final_total+$cgst_total+$cgst_total;
+
+				$rounded_total_amount = round($total_with_gst);
+				$round_off =  ($rounded_total_amount - $total_with_gst);
+				$round_off = round($round_off, 2);
+				// $amount_in_words=getIndianCurrency(floatval($rounded_total_amount));
+
+				$html .= '<tr>
+					  <td><b>'.$total_amount_gst.'</b></td>
+					  <td></td>
+					  <td><b>'.$cgst_total.'</b></td>
+					  <td></td>
+					  <td><b>'.$cgst_total.'</b></td>
+					</tr>';
+	
+				  $html .='
+				  
+				  </tbody>
+			  </table>
+			</div>';}
+			$html .='<div>
+			<h5><b>'.strtoupper(getIndianCurrency(floatval($rounded_total_amount))).'</b></h5>
+			</div>
+		  </div>
 			 <div class="col-xs-4">
 
 			        <div class="table-responsive" >
@@ -587,11 +605,14 @@ class Orders extends Admin_Controller
 					<b>IFSC Code: '.$v['ifsc'].'</b></div>';
 				}
 				$html.='
-				</div>
+				</div>';
+				
+				if($footer_items){
+				$html.='
 				<div style="page-break-inside: avoid">
 				  <b>Terms & Conditions</b><br>
 
-				';
+				';}
 				foreach ($footer_items as $k => $v) {
 					
 					$index = $k + 1;

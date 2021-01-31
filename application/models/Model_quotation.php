@@ -95,8 +95,6 @@ class Model_quotation extends CI_Model
 
 		if($selected_financial_year){
 
-	
-		
 			$financial_year_id = $selected_financial_year;
 	
 	}
@@ -140,9 +138,9 @@ class Model_quotation extends CI_Model
     		'total_discount' => $this->input->post('total_discount'),
 			'total_gst' => $this->input->post('total_gst'),
 			'total_amount' => $this->input->post('total_amount_value'),
-			'tax_id' =>  $this->input->post('tax'),
+			// 'tax_id' =>  $this->input->post('tax'),
 			'financial_year_id' => $financial_year_id,
-			'tax_value' => $tax['sValue'],
+			// 'tax_value' => $tax['sValue'],
 			'other_charges' => $this->input->post('other_charge'),
     		// 'bill_no' => $bill_no,
     		// 'customer_name' => $this->input->post('customer_name'),
@@ -167,6 +165,7 @@ class Model_quotation extends CI_Model
 
 		$count_product = count($this->input->post('product'));
     	for($x = 0; $x < $count_product; $x++) {
+			
     		$items = array(
 				
     			'quotation_no' =>  $this->input->post('quotation_no'),
@@ -175,8 +174,9 @@ class Model_quotation extends CI_Model
 				'item_make' => $this->input->post('make_value')[$x],
 				'qty' => $this->input->post('qty')[$x],
 				'unit' => $this->input->post('unit_value')[$x],
-				'rate' => $this->input->post('rate')[$x],
+				'rate' => $this->input->post('rate_value')[$x],
 				'discount' => $this->input->post('discount')[$x],
+				'tax_id' => $this->input->post('gst')[$x],
 				// 'tax' => $this->input->post('gst_value')[$x],
 				'financial_year_id' => $financial_year_id,
 				'status' => 1
@@ -184,7 +184,17 @@ class Model_quotation extends CI_Model
 				
     		);
 
-    		$this->db->insert('quotation_item', $items);
+			$this->db->insert('quotation_item', $items);
+			
+			$count_terms = count($this->input->post('terms'));
+				for ($z = 0; $z < $count_terms; $z++) {
+
+					$footer = array(
+						'quotation_id' => $quotation_no,
+						't_and_c' => $this->input->post('terms')[$z]
+					);
+				}
+			$this->db->insert('quotation_footer', $footer);
     		// now decrease the stock from the product
 			// $product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
 			
@@ -300,9 +310,9 @@ class Model_quotation extends CI_Model
 				'total_discount' => $this->input->post('total_discount'),
 				'total_gst' => $this->input->post('total_gst'),
 				'total_amount' => $this->input->post('total_amount_value'),
-				'tax_id' =>  $this->input->post('tax'),
+				// 'tax_id' =>  $this->input->post('tax'),
 				'financial_year_id' => $financial_year_id,
-				'tax_value' => $tax['sValue'],
+				// 'tax_value' => $tax['sValue'],
 				'other_charges' => $this->input->post('other_charge'),
 
 
@@ -355,8 +365,9 @@ class Model_quotation extends CI_Model
 					'item_make' => $this->input->post('make_value')[$x],
 					'qty' => $this->input->post('qty')[$x],
 					'unit' => $this->input->post('unit_value')[$x],
-					'rate' => $this->input->post('rate')[$x],
+					'rate' => $this->input->post('rate_value')[$x],
 					'discount' => $this->input->post('discount')[$x],
+					'tax_id' => $this->input->post('gst')[$x],
 					'financial_year_id' => $financial_year_id,
 					'status' => 1
 
@@ -367,7 +378,20 @@ class Model_quotation extends CI_Model
 	    			// 'rate' => $this->input->post('rate_value')[$x],
 	    			// 'amount' => $this->input->post('amount_value')[$x],
 	    		);
-	    		$this->db->insert('quotation_item', $items);
+				$this->db->insert('quotation_item', $items);
+				
+				$this->db->where('quotation_id', $quotation_no);
+				$this->db->delete('quotation_footer');
+
+				$count_terms = count($this->input->post('terms'));
+				for ($z = 0; $z < $count_terms; $z++) {
+
+					$footer = array(
+						'quotation_id' => $quotation_no,
+						't_and_c' => $this->input->post('terms')[$z]
+					);
+				}
+				$this->db->insert('quotation_footer', $footer);
 
 	    		// // now decrease the stock from the product
 	    		// $product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
