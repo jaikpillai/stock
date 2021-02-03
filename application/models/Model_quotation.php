@@ -197,17 +197,19 @@ class Model_quotation extends CI_Model
 
     		// $this->model_products->update($update_product, $this->input->post('product')[$x]);
 		}
+
+		if($this->input->post('terms')){
 		$count_terms = count($this->input->post('terms'));
-		for ($z = 0; $z < $count_terms; $z++) {
+			for ($z = 0; $z < $count_terms; $z++) {
 
-			$footer = array(
-				'quotation_id' => $this->input->post('quotation_no'),
-				't_and_c' => $this->input->post('terms')[$z],
-			);
+				$footer = array(
+					'quotation_id' => $this->input->post('quotation_no'),
+					't_and_c' => $this->input->post('terms')[$z],
+				);
 
-			$this->db->insert('quotation_footer', $footer);
+				$this->db->insert('quotation_footer', $footer);
 
-		}
+			}}
 
 		return ($order_id) ? $order_id : false;
 	}
@@ -394,6 +396,7 @@ class Model_quotation extends CI_Model
 			$this->db->where('quotation_id', $quotation_no);
 			$this->db->delete('quotation_footer');
 
+			if($this->input->post('terms')){
 			$count_terms = count($this->input->post('terms'));
 			for ($z = 0; $z < $count_terms; $z++) {
 
@@ -404,7 +407,7 @@ class Model_quotation extends CI_Model
 			$this->db->insert('quotation_footer', $footer);
 
 			}
-
+}
 			return true;
 		}
 	}

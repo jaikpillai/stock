@@ -193,7 +193,7 @@ class Model_orders extends CI_Model
 			$this->model_products->update($update_product, $this->input->post('product')[$x]);
 		}
 
-		
+		if($this->input->post('terms')){
 		$count_terms = count($this->input->post('terms'));
 		for ($z = 0; $z < $count_terms; $z++) {
 
@@ -202,7 +202,7 @@ class Model_orders extends CI_Model
 				't_and_c' => $this->input->post('terms')[$z],
 			);
 			$this->db->insert('invoice_footer', $footer);
-		}
+	}}
 		
 
 		return ($order_id) ? $order_id : false;
@@ -412,8 +412,9 @@ class Model_orders extends CI_Model
 			}
 
 			$this->db->where('invoice_id', $invoice_no);
-				$this->db->delete('invoice_footer');
+			$this->db->delete('invoice_footer');
 
+			if($this->input->post('terms')){
 				$count_terms = count($this->input->post('terms'));
 				for ($z = 0; $z < $count_terms; $z++) {
 
@@ -422,7 +423,7 @@ class Model_orders extends CI_Model
 						't_and_c' => $this->input->post('terms')[$z],
 					);
 					$this->db->insert('invoice_footer', $footer);
-			}
+			}}
 
 			return true;
 		}
