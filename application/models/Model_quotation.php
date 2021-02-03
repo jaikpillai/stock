@@ -201,7 +201,7 @@ class Model_quotation extends CI_Model
 		for ($z = 0; $z < $count_terms; $z++) {
 
 			$footer = array(
-				'quotation_id' => $quotation_no,
+				'quotation_id' => $this->input->post('quotation_no'),
 				't_and_c' => $this->input->post('terms')[$z],
 			);
 
