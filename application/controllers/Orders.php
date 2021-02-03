@@ -486,7 +486,7 @@ class Orders extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			<div class="row" style="page-break-inside: avoid;overflow: hidden; ">
+			<div class="row" style="overflow: hidden; ">
 			<div class="col-xs-8">';
 			$gst_total_amount=0;
 			
@@ -604,8 +604,8 @@ class Orders extends Admin_Controller
 				<div>
 				<div>
 				<b>GST R.No. :'.$company_info['gst_no'].'</b><br></div>
-				<div class="row">
-				<div class="col-xs-2">
+				<div class="row" style="page-break-inside: avoid">
+				<div class="col-xs-2" >
 				<b>Our Bank Details :</b></div>';
 				foreach ($bank_details as $k => $v) {
 					
