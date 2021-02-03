@@ -305,9 +305,18 @@ class Orders extends Admin_Controller
 
 			$order_date = strtotime($order_data['invoice_date']);
 			$order_date = date( 'd/m/Y', $order_date );
-			$paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
+			$paid_status = ($order_data['is_payment_received'] == 1) ? "Yes" : "No";
 			$freight_other_charge = $order_data['other_charges'];
+			$order_date=date('d-m-Y', strtotime($order_data['order_date']));
+			$invoice_date=date('d-m-Y', strtotime($order_data['invoice_date']));
 			
+			if(strtotime($order_data['order_date'])<0){
+				$order_date='';
+			}
+
+			if(strtotime($order_data['invoice_date'])<0){
+				$invoice_date='';
+			}
 
 			$html = '<!-- Main content -->
 			<!DOCTYPE html>
@@ -363,7 +372,7 @@ class Orders extends Admin_Controller
 					<div class="col-sm-6 invoice-col padding-0">
 					<b>Order/Challan No.:</b> '.$order_data['order_no'].' </div>
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Date.:</b> '.$order_data['order_date'].' </div><br>
+					<b>Date.:</b> '.$order_date.' </div><br>
 
 			      </div>
 
@@ -378,7 +387,7 @@ class Orders extends Admin_Controller
 
 				  </div>
 				  <div class="invoice-boxes padding-5">
-					<b>Date.:</b> '.date('d-m-Y', strtotime($order_data['invoice_date'])).'
+					<b>Date.:</b> '.$invoice_date.'
 
 				  </div>
 				  <div class="invoice-boxes padding-5">
@@ -389,7 +398,7 @@ class Orders extends Admin_Controller
 					<div class="col-sm-6 invoice-col padding-0">
 					<b>GR No.</b> '.$order_data['gr_rr_no'].' </div>
 					<div class="col-sm-6 invoice-col padding-0">
-					<b>Freight Paid.:</b></div>
+					<b>Freight Paid.:</b>'.$paid_status.'</div>
 
 			      </div>
 

@@ -104,7 +104,7 @@
                 <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Date</label>
                     <div class="col-sm-7">
-                    <input type="date" class="form-control" id="date" name="date"  value = "<?php echo $purchase_data['purchase_master']['purchase_date'] ?>" autocomplete="off" />
+                    <input type="date" class="form-control" id="date" name="date"  value = "<?php echo $purchase_data['purchase_master']['purchase_date'] ?>" autocomplete="off" required/>
 
                       
                     </div>

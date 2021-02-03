@@ -291,6 +291,16 @@ class Purchase extends Admin_Controller
 			// $paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 			$freight_other_charge = $order_data['other_charges'];
 
+			$purchase_date=date('d-m-Y', strtotime($order_data['purchase_date']));
+			$ref_date=date('d-m-Y', strtotime($order_data['ref_date']));
+			
+			if(strtotime($order_data['purchase_date'])<0){
+				$purchase_date='';
+			}
+
+			if(strtotime($order_data['ref_date'])<0){
+				$ref_date='';
+			}
 
 
 			$html = '<!-- Main content -->
@@ -330,6 +340,7 @@ class Purchase extends Admin_Controller
 			          Email:'.$company_info['email'].'
 					</h6>
 					</div>
+				  <h4 class="invoice-title-address">Purchase Order</h4>
 			      </div>
 			      <!-- /.col -->
 			    </div>
@@ -350,14 +361,14 @@ class Purchase extends Admin_Controller
 				  <b>Purchase No.:</b> '.$order_data['purchase_no'].'
 					</div>
 					<div class="invoice-boxes padding-5" >
-					<b>Date.:</b> '.$order_data['purchase_date'].' 
+					<b>Date.:</b> '.$purchase_date.' 
 					</div>
 					<div class="invoice-boxes padding-5">
 					<b>Ref. No.:</b> '.$order_data['ref_no'].'
 
 				  </div>
 				  <div class="invoice-boxes padding-5">
-					<b>Ref. Date.:</b> '.$order_data['ref_date'].'
+					<b>Ref. Date.:</b> '.$ref_date.'
 
 				  </div>
 

@@ -98,7 +98,7 @@
                 <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Date</label>
                     <div class="col-sm-7">
-                    <input type="date" class="form-control" id="date" name="date"  value = "<?php echo$quotation_data['quotation_master']['quotation_date'] ?>" autocomplete="off" />
+                    <input type="date" class="form-control" id="date" name="date"  value = "<?php echo$quotation_data['quotation_master']['quotation_date'] ?>" autocomplete="off" required />
 
                       
                     </div>

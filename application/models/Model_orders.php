@@ -174,7 +174,7 @@ class Model_orders extends CI_Model
 				'tax_id' =>  $this->input->post('gst')[$x],
 				// 'tax' => $this->input->post('gst_value')[$x],
 				'financial_year_id' => $financial_year_id,
-				'status' => 1
+				'status' => 1,
 
 
 			);
@@ -182,15 +182,6 @@ class Model_orders extends CI_Model
 			$this->db->insert('invoice_item', $items);
 
 
-			$count_terms = count($this->input->post('terms'));
-			for ($z = 0; $z < $count_terms; $z++) {
-
-				$footer = array(
-					'invoice_id' => $invoice_no,
-					't_and_c' => $this->input->post('terms')[$z]
-				);
-			}
-			$this->db->insert('invoice_footer', $footer);
 			// now decrease the stock from the product
 			$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
 
@@ -201,6 +192,18 @@ class Model_orders extends CI_Model
 
 			$this->model_products->update($update_product, $this->input->post('product')[$x]);
 		}
+
+		
+		$count_terms = count($this->input->post('terms'));
+		for ($z = 0; $z < $count_terms; $z++) {
+
+			$footer = array(
+				'invoice_id' => $invoice_no,
+				't_and_c' => $this->input->post('terms')[$z],
+			);
+			$this->db->insert('invoice_footer', $footer);
+		}
+		
 
 		return ($order_id) ? $order_id : false;
 	}
@@ -386,7 +389,7 @@ class Model_orders extends CI_Model
 					'discount' => $this->input->post('discount')[$x],
 					'tax_id' =>  $this->input->post('gst')[$x],
 					'financial_year_id' => $financial_year_id,
-					'status' => 1
+					'status' => 1,
 
 
 					// 'order_id' => $id,
@@ -397,18 +400,8 @@ class Model_orders extends CI_Model
 				);
 				$this->db->insert('invoice_item', $items);
 
-				$this->db->where('invoice_id', $invoice_no);
-				$this->db->delete('invoice_footer');
-
-				$count_terms = count($this->input->post('terms'));
-				for ($z = 0; $z < $count_terms; $z++) {
-
-					$footer = array(
-						'invoice_id' => $invoice_no,
-						't_and_c' => $this->input->post('terms')[$z]
-					);
-				}
-				$this->db->insert('invoice_footer', $footer);
+				
+				
 
 				// now decrease the stock from the product
 				$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
@@ -416,6 +409,19 @@ class Model_orders extends CI_Model
 
 				$update_product = array('Max_Suggested_Qty' => $qty);
 				$this->model_products->update($update_product, $this->input->post('product')[$x]);
+			}
+
+			$this->db->where('invoice_id', $invoice_no);
+				$this->db->delete('invoice_footer');
+
+				$count_terms = count($this->input->post('terms'));
+				for ($z = 0; $z < $count_terms; $z++) {
+
+					$footer = array(
+						'invoice_id' => $invoice_no,
+						't_and_c' => $this->input->post('terms')[$z],
+					);
+					$this->db->insert('invoice_footer', $footer);
 			}
 
 			return true;

@@ -299,6 +299,16 @@ class Quotation extends Admin_Controller
 			$freight_other_charge = $order_data['other_charges'];
 			// $paid_status = ($order_data['is_payment_received'] == 1) ? "Paid" : "Unpaid";
 
+			$quotation_date=date('d-m-Y', strtotime($order_data['quotation_date']));
+			$ref_date=date('d-m-Y', strtotime($order_data['ref_date']));
+			
+			if(strtotime($order_data['quotation_date'])<0){
+				$quotation_date='';
+			}
+
+			if(strtotime($order_data['ref_date'])<0){
+				$ref_date='';
+			}
 
 
 			$html = '<!-- Main content -->
@@ -358,11 +368,11 @@ class Quotation extends Admin_Controller
 				  <b>Quotation No.:</b> '.$order_data['quotation_no'].'<br>
 					</div>
 					<div class="invoice-boxes padding-5" >
-				  <b>Date.:</b> '.$order_data['quotation_date'].'<br>
+				  <b>Date.:</b> '.$quotation_date.'<br>
 					</div>
 					<div class="invoice-boxes padding-5">
 					<b>Ref. No.:</b> '.$order_data['ref_no'].'<br>
-					<b>Ref. Date.:</b> '.$order_data['ref_date'].'
+					<b>Ref. Date.:</b> '.$ref_date.'
 
 				  </div>
 				  

@@ -116,7 +116,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Sale Tax Registe from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Sale Tax Register from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -156,13 +156,16 @@ class Reports extends Admin_Controller
 					  foreach ($invoice_data as $k => $v) {
 						$orders_items = $this->model_orders->getOrdersItemData($v['invoice_no']);
 						foreach ($orders_items as $k => $v) {
-							$tax_data=$this->model_tax->getTaxData($v['tax_id']);
-							if(!in_array($v['tax_id'],$unique_tax)){
+							if($v['tax_id']>0)
+							{
+								$tax_data=$this->model_tax->getTaxData($v['tax_id']);
+								if(!in_array($v['tax_id'],$unique_tax)){
 								array_push($unique_tax,$v['tax_id']);
 								$grand_total_gst[$tax_data['sTax_Description']]=0;
 								// $tax_array[$tax_data['sTax_Description']]=0;
 							  }
 						  }
+						}
 					  }
 
 					  $html .= '
@@ -213,7 +216,8 @@ class Reports extends Admin_Controller
 
 					$orders_items_details = $this->model_orders->getOrdersItemData($v['invoice_no']);
 						foreach ($orders_items_details as $t => $f) {
-							$tax_data=$this->model_tax->getTaxData($f['tax_id']); 
+							if($f['tax_id']>0)
+							{$tax_data=$this->model_tax->getTaxData($f['tax_id']); 
 							if(!in_array($f['tax_id'],$unique_tax_temp)){
 								array_push($unique_tax_temp,$f['tax_id']);
 								$tax_array[$tax_data['sTax_Description']]=0;
@@ -221,13 +225,13 @@ class Reports extends Admin_Controller
 						  $amount = $f['qty']*$f['rate'];
 						  $discount_amount = $amount - ($amount * $f['discount'])/100;
 
-						  $tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;
+						  $tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;}
 					}
 
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['invoice_no'] . '</td>
-							<td>' . $v['invoice_date'] . '</td>
+							<td>' . date('d-m-Y', strtotime($v['invoice_date'])) . '</td>
 							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $v['total_amount'] . '</td>';
 							
@@ -289,7 +293,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from ' .date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -302,7 +306,7 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
     				<div class="jumbotron my-auto">
-					<p> No Invoices found between ' . $date_from . ' and ' . $date_to . ' </p>
+					<p> No Invoices found between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 					<form action="' . base_url("reports") . '">
 					<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
@@ -326,7 +330,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from ' .date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -397,7 +401,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Stock Ledger Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Stock Ledger Report from. ' .date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -419,7 +423,7 @@ class Reports extends Admin_Controller
 					</h2>
 					  <h4>Item ID. ' . $item_id . '</h4>
 					  <h4>Item Name. ' . $product_data['Item_Name'] . '</h4>
-					  <h5> Sold from ' . $date_from . ' to ' . $date_to . '</h5>
+					  <h5> Sold from ' .date('d-m-Y', strtotime( $date_from)) . ' to ' .date('d-m-Y', strtotime( $date_to)) . '</h5>
 			
 			      </div>
 			      <!-- /.col -->
@@ -474,7 +478,7 @@ class Reports extends Admin_Controller
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['invoice_no'] . '</td>
-							<td>' . $v['invoice_date'] . '</td>
+							<td>' . date('d-m-Y', strtotime($v['invoice_date'] )). '</td>
 			          	</tr>';
 				}
 
@@ -523,7 +527,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from. ' .date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -536,7 +540,7 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
 			<div class="jumbotron my-auto">
-			<p><strong> ' . $product_data['Item_Name'] . '</strong> <br>was not sold between ' . $date_from . ' and ' . $date_to . ' </p>
+			<p><strong> ' . $product_data['Item_Name'] . '</strong> <br>was not sold between ' .date('d-m-Y', strtotime( $date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 			<form action="' . base_url("reports") . '">
 			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 		</form>
@@ -559,7 +563,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -618,7 +622,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -638,7 +642,7 @@ class Reports extends Admin_Controller
 			          ' . $company_info['company_name'] . '
 
 					</h2>
-			  <h5>Quotation Listing Report from. ' . $date_from . ' to ' . $date_to . '</h5>
+			  <h5>Quotation Listing Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
 			
 			      </div>
 			      <!-- /.col -->
@@ -700,7 +704,7 @@ class Reports extends Admin_Controller
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['quotation_no'] . '</td>
-							<td>' . $v['quotation_date'] . '</td>
+							<td>' . date('d-m-Y', strtotime($v['quotation_date'])) . '</td>
 							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $total_products . '</td>
 							<td>' . $v['total_discount'] . '</td>
@@ -759,7 +763,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from ' .date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -772,7 +776,7 @@ class Reports extends Admin_Controller
 
 			<div class="container h-100 d-flex justify-content-center">
     				<div class="jumbotron my-auto">
-					<p> No Quotations found between ' . $date_from . ' and ' . $date_to . ' </p>
+					<p> No Quotations found between ' . date('d-m-Y', strtotime($date_from )). ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 					<form action="' . base_url("reports") . '">
 					<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
@@ -800,7 +804,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -860,7 +864,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>From ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>From ' . date('d-m-Y', strtotime( $date_from )) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -880,7 +884,7 @@ class Reports extends Admin_Controller
 			          ' . $company_info['company_name'] . '
 
 					</h2>
-			  <h5>Purchase Register Report from. ' . $date_from . ' to ' . $date_to . '</h5>
+			  <h5>Purchase Register Report from. ' . date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
 			
 			      </div>
 			      <!-- /.col -->
@@ -940,7 +944,7 @@ class Reports extends Admin_Controller
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['purchase_no'] . '</td>
-							<td>' . $v['purchase_date'] . '</td>
+							<td>' . date('d-m-Y', strtotime( $v['purchase_date'])) . '</td>
 							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $total_products . '</td>
 							<td>' . $total_purchase_amount . '</td>
@@ -997,7 +1001,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1010,7 +1014,7 @@ class Reports extends Admin_Controller
 
 			<div class="container h-100 d-flex justify-content-center">
     				<div class="jumbotron my-auto">
-					<p> No Purchase Orders found between ' . $date_from . ' and ' . $date_to . ' </p>
+					<p> No Purchase Orders found between ' .date('d-m-Y', strtotime( $date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 					<form action="' . base_url("reports") . '">
 					<button id="closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
@@ -1038,7 +1042,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1108,7 +1112,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Customer Ledger Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Customer Ledger Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1129,7 +1133,7 @@ class Reports extends Admin_Controller
 
 					</h2>
 					  <h4>Party Name. ' . $party['party_name'] . '</h4>
-					 <h5> Invoices between ' . $date_from . ' to ' . $date_to . '</h5>
+					 <h5> Invoices between ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
 			
 			      </div>
 			      <!-- /.col -->
@@ -1178,7 +1182,7 @@ class Reports extends Admin_Controller
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['invoice_no'] . '</td>
-							<td>' . $v['invoice_date'] . '</td>
+							<td>' . date('d-m-Y', strtotime($v['invoice_date'])) . '</td>
 							<td>' . $v['total_amount'] . '</td>
 			          	</tr>';
 				}
@@ -1224,7 +1228,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from )). ' to ' .date('d-m-Y', strtotime( $date_to )). '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1237,7 +1241,7 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
 			<div class="jumbotron my-auto">
-			<p><strong> ' . $party['party_name'] . '</strong> <br>have no invoices between ' . $date_from . ' and ' . $date_to . ' </p>
+			<p><strong> ' . $party['party_name'] . '</strong> <br>have no invoices between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to )). ' </p>
 			<form action="' . base_url("reports") . '">
 			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 		</form>
@@ -1260,7 +1264,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from )). ' to ' .date('d-m-Y', strtotime( $date_to )). '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1430,7 +1434,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from. ' .date('d-m-Y', strtotime( $date_from )). ' to ' .date('d-m-Y', strtotime( $date_to )). '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1443,7 +1447,7 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
 			<div class="jumbotron my-auto">
-			<p><strong> ' . $party['party_name'] . '</strong> <br>have no invoices between ' . $date_from . ' and ' . $date_to . ' </p>
+			<p><strong> ' . $party['party_name'] . '</strong> <br>have no invoices between ' .date('d-m-Y', strtotime( $date_from )). ' and ' .date('d-m-Y', strtotime( $date_to)) . ' </p>
 			<form action="' . base_url("reports") . '">
 			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 		</form>
@@ -1466,7 +1470,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . $date_from . ' to ' . $date_to . '</title>
+			  <title>Invoice Report from. ' .date('d-m-Y', strtotime( $date_from)) . ' to ' .date('d-m-Y', strtotime( $date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
