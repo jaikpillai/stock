@@ -491,31 +491,8 @@ class Reports extends Admin_Controller
 			      <!-- /.col -->
 			    </div>
 			    <!-- /.row -->
-			<!--<div class="row">
-			    
-				<div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
-
-				  <div class="table-responsive" >
-					<table class="table table-bordered" >
-					  <tr>
-						<th style="width:50%">Total Qty Sold:</th>
-						<td>' . $total_qty_sold . '</td>
-					  </tr>
-					  <tr>
-						<th style="width:50%">Remaining Qty</th>
-						<td>' . $product_data['Max_Suggested_Qty'] . '</td>
-					  </tr>
-				   
-					</table>
-				  </div>
-				</div>
-				<!-- /.col -->
-			  </div>
-			   
-			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
-			</div>-->
 			</body>
 			</html>';
 
@@ -962,31 +939,6 @@ class Reports extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			   <!-- <div class="row">
-			    
-			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
-
-			        <div class="table-responsive" >
-			          <table class="table table-bordered" >
-			            <tr>
-			              <th style="width:50%">Total Discount:</th>
-			              <td>' . $grand_total_discount . '</td>
-			            </tr>
-						<tr>
-			              <th>Total GST:</th>
-			              <td>' . $grand_total_gst . '</td>
-						</tr>
-						<tr>
-						<th>Total Amount:</th>
-						<td>' . $grand_total_amount . '</td>
-					  </tr>
-					 
-			          </table>
-			        </div>
-			      </div>
-			      <!-- /.col -->
-			    </div> -->
-			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
 			</div>

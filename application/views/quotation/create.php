@@ -6,11 +6,11 @@
   <section class="content-header">
     <h1>
       Manage
-      <small>Purchase Transactions</small>
+      <small>Quotation Transactions</small>
     </h1>
     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Purchase Transaction</li>
+      <li class="active">Quotation Transaction</li>
     </ol>
   </section>
 
@@ -37,10 +37,10 @@
 
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Add Purchase</h3>
+            <h3 class="box-title">Add Quotation</h3>
           </div>
           <!-- /.box-header -->
-          <form role="form" action="<?php base_url('purchase/create') ?>" method="post" class="form-horizontal">
+          <form role="form" action="<?php base_url('quotation/create') ?>" method="post" class="form-horizontal">
               <div class="box-body">
 
                 <?php echo validation_errors(); ?>
@@ -352,8 +352,8 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Create Purchase</button>
-                <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
+                <button type="submit" class="btn btn-primary">Create Quotation</button>
+                <a href="<?php echo base_url('quotation/') ?>" class="btn btn-warning">Back</a>
               </div>
             </form>
           <!-- /.box-body -->
@@ -446,7 +446,7 @@ var removed_row_count_terms =0;
       var row_id = count_table_tbody_tr + 1 + Number(removed_row_count);
 
       $.ajax({
-          url: base_url + '/purchase/getTableProductRow/',
+          url: base_url + '/quotation/getTableProductRow/',
           type: 'post',
           dataType: 'json',
           success:function(response) {
@@ -578,7 +578,7 @@ var removed_row_count_terms =0;
 
     } else {
       $.ajax({
-        url: base_url + 'purchase/getProductValueById',
+        url: base_url + 'quotation/getProductValueById',
         type: 'post',
         data: {product_id : product_id},
         dataType: 'json',
