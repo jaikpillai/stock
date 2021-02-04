@@ -1032,10 +1032,10 @@ class Reports extends Admin_Controller
 			redirect('dashboard', 'refresh');
 		}
 
-		$date_from = $this->input->post('date_from_customer');
-		$date_from = date("d-m-Y", strtotime($date_from));
-		$date_to = $this->input->post('date_to_customer');
-		$date_to = date("d-m-Y", strtotime($date_to));
+		$date_From = $this->input->post('date_from_customer');
+		$date_from = date("d-m-Y", strtotime($date_From));
+		$date_To = $this->input->post('date_to_customer');
+		$date_to = date("d-m-Y", strtotime($date_To));
 	
 		$party_id = $this->input->post('partyid');
 		$grand_total=0;
@@ -1049,7 +1049,7 @@ class Reports extends Admin_Controller
 
 		if ($date_from && $date_to) {
 
-			$item_data = $this->model_reports->getPartyInvoiceList($party_id, $date_from, $date_to);
+			$item_data = $this->model_reports->getPartyInvoiceList($party_id, $date_From, $date_To);
 			$company_info = $this->model_company->getCompanyData(1);
 			// $product_data = $this->model_products->getProductData($item_id);
 			$party=$this->model_party->getPartyData($party_id);
