@@ -80,6 +80,15 @@
                     </div>
                   </div>
 
+
+                  <div class="form-group">
+                    <label for="payment_mode" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
+                    <div class="col-sm-7">
+                      <input type="text" class="form-control" id="payment_mode" name="payment_mode"  autocomplete="off" />
+                      
+                    </div>
+                  </div>
+
                 </div>
 
                
@@ -262,7 +271,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Create Purchase</button>
+                <button type="submit" class="btn btn-primary">Save Purchase</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
               </div>
             </form>

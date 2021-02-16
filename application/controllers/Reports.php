@@ -409,23 +409,34 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
 			<div class="wrapper" style= "overflow: visible">
 			  <section class="invoice">
 			    <!-- title row -->
-			    <div class="row">
-			      <div class="col-xs-12">
-			        <h2 class="page-header">
-			          ' . $company_info['company_name'] . '
-
-					</h2>
-					  <h4>Item ID. ' . $item_id . '</h4>
-					  <h4>Item Name. ' . $product_data['Item_Name'] . '</h4>
-					  <h5> Sold from ' .date('d-m-Y', strtotime( $date_from)) . ' to ' .date('d-m-Y', strtotime( $date_to)) . '</h5>
-			
-			      </div>
+				<div class="row">
+				<div class="col-xs-12 ">
+				  <h1 class="invoice-title-name">
+					'.$company_info['company_name'].'
+				  </h1>
+				  <h6 class="invoice-title-address">
+					'.$company_info['address'].'
+				  </h6>
+				  <div class="display-flex" >
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+				  Phone No:'.$company_info['phone'].'
+				  </h6>
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+					Email:'.$company_info['email'].'
+				  </h6>
+				  </div>
+				  <br>
+					  <h4 class="invoice-title-address">' . $product_data['Item_Code'] . ' - ' . $product_data['Item_Name'] . '</h4>
+					  <h5 class="invoice-title-address"> Sold from ' .date('d-m-Y', strtotime( $date_from)) . ' to ' .date('d-m-Y', strtotime( $date_to)) . '</h5>
+				</div>
+			    
 			      <!-- /.col -->
 			    </div>
 			    <!-- info row -->
@@ -584,6 +595,7 @@ class Reports extends Admin_Controller
 
 			$quotation_data = $this->model_reports->getQuotationListing($date_from, $date_to ,$party);
 			$company_info = $this->model_company->getCompanyData(1);
+			$party_data = $this->model_party->getPartyData($party); 
 			$grand_total_discount = 0;
 			$grand_total_gst = 0;
 			$grand_total_amount = 0;
@@ -607,22 +619,37 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
 			<div class="wrapper" style= "overflow: visible">
 			  <section class="invoice">
 			    <!-- title row -->
-			    <div class="row">
-			      <div class="col-xs-12">
-			        <h2 class="page-header">
-			          ' . $company_info['company_name'] . '
-
-					</h2>
-			  <h5>Quotation Listing Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
-			
-			      </div>
+				<div class="row">
+				<div class="col-xs-12 ">
+				  <h1 class="invoice-title-name">
+					'.$company_info['company_name'].'
+				  </h1>
+				  <h6 class="invoice-title-address">
+					'.$company_info['address'].'
+				  </h6>
+				  <div class="display-flex" >
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+				  Phone No:'.$company_info['phone'].'
+				  </h6>
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+					Email:'.$company_info['email'].'
+				  </h6>
+				  </div>
+				  <h4 class="invoice-title-address">' . $party_data['party_name'] . '</h4>
+				  <p class="invoice-title-address"><small>' . $party_data['address'] . '</small></p>
+				  <h5 class="invoice-title-address">Quotation Listing Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
+					
+				 </div>
+			    
 			      <!-- /.col -->
+			      
 			    </div>
 			    <!-- info row -->
 			    <div class="row invoice-info">
@@ -644,7 +671,6 @@ class Reports extends Admin_Controller
 						<th>S.N.</th>
 						<th>Quotation No</th>
 						<th>Quotation Date</th>
-						<th>Party Name</th>
 						<th>Total Products</th>
 						<th>Discount</th>
 						<th>GST</th>
@@ -667,7 +693,6 @@ class Reports extends Admin_Controller
 
 
 
-					  $party_data = $this->model_party->getPartyData($v['party_id']); 
 					//   $amount = $v['qty']*$v['rate'];
 					//   $total = $total + $amount; 
 					$index = $k + 1;
@@ -682,7 +707,6 @@ class Reports extends Admin_Controller
 							<td>' . $index . '</td>
 							<td>' . $v['quotation_no'] . '</td>
 							<td>' . date('d-m-Y', strtotime($v['quotation_date'])) . '</td>
-							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $total_products . '</td>
 							<td>' . $v['total_discount'] . '</td>
 							<td>' . $v['total_gst'] . '</td>
@@ -724,7 +748,6 @@ class Reports extends Admin_Controller
 			        </div>
 			      </div>
 			      <!-- /.col -->
-			    </div>-->
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
@@ -826,6 +849,7 @@ class Reports extends Admin_Controller
 
 			$purchase_data = $this->model_reports->getPurchaseListing($date_from, $date_to ,$party);
 			$company_info = $this->model_company->getCompanyData(1);
+			$party_data = $this->model_party->getPartyData($party); 
 			$grand_total_discount = 0;
 			$grand_total_gst = 0;
 			$grand_total_amount = 0;
@@ -849,21 +873,36 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
 			<div class="wrapper" style= "overflow: visible">
 			  <section class="invoice">
 			    <!-- title row -->
-			    <div class="row">
-			      <div class="col-xs-12">
-			        <h2 class="page-header">
-			          ' . $company_info['company_name'] . '
-
-					</h2>
-			  <h5>Purchase Register Report from. ' . date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
-			
-			      </div>
+				<div class="row">
+				
+				<div class="col-xs-12 ">
+				  <h1 class="invoice-title-name">
+					'.$company_info['company_name'].'
+				  </h1>
+				  <h6 class="invoice-title-address">
+					'.$company_info['address'].'
+				  </h6>
+				  <div class="display-flex" >
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+				  Phone No:'.$company_info['phone'].'
+				  </h6>
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+					Email:'.$company_info['email'].'
+				  </h6>
+				  </div>
+				  <h4 class="invoice-title-address">' . $party_data['party_name'] . '</h4>
+				  <p class="invoice-title-address"><small>' . $party_data['address'] . '</small></p>
+				  <h5 class="invoice-title-address">Purchase Register Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
+					
+				 </div>
+			    
 			      <!-- /.col -->
 			    </div>
 			    <!-- info row -->
@@ -886,7 +925,6 @@ class Reports extends Admin_Controller
 						<th>S.N.</th>
 						<th>Purchase No</th>
 						<th>Purchase Date</th>
-						<th>Party Name</th>
 						<th>Total Products</th>
 						<th>Amount</th>
 			          </tr>
@@ -899,7 +937,6 @@ class Reports extends Admin_Controller
 					$grand_total_gst = $v['total_gst'] + $grand_total_gst;
 					$grand_total_amount = $v['total_amount'] + $grand_total_amount;
 					$total_products = $this->model_purchase->countPurchaseItem($v['purchase_no']);
-					$party_data = $this->model_party->getPartydata($v['party_id']);
 					$purchase_item_data=$this->model_purchase->getPurchaseItemData($v['purchase_no']);
 
 					$total_purchase_amount=0;
@@ -922,7 +959,6 @@ class Reports extends Admin_Controller
 							<td>' . $index . '</td>
 							<td>' . $v['purchase_no'] . '</td>
 							<td>' . date('d-m-Y', strtotime( $v['purchase_date'])) . '</td>
-							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $total_products . '</td>
 							<td>' . $total_purchase_amount . '</td>
 					
@@ -1072,22 +1108,35 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
 			<div class="wrapper" style= "overflow: visible">
 			  <section class="invoice">
 			    <!-- title row -->
-			    <div class="row">
-			      <div class="col-xs-12">
-			        <h2 class="page-header">
-			          ' . $company_info['company_name'] . '
-
-					</h2>
-					  <h4>Party Name. ' . $party['party_name'] . '</h4>
-					 <h5> Invoices between ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
-			
-			      </div>
+				<div class="row">
+				<div class="col-xs-12 ">
+				  <h1 class="invoice-title-name">
+					'.$company_info['company_name'].'
+				  </h1>
+				  <h6 class="invoice-title-address">
+					'.$company_info['address'].'
+				  </h6>
+				  <div class="display-flex" >
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+				  Phone No:'.$company_info['phone'].'
+				  </h6>
+				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+					Email:'.$company_info['email'].'
+				  </h6>
+				  </div>
+				  <h4 class="invoice-title-address">' . $party_data['party_name'] . '</h4>
+				  <p class="invoice-title-address"><small>' . $party_data['address'] . '</small></p>
+				  <h5 class="invoice-title-address">Invoices between. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
+					
+				 </div>
+			    
 			      <!-- /.col -->
 			    </div>
 			    <!-- info row -->
@@ -1168,7 +1217,6 @@ class Reports extends Admin_Controller
 			    <!-- /.row -->
 			  </section>
 			  <!-- /.content -->
-			</div>-->
 			</body>
 			</html>';
 

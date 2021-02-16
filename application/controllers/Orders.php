@@ -75,12 +75,12 @@ class Orders extends Admin_Controller
 				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].','.$value['invoice_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
-			if($value['is_payment_received'] == 1) {
-				$paid_status = '<span class="label label-success">Paid</span>';	
-			}
-			else {
-				$paid_status = '<span class="label label-warning">Not Paid</span>';
-			}
+			// if($value['is_payment_received'] == 1) {
+			// 	$paid_status = '<span class="label label-success">Paid</span>';	
+			// }
+			// else {
+			// 	$paid_status = '<span class="label label-warning">Not Paid</span>';
+			// }
 
 		
 
@@ -90,7 +90,7 @@ class Orders extends Admin_Controller
 				$party_data['address'],
 				$count_total_item,
 				$value['total_amount'],
-				$paid_status,
+				// $paid_status,
 				$buttons
 			);
 		} // /foreach
@@ -238,7 +238,7 @@ class Orders extends Admin_Controller
 
 			$this->data['order_data'] = $result;
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
-			$this->data['terms_data'] = $this->model_terms->getActiveTerms(); 
+			$this->data['terms_data'] = $this->model_terms->getTermsData(); 
 			$this->data['terms'] = $this->model_terms->getTermsDataInOrder($orders_data['invoice_no']); 
 			
 			
@@ -324,7 +324,7 @@ class Orders extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title></title>
+			  <title>Invoice No.: '.$order_data['invoice_no'].'</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -363,7 +363,7 @@ class Orders extends Admin_Controller
 				<div class="invoice-border">
 			    <div class="row invoice-info" style="margin-right: -8px;">
 			      
-				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
+				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top" style="font-size: 12px;">
 				  <div class="padding-10">
 					<b>Sold To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
 					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
@@ -383,22 +383,20 @@ class Orders extends Admin_Controller
 					<b>'.ucfirst($order_data['mode_of_payment']).' Memo</b><br>
 					</div>
 					<div class="invoice-boxes padding-5">
-					<b>Invoice No.:</b> '.$order_data['invoice_no'].'
+					<b>Invoice No.: '.$order_data['invoice_no'].'</b>
 
 				  </div>
-				  <div class="invoice-boxes padding-5">
+				  <div class="invoice-boxes padding-5" style="font-size: 12px;">
 					<b>Date.:</b> '.$invoice_date.'
 
 				  </div>
-				  <div class="invoice-boxes padding-5">
+				  <div class="invoice-boxes padding-5" style="font-size: 12px;">
 					<b>Dispatch Through.:</b> '.$order_data['dispatched_through'].'
 				  </div>
 				  
-				  <div class="invoice-boxes padding-5">
+				  <div class="invoice-boxes padding-5" style="font-size: 12px;">
 					<div class="col-sm-6 invoice-col padding-0">
 					<b>GR No.</b> '.$order_data['gr_rr_no'].' </div>
-					<div class="col-sm-6 invoice-col padding-0">
-					<b>Freight Paid.:</b>'.$paid_status.'</div>
 
 			      </div>
 
@@ -409,7 +407,7 @@ class Orders extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row" style="margin-right: -15px;">
 			      <div class="col-xs-12 table-responsive table-invoice">
-			        <table class="table table-bordered-invoice" >
+			        <table class="table table-bordered-invoice" style="font-size: 10px;">
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -493,7 +491,7 @@ class Orders extends Admin_Controller
 			if(!empty($unique_tax))
 			{$html .='
 			<div class="table-responsive" >
-			  <table class="table table-bordered" >
+			  <table class="table table-bordered" style="font-size: 10px;" >
 			  <thead>
 			  <tr>
 					<th>Amount</th>
@@ -553,11 +551,11 @@ class Orders extends Admin_Controller
 			<h5><b>'.strtoupper(getIndianCurrency(floatval($rounded_total_amount))).'</b></h5>
 			</div>
 		  </div>
-			 <div class="col-xs-4">
+			 <div class="col-xs-4" style="font-size: 10px;">
 
 			        <div class="table-responsive" >
-					  <table class="table table-bordered" >
-					  <tbody style="font-size:small">
+					  <table class="table table-bordered " style="font-size: 10px;" >
+					  <tbody>
 			            <tr>
 			              <th style="width:50%">Total:</th>
 			              <td>'.$total.'</td>
@@ -583,8 +581,8 @@ class Orders extends Admin_Controller
 						<td>'.$round_off.'</td>
 					  </tr>
 					  <tr>
-					  <th><b>Total Amount:</b></th>
-					  <td><b>'.$rounded_total_amount.'</b></td>
+					  <th><b style="font-size: 12px;">Total Amount:</b></th>
+					  <td><b style="font-size: 12px;">'.$rounded_total_amount.'</b></td>
 					</tr>
 					<!-- /.<tr>
 			              <th>Paid Status:</th>
@@ -597,7 +595,7 @@ class Orders extends Admin_Controller
 			      <!-- /.col -->
 			    </div>
 				<!-- /.row -->
-				<footer>
+				<footer style="font-size: 10px;">
 				<div style=" border-top: 2px solid;padding: 10px;">
 				<div class="row">
 				
@@ -684,7 +682,7 @@ function getIndianCurrency(float $number)
 		$no = floor($no / $divider);
 		$i += $divider == 10 ? 1 : 2;
 		if ($number) {
-			$plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+			$plural = (($counter = count($str)) && $number > 9) ? '' : null;
 			$hundred = ($counter == 1 && $str[0]) ? '' : null;
 			$str [] = ($number < 21) ? $words[$number].' '. $digits[$counter]. $plural.' '.$hundred:$words[floor($number / 10) * 10].' '.$words[$number % 10]. ' '.$digits[$counter].$plural.' '.$hundred;
 		} else $str[] = null;

@@ -55,7 +55,7 @@
                 <th>Party Address</th>
                 <th>Total Products</th>
                 <th>Total Amount</th>
-                <th>Paid status</th>
+                <!-- <th>Paid status</th> -->
                 <?php if(in_array('updateOrder', $user_permission) || in_array('viewOrder', $user_permission) || in_array('deleteOrder', $user_permission)): ?>
                   <th>Action</th>
                 <?php endif; ?>

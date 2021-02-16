@@ -135,7 +135,7 @@ class Model_purchase extends CI_Model
     	$data = array(
 			'purchase_no' => $this->input->post('purchase_no'),
 			'purchase_date' => $this->input->post('date'),
-			'mode_of_payment' => $this->input->post('paymode'),			
+			'mode_of_payment' => $this->input->post('payment_mode'),			
 			'party_id' => $this->input->post('party'),
 			'ref_no' => $this->input->post('ref_no'),
 			'ref_date' => $this->input->post('ref_date'),
@@ -295,7 +295,7 @@ class Model_purchase extends CI_Model
 
 				'purchase_no' => $this->input->post('purchase_no'),
 				'purchase_date' => $this->input->post('date'),
-				'mode_of_payment' => $this->input->post('paymode'),			
+				'mode_of_payment' => $this->input->post('payment_mode'),			
 				'party_id' => $this->input->post('party'),
 				'ref_no' => $this->input->post('ref_no'),
 				'ref_date' => $this->input->post('ref_date'),

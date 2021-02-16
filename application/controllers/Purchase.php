@@ -348,8 +348,8 @@ class Purchase extends Admin_Controller
 				<div class="invoice-border">
 			    <div class="row invoice-info" style="margin-right: -8px;">
 			      
-				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
-				  <div class="padding-10">
+				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top" >
+				  <div class="padding-10" style="font-size: 12px;">
 					<b>To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
 					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
 					</div>
@@ -360,14 +360,14 @@ class Purchase extends Admin_Controller
 				  <div class="padding-5">
 				  <b>Purchase No.:</b> '.$order_data['purchase_no'].'
 					</div>
-					<div class="invoice-boxes padding-5" >
+					<div class="invoice-boxes padding-5" style="font-size: 12px;">
 					<b>Date.:</b> '.$purchase_date.' 
 					</div>
-					<div class="invoice-boxes padding-5">
+					<div class="invoice-boxes padding-5" style="font-size: 12px;"> 
 					<b>Ref. No.:</b> '.$order_data['ref_no'].'
 
 				  </div>
-				  <div class="invoice-boxes padding-5">
+				  <div class="invoice-boxes padding-5" style="font-size: 12px;">
 					<b>Ref. Date.:</b> '.$ref_date.'
 
 				  </div>
@@ -378,7 +378,7 @@ class Purchase extends Admin_Controller
 			    <!-- /.row -->	
 			    <!-- Table row -->
 			    <div class="row" style="margin-right: -15px;">
-			      <div class="col-xs-12 table-responsive table-invoice">
+			      <div class="col-xs-12 table-responsive table-invoice" style="font-size: 10px;">
 			        <table class="table table-bordered-invoice" >
 			          <thead>
 					  <tr>

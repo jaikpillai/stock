@@ -81,22 +81,14 @@
                     </div>
                   </div>
 
-                  <!-- <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
+                  <div class="form-group">
+                    <label for="payment_mode" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
                     <div class="col-sm-7">
-                    <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
-                    <option value="" disabled selected> <?php echo ($purchase_data['purchase_master']['mode_of_payment']) ?></option>
-                   
-                    <option value="Cash"  <?php if ($purchase_data['purchase_master']['mode_of_payment'] == "Cash"): ?> selected <?php endif; ?>>Cash</option>
-                    <option value="Credit"  <?php if ($purchase_data['purchase_master']['mode_of_payment'] == "Credit"): ?> selected <?php endif; ?>>Credit</option>
-                      <option value="Personally"  <?php if ($purchase_data['purchase_master']['mode_of_payment'] == "Personally"): ?> selected <?php endif; ?>>Personally</option>
-                    <option value="Cheque"  <?php if ($purchase_data['purchase_master']['mode_of_payment'] == "Cheque"): ?> selected <?php endif; ?>>Cheque</option>
-                      <option value="UPI"  <?php if ($purchase_data['purchase_master']['mode_of_payment'] == "UPI"): ?> selected <?php endif; ?>>UPI</option>
-      
-                        </select>
+                      <input type="text" value="<?php echo $purchase_data['purchase_master']['mode_of_payment']; ?>" class="form-control" id="payment_mode" name="payment_mode"  autocomplete="off" />
                       
                     </div>
-                </div> -->
+                  </div>
+
 
                 </div>
                 

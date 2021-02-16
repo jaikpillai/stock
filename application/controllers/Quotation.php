@@ -230,7 +230,7 @@ class Quotation extends Admin_Controller
 
 			$this->data['quotation_data'] = $result;
 			$this->data['tax_data'] = $this->model_tax->getActiveTax(); 
-			$this->data['terms_data'] = $this->model_terms->getActiveTerms(); 
+			$this->data['terms_data'] = $this->model_terms->getTermsData(); 
 			$this->data['terms'] = $this->model_terms->getTermsDataInQuotation($quotation_data['quotation_no']); 
 			
 			
@@ -333,9 +333,9 @@ class Quotation extends Admin_Controller
 			  <section class="invoice">
 			    <!-- title row -->
 			    <div class="row">
-				  <div class="col-xs-12 ">
+				  <div class="col-xs-12 " >
 				  <h5 class="invoice-title-address">QUOTATION CUM PROFORMA INVOICE</h5>
-			        <h1 class="invoice-title-name">
+			        <h1 class="invoice-title-name" >
 			          '.$company_info['company_name'].'
 					</h1>
 					<h6 class="invoice-title-address">
@@ -357,7 +357,7 @@ class Quotation extends Admin_Controller
 			    <div class="row invoice-info" style="margin-right: -8px;">
 			      
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
-				  <div class="padding-10">
+				  <div class="padding-10" style="font-size: 12px;">
 					<b>To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
 					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
 					</div>
@@ -365,12 +365,12 @@ class Quotation extends Admin_Controller
 				  <!-- /.col -->
 				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
 				  <div class="padding-5">
-				  <b>Quotation No.:</b> '.$order_data['quotation_no'].'<br>
+				  <b>Quotation No.: '.$order_data['quotation_no'].'</b><br>
 					</div>
-					<div class="invoice-boxes padding-5" >
+					<div class="invoice-boxes padding-5" style="font-size: 12px;">
 				  <b>Date.:</b> '.$quotation_date.'<br>
 					</div>
-					<div class="invoice-boxes padding-5">
+					<div class="invoice-boxes padding-5" style="font-size: 12px;">
 					<b>Ref. No.:</b> '.$order_data['ref_no'].'<br>
 					<b>Ref. Date.:</b> '.$ref_date.'
 
@@ -387,7 +387,7 @@ class Quotation extends Admin_Controller
 			    <!-- /.row -->	
 			    <!-- Table row -->
 			    <div class="row" style="margin-right: -15px;">
-			      <div class="col-xs-12 table-responsive table-invoice">
+			      <div class="col-xs-12 table-responsive table-invoice" style="font-size: 10px;">
 			        <table class="table table-bordered-invoice" >
 			          <thead>
 					  <tr>
@@ -471,7 +471,7 @@ class Quotation extends Admin_Controller
 				
 				if(!empty($unique_tax) && $tax_value_temp>0)
 				{$html .='
-				<div class="table-responsive" >
+				<div class="table-responsive" style="font-size: 10px;">
 				  <table class="table table-bordered" >
 				  <thead>
 				  <tr>
@@ -532,7 +532,7 @@ class Quotation extends Admin_Controller
 				<h5><b>'.strtoupper(getIndianCurrency(floatval($rounded_total_amount))).'</b></h5>
 				</div>
 			  </div>
-			 <div class="col-xs-4">
+			 <div class="col-xs-4" style="font-size: 10px;">
 
 			        <div class="table-responsive" >
 					  <table class="table table-bordered" >
@@ -562,8 +562,8 @@ class Quotation extends Admin_Controller
 						<td>'.$round_off.'</td>
 					  </tr>
 					  <tr>
-					  <th><b>Total Amount:</b></th>
-					  <td><b>'.$rounded_total_amount.'</b></td>
+					  <th><b style="font-size: 12px;">Total Amount:</b></th>
+					  <td><b style="font-size: 12px;">'.$rounded_total_amount.'</b></td>
 					</tr>
 						</tbody>
 			          </table>
@@ -658,7 +658,7 @@ function getIndianCurrency(float $number)
 		$no = floor($no / $divider);
 		$i += $divider == 10 ? 1 : 2;
 		if ($number) {
-			$plural = (($counter = count($str)) && $number > 9) ? 's' : null;
+			$plural = (($counter = count($str)) && $number > 9) ? '' : null;
 			$hundred = ($counter == 1 && $str[0]) ? '' : null;
 			$str [] = ($number < 21) ? $words[$number].' '. $digits[$counter]. $plural.' '.$hundred:$words[floor($number / 10) * 10].' '.$words[$number % 10]. ' '.$digits[$counter].$plural.' '.$hundred;
 		} else $str[] = null;

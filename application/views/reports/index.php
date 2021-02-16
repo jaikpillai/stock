@@ -91,7 +91,7 @@
       <div class="form-group">
         <label for="gross_amount" class="col-sm-3 control-label" style="text-align:left;">Variation %</label>
         <div class="col-sm-9">
-          <input type="number" value=0 class="form-control" id="variation" name="variation" autocomplete="off" />
+          <input type="number" value=0 class="form-control" id="variation" name="variation" autocomplete="off" required />
         </div>
       </div>
 

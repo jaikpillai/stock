@@ -262,6 +262,13 @@
                     </div>
                   </div>
                 
+                  <div class="form-group">
+                    <label for="gst_amount" class="col-sm-5 control-label">GST Amount</label>
+                    <div class="col-sm-7">
+                      <input type="number" class="form-control" id="gst_amount" name="gst_amount" disabled autocomplete="off">
+                      <input type="hidden" class="form-control" id="gst_amount_value" name="gst_amount_value" autocomplete="off">
+                    </div>
+                  </div>
 
                   <div class="form-group">
                     <label for="other_charge" class="col-sm-5 control-label">Freight/Others</label>
@@ -271,15 +278,7 @@
                     </div>
                   </div>
                  
-                  <div class="form-group">
-                    <label for="paid_status" class="col-sm-5 control-label">Freight Paid</label>
-                    <div class="col-sm-7">
-                      <select type="text" class="form-control" id="paid_status" name="paid_status" onchange="subAmount();">
-                      <option value="1"  <?php if ($order_data['invoice_master']['is_payment_received'] == 1): ?> selected <?php endif; ?>>Yes</option>
-                      <option value="0"  <?php if ($order_data['invoice_master']['is_payment_received'] == 0): ?> selected <?php endif; ?>>No</option>
-                      </select>
-                    </div>
-                  </div>
+                 
                   
                   <div class="form-group">
                     <label for="roundoff" class="col-sm-5 control-label">Round off</label>
@@ -316,7 +315,7 @@
                        <tr id="terms_<?php echo $n; ?>">
                       <td>
 
-                            <select type="text" class="form-control terms" terms_row_id="<?php echo $n; ?>" id="terms_<?php echo $n; ?>" name="terms[]">
+                            <select type="text" class="form-control select_group terms" terms_row_id="<?php echo $n; ?>" id="terms_<?php echo $n; ?>" name="terms[]">
                             <option value="" ></option>
                             <?php foreach ($terms_data as $k => $v): ?>
                               <option value="<?php echo $v['s_no'] ?> " <?php if ($val['s_no'] == $v['s_no']): ?> selected <?php endif; ?>> <?php echo $v['description'] ?> </option>
@@ -722,6 +721,8 @@ var removed_row_count_terms =0;
 
     $("#total_discount").val(total_discount);
     $("#total_gst").val(total_gst);
+    $("#gst_amount").val(total_gst.toFixed(2));
+    $("#gst_amount_value").val(total_gst.toFixed(2));
      // /for
     totalSubAmount = totalSubAmount.toFixed(2);
 
@@ -742,15 +743,15 @@ var removed_row_count_terms =0;
     // $("#service_charge_value").val(service);
     
     // total amount
-    var freight=$("#paid_status").find(':selected').val();
+    // var freight=$("#paid_status").find(':selected').val();
     // console.log(freight);
     var totalAmount=0;
-    if(freight==0){
-    totalAmount = (Number(totalSubAmount) + Number($("#other_charge").val()));
-    }
-    else{
-      totalAmount = Number(totalSubAmount);
-    }
+    // if(freight==0){
+    totalAmount = Number(totalSubAmount) + Number($("#other_charge").val());
+    // }
+    // else{
+    //   totalAmount = Number(totalSubAmount);
+    // }
     totalAmount = totalAmount + total_gst;
     totalAmount = totalAmount.toFixed(2);
     // $("#net_amount").val(totalAmount);

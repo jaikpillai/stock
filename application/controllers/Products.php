@@ -404,7 +404,7 @@ class Products extends Admin_Controller
 
             $data = array(
                 // 'Item_ID' => $this->input->post('item_id'),
-                'Category_ID' => json_encode($this->input->post('category')) ,
+                'Category_ID' => $this->input->post('category') ,
                 'Company_ID' => $this->input->post('store'),
                 'Item_Name' => $this->input->post('product_name'),
         		'Item_Make' => $this->input->post('make'),
@@ -435,12 +435,12 @@ class Products extends Admin_Controller
         	);
 
             
-            if($_FILES['product_image']['size'] > 0) {
-                $upload_image = $this->upload_image();
-                $upload_image = array('image' => $upload_image);
+            // if($_FILES['product_image']['size'] > 0) {
+            //     $upload_image = $this->upload_image();
+            //     $upload_image = array('image' => $upload_image);
                 
-                $this->model_products->update($upload_image, $product_id);
-            }
+            //     $this->model_products->update($upload_image, $product_id);
+            // }
 
             $update = $this->model_products->update($data, $product_id);
             if($update == true) {
