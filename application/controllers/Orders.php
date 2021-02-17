@@ -441,8 +441,9 @@ class Orders extends Admin_Controller
 						  $discount_amount = $amount - ($amount * $v['discount'])/100;
 						  $less_discount=$less_discount+($amount * $v['discount'])/100;
 						  
-						 if($v['tax_id']>0){
-							$tax_data=$this->model_tax->getTaxData($v['tax_id']); 
+						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
+
+						 if($v['tax_id']){
 							
 							if(!in_array($v['tax_id'],$unique_tax)){
 							  array_push($unique_tax,$v['tax_id']);

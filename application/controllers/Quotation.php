@@ -422,7 +422,7 @@ class Quotation extends Admin_Controller
 						  $discount_amount = $amount - ($amount * $v['discount'])/100;
 						  $less_discount=$less_discount+($amount * $v['discount'])/100;
 						  
-						  if($v['tax_id']>0){
+						  if($v['tax_id']){
 						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
 						  $tax_value_temp=$tax_value_temp+$tax_data['sValue'];
 						  if(!in_array($v['tax_id'],$unique_tax)){

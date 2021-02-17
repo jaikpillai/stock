@@ -86,7 +86,7 @@ class Terms extends Admin_Controller
 
 	public function getTableTermsRow()
 	{
-		$products = $this->model_terms->getActiveTerms();
+		$products = $this->model_terms->getTermsData();
 
 		echo json_encode($products);
 	}

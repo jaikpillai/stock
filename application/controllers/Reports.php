@@ -125,6 +125,8 @@ class Reports extends Admin_Controller
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
 			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <style>@media print{@page {size: landscape}}</style>
+
 			</head>
 			<body onload="window.print();">
 			
@@ -151,7 +153,7 @@ class Reports extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			        <table class="table table-bordered"  style="font-size: 10px;" >
 					  <thead>';
 					  foreach ($invoice_data as $k => $v) {
 						$orders_items = $this->model_orders->getOrdersItemData($v['invoice_no']);
@@ -162,6 +164,9 @@ class Reports extends Admin_Controller
 								if(!in_array($v['tax_id'],$unique_tax)){
 								array_push($unique_tax,$v['tax_id']);
 								$grand_total_gst[$tax_data['sTax_Description']]=0;
+								$grand_gst_amount[$tax_data['sTax_Description']]=0;
+
+							
 								// $tax_array[$tax_data['sTax_Description']]=0;
 							  }
 						  }
@@ -177,7 +182,8 @@ class Reports extends Admin_Controller
 						<th>Amount</th>';
 						for($i = 0; $i < sizeof($unique_tax); $i++) {
 							$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 	
-							$html .= '<th>'.$tax_data['sTax_Description'].'</td>';
+							$html .= '<th>Amount '.$tax_data['sTax_Description'].'</th>
+							<th>'.$tax_data['sTax_Description'].'</th>';
 						}
 					// 	<th>Discount</th>
 					// 	<th>GST</th>
@@ -205,11 +211,7 @@ class Reports extends Admin_Controller
 
 					//   $discount_amount = $amount - ($amount * $v['discount'])/100;
 
-					if ($v['is_payment_received'] == 1) {
-						$payment = 'Yes';
-					} else {
-						$payment = 'No';
-					}
+					
 					$unique_tax_temp=array();
 					$tax_array=array();
 					
@@ -248,11 +250,15 @@ class Reports extends Admin_Controller
 								$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
 								$cgst_total=$cgst_total+$cgst;
 								$grand_total_gst[$tax_data['sTax_Description']]=$grand_total_gst[$tax_data['sTax_Description']]+$cgst_total;
-								$html .= '<td>'.$cgst_total.'</td>';
+								$grand_gst_amount[$tax_data['sTax_Description']] = $grand_gst_amount[$tax_data['sTax_Description']] + $tax_array[$tax_data['sTax_Description']];
+								$html .= '<td>'.$tax_array[$tax_data['sTax_Description']].'</td>
+								<td>'.$cgst_total.'</td>
+								';
 							}
 						}
 						}else{
-							$html .= '<td>0</td>';
+							$html .= '<td>0</td>
+							<td>0</td>';
 						}
 						}	
 						$html .= ' </tr>';
@@ -268,7 +274,9 @@ class Reports extends Admin_Controller
 							for($i = 0; $i < sizeof($unique_tax); $i++) {
 
 								$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 
-								$html .= '<td>'.$grand_total_gst[$tax_data['sTax_Description']].'</td>';
+								$html .= '<td>'.$grand_gst_amount[$tax_data['sTax_Description']] .'</td>
+								<td>'.$grand_total_gst[$tax_data['sTax_Description']].'</td>
+								';
 							}
 							
 
@@ -417,7 +425,7 @@ class Reports extends Admin_Controller
 			  <section class="invoice">
 			    <!-- title row -->
 				<div class="row">
-				<div class="col-xs-12 ">
+				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
 					'.$company_info['company_name'].'
 				  </h1>
@@ -453,7 +461,7 @@ class Reports extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			        <table class="table table-bordered"  style="font-size: 10px;" >
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -627,7 +635,7 @@ class Reports extends Admin_Controller
 			  <section class="invoice">
 			    <!-- title row -->
 				<div class="row">
-				<div class="col-xs-12 ">
+				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
 					'.$company_info['company_name'].'
 				  </h1>
@@ -665,7 +673,7 @@ class Reports extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			        <table class="table table-bordered"  style="font-size: 10px;">
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -730,7 +738,7 @@ class Reports extends Admin_Controller
 			      <div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
 			        <div class="table-responsive" >
-			          <table class="table table-bordered" >
+			          <table class="table table-bordered"  style="font-size: 10px;">
 			            <tr>
 			              <th style="width:50%">Total Discount:</th>
 			              <td>' . $grand_total_discount . '</td>
@@ -882,7 +890,7 @@ class Reports extends Admin_Controller
 			    <!-- title row -->
 				<div class="row">
 				
-				<div class="col-xs-12 ">
+				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
 					'.$company_info['company_name'].'
 				  </h1>
@@ -919,7 +927,7 @@ class Reports extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			        <table class="table table-bordered"  style="font-size: 10px;">
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -1088,7 +1096,7 @@ class Reports extends Admin_Controller
 			$item_data = $this->model_reports->getPartyInvoiceList($party_id, $date_From, $date_To);
 			$company_info = $this->model_company->getCompanyData(1);
 			// $product_data = $this->model_products->getProductData($item_id);
-			$party=$this->model_party->getPartyData($party_id);
+			$party_data=$this->model_party->getPartyData($party_id);
 
 
 			setlocale(LC_MONETARY, "en_US");
@@ -1116,7 +1124,7 @@ class Reports extends Admin_Controller
 			  <section class="invoice">
 			    <!-- title row -->
 				<div class="row">
-				<div class="col-xs-12 ">
+				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
 					'.$company_info['company_name'].'
 				  </h1>
@@ -1153,7 +1161,7 @@ class Reports extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			        <table class="table table-bordered"  style="font-size: 10px;">
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -1197,15 +1205,15 @@ class Reports extends Admin_Controller
 			      <!-- /.col -->
 			    </div>
 			    <!-- /.row -->
-			<div class="row">
+			<div class="row" >
 			    
 				<div class="col-xs-6 pull pull-right" style="page-break-inside: avoid">
 
 				  <div class="table-responsive" >
-					<table class="table table-bordered" >
+					<table class="table table-bordered"  style="font-size: 12px;">
 					  <tr>
 						<th style="width:50%">Grand Total</th>
-						<td>' . $grand_total . '</td>
+						<td><b>' . $grand_total . '</b></td>
 					  </tr>
 				   
 					</table>
@@ -1241,7 +1249,7 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
 			<div class="jumbotron my-auto">
-			<p><strong> ' . $party['party_name'] . '</strong> <br>have no invoices between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to )). ' </p>
+			<p><strong> ' . $party_data['party_name'] . '</strong> <br>have no invoices between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to )). ' </p>
 			<form action="' . base_url("reports") . '">
 			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 		</form>
@@ -1341,7 +1349,7 @@ class Reports extends Admin_Controller
 			  <section class="invoice">
 			  <!-- title row -->
 			  <div class="row">
-				<div class="col-xs-12 ">
+				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
 					'.$company_info['company_name'].'
 				  </h1>
@@ -1375,7 +1383,7 @@ class Reports extends Admin_Controller
 			    <!-- Table row -->
 			    <div class="row">
 			      <div class="col-xs-12 table-responsive">
-			        <table class="table table-bordered" >
+			        <table class="table table-bordered"  style="font-size: 10px;" >
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
@@ -1428,68 +1436,12 @@ class Reports extends Admin_Controller
 
 				echo $html;
 			} else {
-				$html = '<!-- Main content -->
-			<!DOCTYPE html>
-			<html>
-			<head>
-			  <meta charset="utf-8">
-			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' .date('d-m-Y', strtotime( $date_from )). ' to ' .date('d-m-Y', strtotime( $date_to )). '</title>
-			  <!-- Tell the browser to be responsive to screen width -->
-			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-			  <!-- Bootstrap 3.3.7 -->
-			  <link rel="stylesheet" href="' . base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css') . '">
-			  <!-- Font Awesome -->
-			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
-			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			</head>
-			<body >
-			
-			<div class="container h-100 d-flex justify-content-center">
-			<div class="jumbotron my-auto">
-			<p><strong> ' . $party['party_name'] . '</strong> <br>have no invoices between ' .date('d-m-Y', strtotime( $date_from )). ' and ' .date('d-m-Y', strtotime( $date_to)) . ' </p>
-			<form action="' . base_url("reports") . '">
-			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
-		</form>
-			</div>
-	 </div>
-			</body>
-			</html>
-			<script>
-			document.getElementById("closeBtn").addEventListener("click", function() {
-				window.close()
-			});
-			</script>';
+				$html = '';
 
 				echo $html;
 			}
 		} else {
-			$html = '<!-- Main content -->
-			<!DOCTYPE html>
-			<html>
-			<head>
-			  <meta charset="utf-8">
-			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' .date('d-m-Y', strtotime( $date_from)) . ' to ' .date('d-m-Y', strtotime( $date_to)) . '</title>
-			  <!-- Tell the browser to be responsive to screen width -->
-			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-			  <!-- Bootstrap 3.3.7 -->
-			  <link rel="stylesheet" href="' . base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css') . '">
-			  <!-- Font Awesome -->
-			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
-			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			</head>
-			<body >
-			
-			<div class="container h-100 d-flex justify-content-center">
-    				<div class="jumbotron my-auto">
-					<p> Please provide necessary dates </p>
-					<form action="' . base_url("reports") . '">
-					<button class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
-				</form>
-    				</div>
-			</body>
-			</html>';
+			$html = '';
 
 			echo $html;;
 		}
