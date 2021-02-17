@@ -467,6 +467,10 @@ class Reports extends Admin_Controller
 						<th>S.N.</th>
 						<th>Invoice Number</th>
 						<th>Invoice Date</th>
+						<th>Party Name</th>
+
+						<th>Qty</th>
+
 
 						
 
@@ -481,6 +485,7 @@ class Reports extends Admin_Controller
 				foreach ($item_data as $k => $v) {
 
 					$total_qty_sold = $total_qty_sold + 1;
+					$party_data = $this->model_party->getPartyData($v['party_id']);
 
 
 
@@ -498,6 +503,10 @@ class Reports extends Admin_Controller
 							<td>' . $index . '</td>
 							<td>' . $v['invoice_no'] . '</td>
 							<td>' . date('d-m-Y', strtotime($v['invoice_date'] )). '</td>
+							<td>' . $party_data['party_name'] . '</td>
+							<td>' . $v['qty'] . '</td>
+
+
 			          	</tr>';
 				}
 
