@@ -67,7 +67,7 @@ class Quotation extends Admin_Controller
 			
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('quotation/printDiv/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a target="__blank" href="'.base_url('quotation/quotation/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
@@ -280,7 +280,7 @@ class Quotation extends Admin_Controller
 	* It gets the product id and fetch the order data. 
 	* The order print logic is done here 
 	*/
-	public function printDiv($id)
+	public function quotation($id)
 	{
 		if(!in_array('viewOrder', $this->permission)) {
             redirect('dashboard', 'refresh');
@@ -572,7 +572,7 @@ class Quotation extends Admin_Controller
 			      <!-- /.col -->
 			    </div>
 				<!-- /.row -->
-				<footer>
+				<footer style="font-size: 10px;">
 				<div style=" border-top: 2px solid;padding: 10px;">
 				<div class="row">
 				

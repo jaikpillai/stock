@@ -64,7 +64,7 @@ class Orders extends Admin_Controller
 			$buttons = '';
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('orders/printDiv/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a target="__blank" href="'.base_url('orders/invoice/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
@@ -287,7 +287,7 @@ class Orders extends Admin_Controller
 	* It gets the product id and fetch the order data. 
 	* The order print logic is done here 
 	*/
-	public function printDiv($id)
+	public function invoice($id)
 	{
 
 		

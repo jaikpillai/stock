@@ -366,7 +366,7 @@ var removed_row_count_terms =0;
   {
     if(id) {
       $.ajax({
-        url: base_url + 'orders/printDiv/' + id,
+        url: base_url + 'orders/invoice/' + id,
         type: 'post',
         success:function(response) {
           var mywindow = window.open('', 'new div', 'height=1000,width=1500');
