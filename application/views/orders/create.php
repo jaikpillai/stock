@@ -382,7 +382,7 @@
 
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Create Invoice</button>
                 <a href="<?php echo base_url('orders/') ?>" class="btn btn-warning">Back</a>
               </div>
             </form>

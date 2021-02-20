@@ -67,15 +67,15 @@ class Quotation extends Admin_Controller
 			
 
 			if(in_array('viewOrder', $this->permission)) {
-				$buttons .= '<a target="__blank" href="'.base_url('quotation/quotation/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
+				$buttons .= '<a style="font-size: 25px;" target="__blank" href="'.base_url('quotation/quotation/'.$value['s_no']).'" class="btn btn-default"><i class="fa fa-print"></i></a>';
 			}
 
 			if(in_array('updateOrder', $this->permission)) {
-				$buttons .= ' <a href="'.base_url('quotation/update/'.$value['s_no'].'/'.$value['quotation_no'].'').'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
+				$buttons .= ' <a style="font-size: 25px;" href="'.base_url('quotation/update/'.$value['s_no'].'/'.$value['quotation_no'].'').'" class="btn btn-default"><i class="fa fa-pencil"></i></a>';
 			}
 
 			if(in_array('deleteOrder', $this->permission)) {
-				$buttons .= ' <button type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].', '.$value['quotation_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
+				$buttons .= ' <button style="font-size: 25px;" type="button" class="btn btn-default" onclick="removeFunc('.$value['s_no'].', '.$value['quotation_no'].')" data-toggle="modal" data-target="#removeModal"><i class="fa fa-trash"></i></button>';
 			}
 
 			// if($value['is_payment_received'] == 1) {
