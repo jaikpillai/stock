@@ -188,6 +188,17 @@ class Orders extends Admin_Controller
 		echo json_encode($tax);
 	}
 
+
+	public function getProductfromSearch($search_text){
+
+		// $search_text = $this->input->post('search_text');
+		$products = $this->model_products->getProductfromSearch($search_text);
+		echo ($search_text);
+		echo json_encode($products);
+
+	}
+
+
 	/*
 	* If the validation is not valid, then it redirects to the edit orders page 
 	* If the validation is successfully then it updates the data into the database 

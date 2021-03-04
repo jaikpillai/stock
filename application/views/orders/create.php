@@ -406,10 +406,167 @@ var removed_row_count =0;
 var removed_row_count_terms=0;
 </script>
 
+
 <script type="text/javascript">
   var base_url = "<?php echo base_url(); ?>";
 
+  $(function() {
+    
+  });
+//   $(document).ready(function() {
+
+
+// $(".testproduct").keydown(function(){
+
+
+
+// var text = $(this).val();
+// console.log(text);
+// var elt = $(this);
+// // var id = $(this).id;
+
+
+
+
+
+
+// });
+// });
+
   $(document).ready(function() {
+
+
+    
+
+    $("#product_2").select2({
+  ajax: {
+    url: "https://api.github.com/search/repositories",
+    dataType: 'json',
+    delay: 250,
+    data: function (params) {
+      return {
+        q: params.term, // search term
+        page: params.page
+      };
+    },
+    processResults: function (data, params) {
+      // parse the results into the format expected by Select2
+      // since we are using custom formatting functions we do not need to
+      // alter the remote JSON data, except to indicate that infinite
+      // scrolling can be used
+      params.page = params.page || 1;
+
+      return {
+        results: data.items,
+        pagination: {
+          more: (params.page * 30) < data.total_count
+        }
+      };
+    },
+    cache: true
+  },
+  placeholder: 'Search for a repository',
+  minimumInputLength: 1,
+  templateResult: formatRepo,
+  templateSelection: formatRepoSelection
+});
+
+function formatRepo (repo) {
+  if (repo.loading) {
+    return repo.text;
+  }
+
+  var $container = $(
+    "<div class='select2-result-repository clearfix'>" +
+      "<div class='select2-result-repository__avatar'><img src='" + repo.owner.avatar_url + "' /></div>" +
+      "<div class='select2-result-repository__meta'>" +
+        "<div class='select2-result-repository__title'></div>" +
+        "<div class='select2-result-repository__description'></div>" +
+        "<div class='select2-result-repository__statistics'>" +
+          "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
+          "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
+          "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
+        "</div>" +
+      "</div>" +
+    "</div>"
+  );
+
+  $container.find(".select2-result-repository__title").text(repo.full_name);
+  $container.find(".select2-result-repository__description").text(repo.description);
+  $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
+  $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
+  $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
+
+  return $container;
+}
+
+function formatRepoSelection (repo) {
+  return repo.full_name || repo.text;
+}
+
+
+
+
+  //   $(document).on('keydown', ".testproduct",function () {
+  //       var text = $(this).val();
+  //       console.log(text);
+       
+  //       var elt = $(this);
+  //       var id = $(this).attr('id');
+  //       console.log(id);
+
+
+
+
+
+
+
+  //       $('#'+id).autocomplete({
+
+  //      source: function(request, response){
+  //       $.ajax({
+  //       url:  base_url + '/orders/getProductfromSearch/',
+  //       type: 'post',
+  //       data: {search_text: request.term},
+  //       dataType: 'jsonp',
+        
+  //       success: function (data) {
+  //         response( data );
+  //         console.log(data)
+  //       // response($.map(response, function (item) {
+  //       //   console.log(response);
+  //       //     return {
+  //       //         label: item.Item_Name,
+  //       //         value: item.Item_ID
+  //       //     };
+  //       // }));
+  //     }
+
+  //       })
+      
+  //      },
+  //      select: function (event, ui) {
+  //    // Set selection
+  //    $('#'+id).val(ui.item.Item_Name); // display the selected text
+  //    $('#selectuser_id').val(ui.item.Item_ID); // save selected id to input
+  //    return false;
+  // },
+  // focus: function(event, ui){
+  //    $('#'+id).val( ui.item.Item_Name );
+  //    $( "#selectuser_id" ).val( ui.item.Item_ID );
+  //    return false;
+  //  },
+       
+     
+  //    });
+
+
+  //     });
+
+
+
+
+
     $(".select_group").select2();
     // $("#description").wysihtml5();
 
@@ -473,6 +630,10 @@ var removed_row_count_terms=0;
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
       var row_id = count_table_tbody_tr + 1 + Number(removed_row_count);
+
+
+
+
       // var tax_data;
 
       // $.ajax({
@@ -484,8 +645,89 @@ var removed_row_count_terms=0;
       //     }
       //   });
 
-      $.ajax({
-          url: base_url + '/orders/getTableProductRow/',
+
+      //----------------
+    //   $.ajax({
+    //       url: base_url + '/orders/getTableProductRow/',
+    //       type: 'post',
+    //       dataType: 'json',
+    //       success:function(response) {
+            
+
+    //         // console.log(reponse.x);
+    //         var html = '<tr id="row_'+row_id+'">'+
+            
+    //         //  '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
+    //         // '<td>'+ 
+                 
+    //             //  '<select class="form-control select_group product" data-row-id="'+row_id+'" id="code_'+row_id+'" name="code[]" style="width:100%;" onchange="getProductDataFromCode('+row_id+')">'+
+
+    //             //      '<option value=""></option>';
+    //             //      $.each(response, function(index, value) {
+    //             //        html += '<option value="'+value.Item_Code+'" data-code-id="'+value.Item_ID+'">'+value.Item_Code+'</option>';             
+    //             //      });
+                     
+    //             //    html += '</select>'+
+    //             //  '</td>'+ 
+                     
+    //              '<td><input type="hidden" name="code[]" id="code_'+row_id+'" class="form-control" autocomplete="off"> <div style="max-width:300px">'+ 
+                 
+    //               '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+
+    //                   '<option value=""></option>';
+    //                   $.each(response, function(index, value) {
+    //                     html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
+    //                   });
+                      
+    //                 html += '</select>'+
+    //               '</div></td>'+ 
+
+    //               '<td><div style="min-width:60px"><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></div></td>'+
+    //               '<td><div style="min-width:60px"><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></div></td>'+
+    //               '<td><div style="min-width:60px"><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></div></td>'+                    
+    //               '<td><div style="min-width:80px"><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></div></td>'+
+    //               '<td><div style="min-width:60px"><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></div></td>'+
+                  
+
+    //               '<td>'+ 
+                 
+    //              '<select class="form-control select_group product" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+
+    //                  '<option value=""></option>';
+    //                  $.each(response['tax_data'], function(index, value) {
+    //                    html += '<option value="'+value.iTax_ID+'" data-tax-value="'+value.sValue+'">'+value.sTax_Description+'</option>';
+
+    //                  });
+                     
+    //                html += '</select>'+
+    //              '</td>'+ 
+
+    //               // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control"><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
+                  
+    //               '<td><div style="min-width:100px"><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></div></td>'+
+    //               '<td><button type="button" class="btn btn-danger" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
+    //               '</tr>';
+
+    //           if(count_table_tbody_tr >= 1) {
+    //           $("#product_info_table tbody tr:last").after(html);  
+    //         }
+    //         else {
+    //           $("#product_info_table tbody").html(html);
+    //         }
+
+    //         $(".product").select2();
+
+    //     }
+    //     });
+
+       
+
+    //   return false;
+    // });
+
+
+    $.ajax({
+          url: base_url + '/orders/getTableTaxData/',
           type: 'post',
           dataType: 'json',
           success:function(response) {
@@ -512,12 +754,19 @@ var removed_row_count_terms=0;
                   '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                       '<option value=""></option>';
-                      $.each(response, function(index, value) {
-                        html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
-                      });
+                      // $.each(response, function(index, value) {
+                      //   html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
+                      // });
                       
                     html += '</select>'+
+
+                        
+
+
+                  
+                  // '<input class="testproduct form-control" name="product[]" id="product_'+row_id+'" autocomplete="off" list="data_product_'+row_id+'"><datalist id="data_product_'+row_id+'"> </datalist>
                   '</div></td>'+ 
+                  
 
                   '<td><div style="min-width:60px"><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></div></td>'+
                   '<td><div style="min-width:60px"><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></div></td>'+
@@ -531,7 +780,7 @@ var removed_row_count_terms=0;
                  '<select class="form-control select_group product" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                      '<option value=""></option>';
-                     $.each(response['tax_data'], function(index, value) {
+                     $.each(response, function(index, value) {
                        html += '<option value="'+value.iTax_ID+'" data-tax-value="'+value.sValue+'">'+value.sTax_Description+'</option>';
 
                      });
@@ -552,15 +801,18 @@ var removed_row_count_terms=0;
               $("#product_info_table tbody").html(html);
             }
 
-            $(".product").select2();
+            // $(".product").select2();
+            initailizeSelect2();
 
         }
         });
 
-      return false;
-    });
+       
 
-  }); // /document
+      return false;
+  });
+
+  // }); // /document
 
   function getTotal(row = null) {
     if(row) {
@@ -605,7 +857,7 @@ var removed_row_count_terms=0;
   // get the product information from the server
   function getProductData(row_id)
   {
-    var product_id = $("#product_"+row_id).val();   
+    var product_id = $('#product_'+row_id).val();   
      
 
     // $("#code_"+row_id).val(product_id);
@@ -832,4 +1084,43 @@ var removed_row_count_terms=0;
     $('#challan_date').attr('max', maxDate);
 
 });
+
+
+
+  });
+
+  function initailizeSelect2(){
+    var search;
+
+    $('.product').select2({
+  placeholder: "Select item...",
+  width: '100%',
+  ajax: {
+    type: "GET",
+    // dataType: 'json',
+    
+    
+    url: function(params) {
+      // console.log("ajax func", params);
+      var url = base_url + '/orders/getProductfromSearch/' + params.term
+      search = params.term;
+      return url;
+    },
+   
+    cache: true,
+    processResults: function(data) {
+      
+      var newdata = $.map(data, function (obj) {
+        obj.id = obj.id || obj.Item_ID;
+        obj.text = obj.text || obj.Item_Name; // replace name with the property used for the text
+
+        return obj;
+      });
+
+      console.log(newdata);
+    },
+  }
+});
+
+  } 
 </script>
