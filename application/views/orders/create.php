@@ -854,6 +854,44 @@ function formatRepoSelection (repo) {
     }
   }
 
+
+  
+  function initailizeSelect2(){
+    var search;
+
+    $('.product').select2({
+      placeholder: "Select item...",
+      width: '100%',
+      ajax: {
+        type: "GET",
+        // dataType: 'json',
+        
+        
+        url: function(params) {
+          // console.log("ajax func", params);
+          var url = base_url + '/orders/getProductfromSearch/' + params.term
+          search = params.term;
+          return url;
+        },
+
+        processResults: function(data, page) {
+          console.log(data);
+                // return { results: data };
+                return {
+                        results: $.map(JSON.parse(data), function(item) {
+                            return {
+                                text: item.text,
+                                id: item.id
+                            }
+                        })
+                    };
+            },
+                minimumInputLength: 1
+          }
+      });
+
+  } 
+
   // get the product information from the server
   function getProductData(row_id)
   {
@@ -1089,38 +1127,4 @@ function formatRepoSelection (repo) {
 
   });
 
-  function initailizeSelect2(){
-    var search;
-
-    $('.product').select2({
-  placeholder: "Select item...",
-  width: '100%',
-  ajax: {
-    type: "GET",
-    // dataType: 'json',
-    
-    
-    url: function(params) {
-      // console.log("ajax func", params);
-      var url = base_url + '/orders/getProductfromSearch/' + params.term
-      search = params.term;
-      return url;
-    },
-   
-    cache: true,
-    processResults: function(data) {
-      
-      var newdata = $.map(data, function (obj) {
-        obj.id = obj.id || obj.Item_ID;
-        obj.text = obj.text || obj.Item_Name; // replace name with the property used for the text
-
-        return obj;
-      });
-
-      console.log(newdata);
-    },
-  }
-});
-
-  } 
 </script>

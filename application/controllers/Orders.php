@@ -193,8 +193,18 @@ class Orders extends Admin_Controller
 
 		// $search_text = $this->input->post('search_text');
 		$products = $this->model_products->getProductfromSearch($search_text);
-		echo ($search_text);
-		echo json_encode($products);
+		$dataArray = array();
+		foreach($products as $k => $v) {
+			$data=array();
+			$data['id']=$v['Item_ID'];
+			$data['text']= $v['Item_Name'];
+			array_push($dataArray,$data);
+			
+		}
+		// $search_result['results']=$dataArray;
+		$search_result=$dataArray;
+		// echo ($search_text);
+		echo json_encode($search_result);
 
 	}
 
