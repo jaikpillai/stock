@@ -197,7 +197,7 @@ class Orders extends Admin_Controller
 		foreach($products as $k => $v) {
 			$data=array();
 			$data['id']=$v['Item_ID'];
-			$data['text']= $v['Item_Name'];
+			$data['text']= $v['Item_Code']. " , " .$v['Item_Name'];
 			array_push($dataArray,$data);
 			
 		}

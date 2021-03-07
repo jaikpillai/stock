@@ -214,11 +214,9 @@
                         <td>
                         <input type="hidden" name="code[]" id="code_1" class="form-control" autocomplete="off">
                         <div style="max-width:300px">
-                        <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
+                        <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" required>
                             <option value=""></option>
-                            <?php foreach ($products as $k => $v): ?>
-                              <option value="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Code'].' , '.$v['Item_Name'] ?></option>
-                            <?php endforeach ?>
+                           
                           </select>
                             </div>
                         </td>
@@ -259,7 +257,7 @@
                             </div>
                         </td>
                         <td>
-                        <select class="form-control select_group product" data-row-id="row_1" name="gst[]" id="gst_1" style="width:100%;" onchange=subAmount();>
+                        <select class="form-control select_group tax" data-row-id="row_1" name="gst[]" id="gst_1" style="width:100%;" onchange=subAmount();>
                             <option value=""></option>
                             <?php foreach ($tax_data as $k => $v): ?>
                               <option value="<?php echo $v['iTax_ID'] ?> " data-tax-value="<?php echo $v['sValue'] ?> "> <?php echo $v['sTax_Description'] ?> </option>
@@ -438,136 +436,20 @@ var removed_row_count_terms=0;
 
     
 
-    $("#product_2").select2({
-  ajax: {
-    url: "https://api.github.com/search/repositories",
-    dataType: 'json',
-    delay: 250,
-    data: function (params) {
-      return {
-        q: params.term, // search term
-        page: params.page
-      };
-    },
-    processResults: function (data, params) {
-      // parse the results into the format expected by Select2
-      // since we are using custom formatting functions we do not need to
-      // alter the remote JSON data, except to indicate that infinite
-      // scrolling can be used
-      params.page = params.page || 1;
-
-      return {
-        results: data.items,
-        pagination: {
-          more: (params.page * 30) < data.total_count
-        }
-      };
-    },
-    cache: true
-  },
-  placeholder: 'Search for a repository',
-  minimumInputLength: 1,
-  templateResult: formatRepo,
-  templateSelection: formatRepoSelection
-});
-
-function formatRepo (repo) {
-  if (repo.loading) {
-    return repo.text;
-  }
-
-  var $container = $(
-    "<div class='select2-result-repository clearfix'>" +
-      "<div class='select2-result-repository__avatar'><img src='" + repo.owner.avatar_url + "' /></div>" +
-      "<div class='select2-result-repository__meta'>" +
-        "<div class='select2-result-repository__title'></div>" +
-        "<div class='select2-result-repository__description'></div>" +
-        "<div class='select2-result-repository__statistics'>" +
-          "<div class='select2-result-repository__forks'><i class='fa fa-flash'></i> </div>" +
-          "<div class='select2-result-repository__stargazers'><i class='fa fa-star'></i> </div>" +
-          "<div class='select2-result-repository__watchers'><i class='fa fa-eye'></i> </div>" +
-        "</div>" +
-      "</div>" +
-    "</div>"
-  );
-
-  $container.find(".select2-result-repository__title").text(repo.full_name);
-  $container.find(".select2-result-repository__description").text(repo.description);
-  $container.find(".select2-result-repository__forks").append(repo.forks_count + " Forks");
-  $container.find(".select2-result-repository__stargazers").append(repo.stargazers_count + " Stars");
-  $container.find(".select2-result-repository__watchers").append(repo.watchers_count + " Watchers");
-
-  return $container;
-}
-
-function formatRepoSelection (repo) {
-  return repo.full_name || repo.text;
-}
-
-
-
-
-  //   $(document).on('keydown', ".testproduct",function () {
-  //       var text = $(this).val();
-  //       console.log(text);
-       
-  //       var elt = $(this);
-  //       var id = $(this).attr('id');
-  //       console.log(id);
 
 
 
 
 
 
-
-  //       $('#'+id).autocomplete({
-
-  //      source: function(request, response){
-  //       $.ajax({
-  //       url:  base_url + '/orders/getProductfromSearch/',
-  //       type: 'post',
-  //       data: {search_text: request.term},
-  //       dataType: 'jsonp',
-        
-  //       success: function (data) {
-  //         response( data );
-  //         console.log(data)
-  //       // response($.map(response, function (item) {
-  //       //   console.log(response);
-  //       //     return {
-  //       //         label: item.Item_Name,
-  //       //         value: item.Item_ID
-  //       //     };
-  //       // }));
-  //     }
-
-  //       })
-      
-  //      },
-  //      select: function (event, ui) {
-  //    // Set selection
-  //    $('#'+id).val(ui.item.Item_Name); // display the selected text
-  //    $('#selectuser_id').val(ui.item.Item_ID); // save selected id to input
-  //    return false;
-  // },
-  // focus: function(event, ui){
-  //    $('#'+id).val( ui.item.Item_Name );
-  //    $( "#selectuser_id" ).val( ui.item.Item_ID );
-  //    return false;
-  //  },
-       
-     
-  //    });
-
-
-  //     });
 
 
 
 
 
     $(".select_group").select2();
+    initailizeSelect2();
+    
     // $("#description").wysihtml5();
 
     $("#mainOrderNav").addClass('active');
@@ -751,11 +633,11 @@ function formatRepoSelection (repo) {
                      
                  '<td><input type="hidden" name="code[]" id="code_'+row_id+'" class="form-control" autocomplete="off"> <div style="max-width:300px">'+ 
                  
-                  '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                  '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" >'+
 
                       '<option value=""></option>';
                       // $.each(response, function(index, value) {
-                      //   html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
+                      //   html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';    onchange="getProductData('+row_id+')"         
                       // });
                       
                     html += '</select>'+
@@ -777,7 +659,7 @@ function formatRepoSelection (repo) {
 
                   '<td>'+ 
                  
-                 '<select class="form-control select_group product" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                 '<select class="form-control select_group tax" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
 
                      '<option value=""></option>';
                      $.each(response, function(index, value) {
@@ -857,6 +739,8 @@ function formatRepoSelection (repo) {
 
   
   function initailizeSelect2(){
+
+  
     var search;
 
     $('.product').select2({
@@ -875,7 +759,7 @@ function formatRepoSelection (repo) {
         },
 
         processResults: function(data, page) {
-          console.log(data);
+          // console.log(data);
                 // return { results: data };
                 return {
                         results: $.map(JSON.parse(data), function(item) {
@@ -888,7 +772,21 @@ function formatRepoSelection (repo) {
             },
                 minimumInputLength: 1
           }
-      });
+      }).on('change', function (e) {
+        var str = $("#s2id_search_code .select2-choice span").text();
+        
+        console.log();
+        var row_id = $(this).attr('id').replace('product_','');
+        getProductData(row_id);
+        
+
+
+    
+    //this.value
+        }).on('select', function (e) {
+          console.log("select");  
+
+});
 
   } 
 
