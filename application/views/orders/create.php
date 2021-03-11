@@ -451,17 +451,14 @@ var removed_row_count_terms=0;
 
     initailizeSelect2();
     $(".tax").select2()
-            
-            .on('change', function (e) {
+    .on('change', function (e) {
         var row_id = $(this).attr('id').replace('gst_','');
         getTotal(row_id)
       })
-        .on('select', function (e) {
+      .on('select', function (e) {
           var row_id = $(this).attr('id').replace('gst_','');
         getTotal(row_id)
-
-
-});
+      });
     
     // $("#description").wysihtml5();
 
@@ -697,22 +694,14 @@ var removed_row_count_terms=0;
             }
 
             $(".tax").select2()
-            
             .on('change', function (e) {
-        var row_id = $(this).attr('id').replace('gst_','');
-        getTotal(row_id)
-      })
-        .on('select', function (e) {
-          var row_id = $(this).attr('id').replace('gst_','');
-        getTotal(row_id)
-
-});
+              var row_id = $(this).attr('id').replace('gst_','');
+              getTotal(row_id)
+            }).on('select', function (e) {
+                var row_id = $(this).attr('id').replace('gst_','');
+                getTotal(row_id)
+              });
       
-      
-
-
-
-
             initailizeSelect2();
 
         }
@@ -816,7 +805,7 @@ var removed_row_count_terms=0;
         }).on('select', function (e) {
           console.log("select");  
 
-});
+    });
 
   } 
 

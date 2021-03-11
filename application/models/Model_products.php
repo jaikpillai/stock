@@ -34,7 +34,7 @@ class Model_products extends CI_Model
 
 
 	public function getProductfromSearch($search_text){
-		$sql = "SELECT * FROM item_master WHERE active = 1 AND Item_Name  LIKE '%$search_text%' OR Item_Code LIKE '%$search_text%' ORDER BY Item_ID";
+		$sql = "SELECT * FROM item_master WHERE active = 1 AND Item_Name  LIKE '%$search_text%' OR Item_Code LIKE '%$search_text%' ORDER BY Item_ID LIMIT 20";
 		// $sql = "SELECT * FROM item_master ORDER BY Item_ID DESC";
 
 		$query = $this->db->query($sql, array(1));

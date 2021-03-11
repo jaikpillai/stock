@@ -51,8 +51,8 @@ class Model_orders extends CI_Model
 		if (!$order_id) {
 			return false;
 		}
-
-		$sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
+		$sql="SELECT * FROM invoice_item JOIN item_master WHERE invoice_item.invoice_no=? AND item_master.Item_ID=invoice_item.item_id";
+		// $sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
 		$query = $this->db->query($sql, array($order_id));
 		return $query->result_array();
 	}
