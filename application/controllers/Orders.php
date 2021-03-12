@@ -201,12 +201,44 @@ class Orders extends Admin_Controller
 			array_push($dataArray,$data);
 			
 		}
+
+		
+
+
+
 		// $search_result['results']=$dataArray;
 		$search_result=$dataArray;
 		// echo ($search_text);
 		echo json_encode($search_result);
 
 	}
+
+
+	public function getPartyfromSearch($search_text){
+
+		// $search_text = $this->input->post('search_text');
+		$products = $this->model_party->getPartyfromSearch($search_text);
+		$dataArray = array();
+		foreach($products as $k => $v) {
+			$data=array();
+			$data['id']=$v['party_id'];
+			$data['text']= $v['party_name'];
+			array_push($dataArray,$data);
+			
+		}
+
+		
+
+
+
+		// $search_result['results']=$dataArray;
+		$search_result=$dataArray;
+		// echo ($search_text);
+		echo json_encode($search_result);
+
+	}
+
+
 
 
 	/*

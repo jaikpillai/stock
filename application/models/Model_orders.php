@@ -13,7 +13,7 @@ class Model_orders extends CI_Model
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
 		if ($id) {
-			$sql = "SELECT * FROM invoice_master WHERE s_no = ? AND `status` = 1 ORDER BY invoice_no DESC";
+			$sql = "SELECT * FROM invoice_master JOIN party_master WHERE invoice_master.s_no = ? AND invoice_master.status = 1 AND party_master.party_id = invoice_master.party_id";
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}

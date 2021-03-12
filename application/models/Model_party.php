@@ -43,6 +43,14 @@ class Model_party extends CI_Model
 		// return $query->result_array();
 	}
 
+	public function getPartyfromSearch($search_text){
+		$sql = "SELECT * FROM party_master WHERE active = 1 AND party_name  LIKE '%$search_text%' LIMIT 20";
+		// $sql = "SELECT * FROM item_master ORDER BY Item_ID DESC";
+
+		$query = $this->db->query($sql, array(1));
+		return $query->result_array();
+	}
+
 	public function getLastID()
 	{
 		$sql = "SELECT  MAX(party_id) FROM party_master";

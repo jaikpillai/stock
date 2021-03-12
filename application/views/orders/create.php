@@ -68,13 +68,13 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party Name</label>
+                    <label for="gross_amount" class="col-sm-5 control-label " style="text-align:left;">Party Name</label>
                     <div class="col-sm-7">
-                    <select class="form-control select_group partySelect" id="party" name="party" style="width:100%;" required>
+                    <select class="form-control select_group party_select" id="party" name="party" style="width:100%;" required>
                             <option value="" disabled selected>--Select--</option>
-                            <?php foreach ($party_data as $k => $v): ?>
-                              <option value="<?php echo $v['party_id'] ?>"><?php echo $v['party_name'] ?></option>
-                            <?php endforeach ?>
+                       
+                           
+                           
                           </select>
                       
                     </div>
@@ -443,11 +443,11 @@ var removed_row_count_terms=0;
 
 
 
-
-
-
-
     $(".select_group").select2();
+
+    initailizeParty();
+
+   
 
     initailizeSelect2();
     $(".tax").select2()
@@ -763,7 +763,7 @@ var removed_row_count_terms=0;
     var search;
 
     $('.product').select2({
-      placeholder: "Select item...",
+      placeholder: "--Select item--",
       width: '100%',
       ajax: {
         type: "GET",
@@ -808,6 +808,42 @@ var removed_row_count_terms=0;
     });
 
   } 
+
+function initailizeParty(){
+var search;
+
+$('.party_select').select2({
+  placeholder: "--Select Party--",
+  width: '100%',
+  ajax: {
+    type: "GET",
+    // dataType: 'json',
+    
+    
+    url: function(params) {
+      // console.log("ajax func", params);
+      var url = base_url + '/orders/getPartyfromSearch/' + params.term
+      search = params.term;
+      return url;
+    },
+
+    processResults: function(data, page) {
+      // console.log(data);
+            // return { results: data };
+            return {
+                    results: $.map(JSON.parse(data), function(item) {
+                        return {
+                            text: item.text,
+                            id: item.id
+                        }
+                    })
+                };
+        },
+            minimumInputLength: 1
+      }
+  });
+
+} 
 
   // get the product information from the server
   function getProductData(row_id)

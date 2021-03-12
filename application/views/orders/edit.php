@@ -65,7 +65,7 @@
                   <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party Name</label>
                     <div class="col-sm-7">
-                    <select class="form-control select_group" id="party" name="party" style="width:100%;" required>
+                    <select class="form-control select_group party_select" id="party" name="party" style="width:100%;" required>
                             <!-- <option value="" disabled></option> -->
                             <?php foreach ($party_data as $k => $v): ?>
                             
@@ -95,7 +95,7 @@
                   <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Payment Mode</label>
                     <div class="col-sm-7">
-                    <select class="form-control select_group product" id="paymode" name="paymode" style="width:100%;" required>
+                    <select class="form-control select_group" id="paymode" name="paymode" style="width:100%;" required>
                     <option value="" disabled selected> <?php echo ucfirst($order_data['invoice_master']['mode_of_payment']) ?></option>
                    
                     <option value="Cash"  <?php if ($order_data['invoice_master']['mode_of_payment'] == "Cash"): ?> selected <?php endif; ?>>Cash</option>
@@ -177,9 +177,9 @@
                            <div style="max-width:300px">
                           <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
                               <option value=""></option>
-                              <!-- <?php foreach ($products as $k => $v): ?> -->
+                              
                                 <option value="<?php echo $val['Item_ID'] ?>" <?php echo "selected='selected'"; ?>><?php echo $val['Item_Code'].' , '.$val['Item_Name'] ?></option>
-                                <!-- <?php endforeach ?> -->
+                           
              
                             </select>
                               </div>
@@ -383,6 +383,7 @@ var removed_row_count_terms =0;
    
     $(".select_group").select2();
     initailizeSelect2();
+    initailizeParty();
     $(".tax").select2()
     .on('change', function (e) {
         var row_id = $(this).attr('id').replace('gst_','');
@@ -532,7 +533,18 @@ var removed_row_count_terms =0;
               $("#product_info_table tbody").html(html);
             }
 
-            $(".product").select2();
+            $(".tax").select2()
+            .on('change', function (e) {
+              var row_id = $(this).attr('id').replace('gst_','');
+              getTotal(row_id)
+            }).on('select', function (e) {
+                var row_id = $(this).attr('id').replace('gst_','');
+                getTotal(row_id)
+              });
+      
+            initailizeSelect2();
+
+            
 
         }
         });
@@ -923,6 +935,43 @@ $('.product').select2({
   }).on('select', function (e) {
       console.log("select");
     });
+
+} 
+
+
+function initailizeParty(){
+var search;
+
+$('.party_select').select2({
+  placeholder: "--Select Party--",
+  width: '100%',
+  ajax: {
+    type: "GET",
+    // dataType: 'json',
+    
+    
+    url: function(params) {
+      // console.log("ajax func", params);
+      var url = base_url + '/orders/getPartyfromSearch/' + params.term
+      search = params.term;
+      return url;
+    },
+
+    processResults: function(data, page) {
+      // console.log(data);
+            // return { results: data };
+            return {
+                    results: $.map(JSON.parse(data), function(item) {
+                        return {
+                            text: item.text,
+                            id: item.id
+                        }
+                    })
+                };
+        },
+            minimumInputLength: 1
+      }
+  });
 
 } 
 
