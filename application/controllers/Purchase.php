@@ -99,6 +99,8 @@ class Purchase extends Admin_Controller
 		echo json_encode($result);
 	}
 
+	
+
 	/*
 	* If the validation is not valid, then it redirects to the create page.
 	* If the validation for each input field is valid then it inserts the data into the database 

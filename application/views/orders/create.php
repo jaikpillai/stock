@@ -437,12 +437,6 @@ var removed_row_count_terms=0;
     
 
 
-
-
-
-
-
-
     $(".select_group").select2();
 
     initailizeParty();
