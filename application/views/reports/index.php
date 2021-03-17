@@ -77,7 +77,7 @@
       <div class="form-group">
         <label for="product" class="col-sm-3 control-label" style="text-align:left;">Select Make</label>
         <div class="col-sm-9">
-          <select class="form-control select_group product" id="itemMake" name="itemMake" required>
+          <select class="form-control select_group" id="itemMake" name="itemMake" required>
 
             <?php foreach ($item_make as $k => $v) : ?>
               <option value="<?php echo $v['item_make'] ?>" ><?php echo $v['item_make'] ?></option>

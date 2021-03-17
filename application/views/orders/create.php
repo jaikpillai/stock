@@ -345,7 +345,7 @@
                 </div>
               </div>
 
-              <div class="col-md-12 col-xs-12 pull pull-right">
+              <div class="col-md-12 col-xs-12 pull pull-right" style="display:none">
                 <table class="table table-bordered" id="terms_info_table">
                     <thead>
                       <tr>
