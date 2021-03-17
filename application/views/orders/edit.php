@@ -490,7 +490,7 @@ var removed_row_count_terms =0;
                      
                  '<td><input type="hidden" name="code[]" id="code_'+row_id+'" class="form-control" autocomplete="off"> <div style="max-width:300px">'+ 
                  
-                  '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                  '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" '+
 
                       '<option value=""></option>';
                       // $.each(response, function(index, value) {
@@ -509,7 +509,7 @@ var removed_row_count_terms =0;
 
                   '<td>'+ 
                  
-                 '<select class="form-control select_group tax" data-row-id="'+row_id+'" name="gst[]" id="gst_'+row_id+'"  style="width:100%;" onchange="getProductData('+row_id+')">'+
+                 '<select class="form-control select_group tax" data-row-id="'+row_id+'" name="gst[]" id="gst_'+row_id+'"  style="width:100%;" '+
 
                      '<option value=""></option>';
                      $.each(response, function(index, value) {

@@ -100,6 +100,13 @@ class Quotation extends Admin_Controller
 		echo json_encode($result);
 	}
 
+
+		public function getTableTaxData()
+	{
+		$tax = $this->model_tax->getTaxData();
+
+		echo json_encode($tax);
+	}
 	/*
 	* If the validation is not valid, then it redirects to the create page.
 	* If the validation for each input field is valid then it inserts the data into the database 
@@ -177,6 +184,8 @@ class Quotation extends Admin_Controller
 
 		echo json_encode($products);
 	}
+
+
 
 	/*
 	* If the validation is not valid, then it redirects to the edit orders page 

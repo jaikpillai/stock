@@ -12,7 +12,7 @@ class Model_quotation extends CI_Model
 	{
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 		if($id) {
-			$sql = "SELECT * FROM quotation_master WHERE s_no = ? AND status = 1 "  ;
+			$sql = "SELECT * FROM quotation_master JOIN party_master WHERE quotation_master.s_no = ? AND quotation_master.status = 1  AND party_master.party_id = quotation_master.party_id"  ;
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
@@ -57,7 +57,7 @@ class Model_quotation extends CI_Model
 			return false;
 		}
 
-		$sql = "SELECT * FROM quotation_item WHERE quotation_no = ?";
+		$sql = "SELECT * FROM quotation_item JOIN item_master WHERE quotation_item.quotation_no = ? AND item_master.Item_ID=quotation_item.item_id";
 		$query = $this->db->query($sql, array($order_id));
 		return $query->result_array();
 	}
@@ -366,7 +366,7 @@ class Model_quotation extends CI_Model
 
 					'quotation_no' =>  $this->input->post('quotation_no'),
 					'item_id' => $this->input->post('product')[$x],
-					'item_code' => $this->input->post('code_value')[$x],
+					'item_code' => $this->input->post('code')[$x],
 					'item_make' => $this->input->post('make_value')[$x],
 					'qty' => $this->input->post('qty')[$x],
 					'unit' => $this->input->post('unit_value')[$x],

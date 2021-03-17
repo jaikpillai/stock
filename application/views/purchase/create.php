@@ -70,11 +70,9 @@
                   <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party</label>
                     <div class="col-sm-7">
-                    <select class="form-control select_group product" id="party" name="party" style="width:100%;" required>
+                    <select class="form-control select_group party_select" id="party" name="party" style="width:100%;" required>
                             <option value="" disabled selected>--Select--</option>
-                            <?php foreach ($party_data as $k => $v): ?>
-                              <option value="<?php echo $v['party_id'] ?>"><?php echo $v['party_name'] ?></option>
-                            <?php endforeach ?>
+                            
                           </select>
                       
                     </div>
@@ -148,11 +146,9 @@
                         
                         <td>
                         <input type="hidden" name="code[]" id="code_1" class="form-control" autocomplete="off">
-                        <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;" onchange="getProductData(1)" required>
+                        <select class="form-control select_group product" data-row-id="row_1" id="product_1" name="product[]" style="width:100%;"  required>
                             <option value=""></option>
-                            <?php foreach ($products as $k => $v): ?>
-                              <option value="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Code'].' , '.$v['Item_Name'] ?></option>
-                            <?php endforeach ?>
+                           
                           </select>
                         </td>
                         <!-- <td>
@@ -170,7 +166,7 @@
 
                         <td>
                         <!-- <input type="number" name="qty[]" id="qty_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)"> -->
-                        <input type="number" name="qty[]" id="qty_1" class="form-control">
+                        <input type="number" name="qty[]" id="qty_1" class="form-control total_calculator_qty">
                         
                         </td>
 
@@ -181,7 +177,7 @@
                         </td>
                         <td>
                           <!-- <input type="number" name="rate[]" id="rate_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)" autocomplete="off"> -->
-                          <input type="number" name="rate[]" id="rate_1" class="form-control" autocomplete="off">
+                          <input type="number" name="rate[]" id="rate_1" class="form-control  total_calculator_rate" autocomplete="off">
                           <input type="hidden" name="rate_value[]" id="rate_value_1" class="form-control" autocomplete="off">
                         </td>
                         <!-- <td>
@@ -197,7 +193,7 @@
                           <input type="hidden" name="amount_value[]" id="amount_value_1" class="form-control" autocomplete="off">
                         </td>
                          -->
-                        <td><button type="button" class="btn btn-danger" onclick="removeRow(1)"><i class="fa fa-close"></i></button></td>
+                        <td><button type="button" class="btn btn-danger removeProduct" id="removeProduct_1"><i class="fa fa-close"></i></button></td>
                      </tr>
                    </tbody>
                 </table>
@@ -271,7 +267,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Create Purchase</button>
+                <button type="submit" class="btn btn-primary removeProduct" >Create Purchase</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
               </div>
             </form>
@@ -293,12 +289,21 @@
 <script type="text/javascript">
 var removed_row_count =0;
 </script>
-
 <script type="text/javascript">
+
+
+
   var base_url = "<?php echo base_url(); ?>";
 
   $(document).ready(function() {
     $(".select_group").select2();
+   
+
+    initailizeParty();
+
+   
+
+    initailizeSelect2();
     // $("#description").wysihtml5();
 
     $("#mainPurchaseNav").addClass('active');
@@ -319,11 +324,6 @@ var removed_row_count =0;
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
       var row_id = count_table_tbody_tr + 1 + Number(removed_row_count);
 
-      $.ajax({
-          url: base_url + '/purchase/getTableProductRow/',
-          type: 'post',
-          dataType: 'json',
-          success:function(response) {
             
               // console.log(reponse.x);
                var html = '<tr id="row_'+row_id+'">'+
@@ -331,25 +331,25 @@ var removed_row_count =0;
                        
                    '<td><input type="hidden" name="code[]" id="code_'+row_id+'" class="form-control" autocomplete="off">'+ 
                    
-                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" >'+
 
                         '<option value=""></option>';
-                        $.each(response, function(index, value) {
-                          html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
-                        });
+                        // $.each(response, function(index, value) {
+                        //   html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
+                        // });
                         
                       html += '</select>'+
                     '</td>'+ 
                     // '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
 
                     '<td><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></td>'+
+                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control total_calculator_qty"></td>'+
                     '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
-                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')" class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><button type="button" class="btn btn-danger" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
+                    '<td><button type="button" class="btn btn-danger removeProduct" id="removeProduct_'+row_id+'"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
 
                 if(count_table_tbody_tr >= 1) { 
@@ -360,14 +360,14 @@ var removed_row_count =0;
               }
 
               $(".product").select2();
+              initailizeSelect2();
 
-          }
-        });
+      
 
       return false;
     });
 
-  }); // /document
+   // /document
 
   function getTotal(row = null) {
     if(row) {
@@ -408,6 +408,95 @@ var removed_row_count =0;
       alert('no row !! please refresh the page');
     }
   }
+
+
+function initailizeSelect2(){
+
+  
+var search;
+
+$('.product').select2({
+  placeholder: "--Select item--",
+  width: '100%',
+  ajax: {
+    type: "GET",
+    // dataType: 'json',
+    
+    
+    url: function(params) {
+      // console.log("ajax func", params);
+      var url = base_url + '/orders/getProductfromSearch/' + params.term
+      search = params.term;
+      return url;
+    },
+
+    processResults: function(data, page) {
+      // console.log(data);
+            // return { results: data };
+            return {
+                    results: $.map(JSON.parse(data), function(item) {
+                        return {
+                            text: item.text,
+                            id: item.id
+                        }
+                    })
+                };
+        },
+            minimumInputLength: 1
+      }
+  }).on('change', function (e) {
+    var str = $("#s2id_search_code .select2-choice span").text();
+    
+    console.log();
+    var row_id = $(this).attr('id').replace('product_','');
+    getProductData(row_id);
+    
+
+
+
+//this.value
+    }).on('select', function (e) {
+      console.log("select");  
+
+});
+
+} 
+
+function initailizeParty(){
+var search;
+
+$('.party_select').select2({
+placeholder: "--Select Party--",
+width: '100%',
+ajax: {
+type: "GET",
+// dataType: 'json',
+
+
+url: function(params) {
+  // console.log("ajax func", params);
+  var url = base_url + '/orders/getPartyfromSearch/' + params.term
+  search = params.term;
+  return url;
+},
+
+processResults: function(data, page) {
+  // console.log(data);
+        // return { results: data };
+        return {
+                results: $.map(JSON.parse(data), function(item) {
+                    return {
+                        text: item.text,
+                        id: item.id
+                    }
+                })
+            };
+    },
+        minimumInputLength: 1
+  }
+});
+
+} 
 
   // get the product information from the server
   function getProductData(row_id)
@@ -590,4 +679,46 @@ var removed_row_count =0;
     $('#ref_date').attr('max', maxDate);
 
 });
+
+
+$(document).on('keyup change', ".total_calculator_qty",function () {
+    // do stuff!
+    var row_id = $(this).attr('id').replace('qty_','');
+    getTotal(row_id);
+})
+
+$(document).on('keyup change', ".total_calculator_rate",function () {
+    // do stuff!
+    var row_id = $(this).attr('id').replace('rate_','');
+    getTotal(row_id);
+})
+
+// $(document).on('keyup change', ".total_calculator_discount",function () {
+//     // do stuff!
+//     var row_id = $(this).attr('id').replace('discount_','');
+//     getTotal(row_id);
+// })
+
+
+// $(document).on('keyup change', "#other_charge",function () {
+//     // do stuff!
+//     subAmount();
+// })
+
+
+$(document).on('click', ".tandc",function () {
+    // do stuff!
+    var row_id = $(this).attr('id').replace('remove_','');
+    removeTerms(row_id);
+})
+
+
+$(document).on('click', ".removeProduct",function () {
+    // do stuff!
+    var row_id = $(this).attr('id').replace('removeProduct_','');
+    removeRow(row_id);
+})
+// 
+});
+ 
 </script>

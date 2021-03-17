@@ -69,7 +69,7 @@
                   <div class="form-group">
                     <label for="gross_amount" class="col-sm-5 control-label" style="text-align:left;">Party Name</label>
                     <div class="col-sm-7">
-                    <select class="form-control select_group product" id="party" name="party" style="width:100%;" required>
+                    <select class="form-control select_group party_select" id="party" name="party" style="width:100%;" required>
                             <!-- <option value="" disabled></option> -->
                             <?php foreach ($party_data as $k => $v): ?>
                             
@@ -146,9 +146,10 @@
                         <input type="hidden" name="code[]" id="code_<?php echo $x; ?>" class="form-control" value="<?php echo $val['item_code'] ?>" autocomplete="off">
                           <select class="form-control select_group product" data-row-id="row_<?php echo $x; ?>" id="product_<?php echo $x; ?>" name="product[]" style="width:100%;" onchange="getProductData(<?php echo $x; ?>)" required>
                               <option value=""></option>
-                              <?php foreach ($products as $k => $v): ?>
-                                <option value="<?php echo $v['Item_ID'] ?>" <?php if($val['item_id'] == $v['Item_ID']) { echo "selected='selected'"; } ?>><?php echo $v['Item_Code'].' , '.$v['Item_Name'] ?></option>
-                                <?php endforeach ?>
+                             
+
+                                <option value="<?php echo $val['Item_ID'] ?>" <?php  echo "selected='selected'"; ?>><?php echo $val['Item_Code'].' , '.$val['Item_Name'] ?></option>
+                                
              
                             </select>
                           </td>
@@ -162,14 +163,14 @@
                           <input type="hidden" name="make_value[]" id="make_value_<?php echo $x; ?>" value="<?php echo $val['item_make']?>"  class="form-control" autocomplete="off">
                         </td>
                           <!-- <td><input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control" required onkeyup="getTotal(<?php echo $x; ?>)" value="<?php echo $val['qty'] ?>" autocomplete="off"></td> -->
-                          <td><input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control" required value="<?php echo $val['qty'] ?>" autocomplete="off"></td>
+                          <td><input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control total_calculator_qty" required value="<?php echo $val['qty'] ?>" autocomplete="off"></td>
                           <td>
                           <input type="text" name="unit[]" id="unit_<?php echo $x; ?>" class="form-control" value="<?php echo $val['unit']?>" disabled autocomplete="off">
                           <input type="hidden" name="unit_value[]" id="unit_value_<?php echo $x; ?>"  value="<?php echo $val['unit']?>" class="form-control" autocomplete="off">
                         </td>
                           <td>
                           <!-- <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control"   value="<?php echo $val['rate'] ?>" onchange= "getTotal(<?php echo $x; ?>)" onkeyup="getTotal(<?php echo $x; ?>)" autocomplete="off"> -->
-                            <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control"   value="<?php echo $val['rate'] ?>" autocomplete="off">
+                            <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control total_calculator_rate"   value="<?php echo $val['rate'] ?>" autocomplete="off">
                             <input type="hidden" name="rate_value[]" id="rate_value_<?php echo $x; ?>" class="form-control" value="<?php echo $val['rate'] ?>" autocomplete="off">
                           </td>
                           <!-- <td>
@@ -184,7 +185,7 @@
                             <input type="text" name="amount[]" id="amount_<?php echo $x; ?>" class="form-control" disabled value="<?php  ?>" autocomplete="off">
                             <input type="hidden" name="amount_value[]" id="amount_value_<?php echo $x; ?>" class="form-control" value="<?php  ?>" autocomplete="off">
                           </td> -->
-                          <td><button type="button" class="btn btn-danger" onclick="removeRow('<?php echo $x; ?>')"><i class="fa fa-close"></i></button></td>
+                          <td><button type="button" class="btn btn-danger removeProduct"  id="removeProduct_<?php echo $x ?>" ><i class="fa fa-close"></i></button></td>
                        </tr>
                        <?php $x++; ?>
                      <?php endforeach; ?>
@@ -253,7 +254,8 @@ var removed_rows_count =0;
    
     $(".select_group").select2();
     // $("#description").wysihtml5();
-    
+    initailizeSelect2();
+    initailizeParty();
 
 
     $("#mainPurchaseNav").addClass('active');
@@ -272,35 +274,30 @@ var removed_rows_count =0;
       var row_id = count_table_tbody_tr + 1 +Number(removed_rows_count);
       
 
-      $.ajax({
-          url: base_url + '/purchase/getTableProductRow/',
-          type: 'post',
-          dataType: 'json',
-          success:function(response) {
             
 
               // console.log(reponse.x);
                var html = '<tr id="row_'+row_id+'">'+
 
                    '<td><input type="hidden" name="code[]" id="code_1" class="form-control" autocomplete="off">'+ 
-                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                    '<select class="form-control select_group product" data-row-id="'+row_id+'" id="product_'+row_id+'" name="product[]" style="width:100%;" >'+
 
                         '<option value=""></option>';
-                        $.each(response, function(index, value) {
-                          html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
-                        });
+                        // $.each(response, function(index, value) {
+                        //   html += '<option value="'+value.Item_ID+'">'+value.Item_Code+' , '+value.Item_Name+'</option>';             
+                        // });
                         
                       html += '</select>'+
                     '</td>'+ 
                     // '<td><input type="text" name="code[]" id="code_'+row_id+'" class="form-control" disabled><input type="hidden" name="code_value[]" id="code_value_'+row_id+'" class="form-control"></td>'+
                     '<td><input type="text" name="make[]" id="make_'+row_id+'" class="form-control" disabled><input type="hidden" name="make_value[]" id="make_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"></td>'+
+                    '<td><input type="number" name="qty[]" id="qty_'+row_id+'" class="form-control total_calculator_qty" ></td>'+
                     '<td><input type="text" name="unit[]" id="unit_'+row_id+'" class="form-control" disabled><input type="hidden" name="unit_value[]" id="unit_value_'+row_id+'" class="form-control"></td>'+                    
-                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control" onchange="getTotal('+row_id+')" onkeyup="getTotal('+row_id+')"><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
+                    '<td><input type="text" name="rate[]" id="rate_'+row_id+'" class="form-control total_calculator_rate" ><input type="hidden" name="rate_value[]" id="rate_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="discount[]"  id="discount_'+row_id+'" onkeyup="getTotal('+row_id+')" onchange="getTotal('+row_id+')"  class="form-control" ><input type="hidden" name="discount_value[]" id="discount_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control" disabled><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
                     // '<td><input type="text" name="amount[]" id="amount_'+row_id+'" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_'+row_id+'" class="form-control"></td>'+
-                    '<td><button type="button" class="btn btn-danger" onclick="removeRow('+row_id+')"><i class="fa fa-close"></i></button></td>'+
+                    '<td><button type="button" class="btn btn-danger removeProduct" id="removeProduct_'+row_id+'"><i class="fa fa-close"></i></button></td>'+
                     '</tr>';
 
                 if(count_table_tbody_tr >= 1) {
@@ -311,9 +308,8 @@ var removed_rows_count =0;
               }
 
               $(".product").select2();
+              initailizeSelect2();
 
-          }
-        });
      
      
 
@@ -329,7 +325,7 @@ var removed_rows_count =0;
 
     }
 
-  }); // /document
+  // /document
 
 //purana
   // function getTotal(row = null) {
@@ -385,6 +381,95 @@ var removed_rows_count =0;
       alert('no row !! please refresh the page');
     }
   }
+
+
+  function initailizeSelect2(){
+
+  
+var search;
+
+$('.product').select2({
+  placeholder: "--Select item--",
+  width: '100%',
+  ajax: {
+    type: "GET",
+    // dataType: 'json',
+    
+    
+    url: function(params) {
+      // console.log("ajax func", params);
+      var url = base_url + '/orders/getProductfromSearch/' + params.term
+      search = params.term;
+      return url;
+    },
+
+    processResults: function(data, page) {
+      // console.log(data);
+            // return { results: data };
+            return {
+                    results: $.map(JSON.parse(data), function(item) {
+                        return {
+                            text: item.text,
+                            id: item.id
+                        }
+                    })
+                };
+        },
+            minimumInputLength: 1
+      }
+  }).on('change', function (e) {
+    var str = $("#s2id_search_code .select2-choice span").text();
+    
+    console.log();
+    var row_id = $(this).attr('id').replace('product_','');
+    getProductData(row_id);
+    
+
+
+
+//this.value
+    }).on('select', function (e) {
+      console.log("select");  
+
+});
+
+} 
+
+function initailizeParty(){
+var search;
+
+$('.party_select').select2({
+placeholder: "--Select Party--",
+width: '100%',
+ajax: {
+type: "GET",
+// dataType: 'json',
+
+
+url: function(params) {
+  // console.log("ajax func", params);
+  var url = base_url + '/orders/getPartyfromSearch/' + params.term
+  search = params.term;
+  return url;
+},
+
+processResults: function(data, page) {
+  // console.log(data);
+        // return { results: data };
+        return {
+                results: $.map(JSON.parse(data), function(item) {
+                    return {
+                        text: item.text,
+                        id: item.id
+                    }
+                })
+            };
+    },
+        minimumInputLength: 1
+  }
+});
+
+} 
 
   // get the product information from the server
   function getProductData(row_id)
@@ -622,4 +707,38 @@ var removed_rows_count =0;
     $('#ref_date').attr('max', maxDate);
 
 });
+
+
+$(document).on('keyup change', ".total_calculator_qty",function () {
+    // do stuff!
+    var row_id = $(this).attr('id').replace('qty_','');
+    getTotal(row_id);
+})
+
+$(document).on('keyup change', ".total_calculator_rate",function () {
+    // do stuff!
+    var row_id = $(this).attr('id').replace('rate_','');
+    getTotal(row_id);
+})
+
+// $(document).on('keyup change', ".total_calculator_discount",function () {
+//     // do stuff!
+//     var row_id = $(this).attr('id').replace('discount_','');
+//     getTotal(row_id);
+// })
+
+
+// $(document).on('keyup change', "#other_charge",function () {
+//     // do stuff!
+//     subAmount();
+// })
+
+
+
+$(document).on('click', ".removeProduct",function () {
+    // do stuff!
+    var row_id = $(this).attr('id').replace('removeProduct_','');
+    removeRow(row_id);
+})
+}); 
 </script>

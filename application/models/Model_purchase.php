@@ -15,7 +15,7 @@ class Model_purchase extends CI_Model
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
 		if($id) {
-			$sql = "SELECT * FROM purchase_master WHERE s_no = ? AND status = 1 "  ;
+			$sql = "SELECT * FROM purchase_master JOIN party_master WHERE purchase_master.s_no = ? AND purchase_master.status = 1 AND party_master.party_id = purchase_master.party_id"  ;
 			$query = $this->db->query($sql, array($id));
 			return $query->row_array();
 		}
@@ -59,7 +59,7 @@ class Model_purchase extends CI_Model
 			return false;
 		}
 
-		$sql = "SELECT * FROM purchase_item WHERE purchase_no = ?";
+		$sql = "SELECT * FROM purchase_item JOIN item_master WHERE purchase_item.purchase_no = ? AND item_master.Item_ID=purchase_item.item_id";
 		$query = $this->db->query($sql, array($order_id));
 		return $query->result_array();
 	}
@@ -174,12 +174,12 @@ class Model_purchase extends CI_Model
 				
     			'purchase_no' =>  $this->input->post('purchase_no'),
 				'item_id' => $this->input->post('product')[$x],
-				'item_code' => $this->input->post('code_value')[$x],
+				// 'item_code' => $this->input->post('code_value')[$x],
 				'item_make' => $this->input->post('make_value')[$x],
 				'qty' => $this->input->post('qty')[$x],
 				'unit' => $this->input->post('unit_value')[$x],
 				'rate' => $this->input->post('rate')[$x],
-				'discount' => $this->input->post('discount')[$x],
+				// 'discount' => $this->input->post('discount')[$x],
 				// 'tax' => $this->input->post('gst_value')[$x],
 				'financial_year_id' => $financial_year_id,
 				'status' => 1
@@ -354,12 +354,12 @@ class Model_purchase extends CI_Model
 
 					'purchase_no' =>  $this->input->post('purchase_no'),
 					'item_id' => $this->input->post('product')[$x],
-					'item_code' => $this->input->post('code_value')[$x],
+					// 'item_code' => $this->input->post('code_value')[$x],
 					'item_make' => $this->input->post('make_value')[$x],
 					'qty' => $this->input->post('qty')[$x],
 					'unit' => $this->input->post('unit_value')[$x],
 					'rate' => $this->input->post('rate')[$x],
-					'discount' => $this->input->post('discount')[$x],
+					// 'discount' => $this->input->post('discount')[$x],
 					'financial_year_id' => $financial_year_id,
 					'status' => 1
 
