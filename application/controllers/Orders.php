@@ -769,7 +769,6 @@ class Orders extends Admin_Controller
 			  
 			  body{
 				width: 21cm;
-				height: 29.7cm;
 				margin: auto;
 				margin-top:20px;
 				margin-bottom:30px;
