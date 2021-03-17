@@ -388,6 +388,14 @@ class Orders extends Admin_Controller
 			  <link rel="stylesheet" href="'.base_url('assets/bower_components/font-awesome/css/font-awesome.min.css').'">
 			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.min.css').'">
 			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <style>
+			  
+			  body{
+				width: 21cm;
+				height: 29.7cm;
+				margin: auto;
+		   		} 
+			  </style>
 			</head>
 			<body onload="window.print();">
 			
@@ -683,15 +691,16 @@ class Orders extends Admin_Controller
 				}
 					
 					$html.='</div>
-					<br><br><br><br><br>
-					<b>Receiver\'s Signature</b><br>
+					
 			      </div>
 			      <!-- /.col -->
 			      
-			      <div class="col invoice-footer" style="page-break-inside: avoid">
-				  <b>For '.$company_info['company_name'].'</b>
+			      <div class="row" style="page-break-inside: avoid">
+				  <div class="col-xs-6"><br><br>
+					<b>Receiver\'s Signature</b><br></div>
+				  <div class="col-xs-6" style="text-align:right"><b>For '.$company_info['company_name'].'</b>
 				  <br><br><br>
-				  <b>Authorised Signatory</b><br>
+				  <b>Authorised Signatory</b><br></div>
 
 			      </div>
 				  <!-- /.col -->
@@ -704,6 +713,388 @@ class Orders extends Admin_Controller
 			  </section>
 			  <!-- /.content -->
 			</div>
+		</body>
+	</html>';
+
+			  echo $html;
+		}
+	}
+
+	public function printtest($id){
+		
+		
+		if(!in_array('viewOrder', $this->permission)) {
+            redirect('dashboard', 'refresh');
+        }
+        
+		if($id) {
+			$order_data = $this->model_orders->getOrdersData($id);
+			$orders_items = $this->model_orders->getOrdersItemData($id);
+			$footer_items = $this->model_terms->getTermsDataInOrder($id);
+			$company_info = $this->model_company->getCompanyData(1);
+			$party_data = $this->model_party->getPartyData($order_data['party_id']);
+			$bank_details=$this->model_company->getBankDetails();
+
+			$order_date = strtotime($order_data['invoice_date']);
+			$order_date = date( 'd/m/Y', $order_date );
+			$paid_status = ($order_data['is_payment_received'] == 1) ? "Yes" : "No";
+			$freight_other_charge = $order_data['other_charges'];
+			$order_date=date('d-m-Y', strtotime($order_data['order_date']));
+			$invoice_date=date('d-m-Y', strtotime($order_data['invoice_date']));
+			
+			if(strtotime($order_data['order_date'])<0){
+				$order_date='';
+			}
+
+			if(strtotime($order_data['invoice_date'])<0){
+				$invoice_date='';
+			}
+
+			$html = '<!-- Main content -->
+			<!DOCTYPE html>
+			<html>
+			<head>
+			  <meta charset="utf-8">
+			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+			  <title>Invoice No.: '.$order_data['invoice_no'].'</title>
+			  <!-- Tell the browser to be responsive to screen width -->
+			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+			  <!-- Bootstrap 3.3.7 -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/bootstrap/dist/css/bootstrap.min.css').'">
+			  <!-- Font Awesome -->
+			  <link rel="stylesheet" href="'.base_url('assets/bower_components/font-awesome/css/font-awesome.min.css').'">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.min.css').'">
+			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <style>
+			  
+			  body{
+				width: 21cm;
+				height: 29.7cm;
+				margin: auto;
+		   		} 
+			  </style>
+			</head>
+			<body onload="window.print();">
+
+			<table>
+				<thead>
+					<tr><td>
+					<div class="row">
+				  		<div class="col-xs-12 ">
+				  			<h5 class="invoice-title-address">GST INVOICE</h5>
+			        			<h1 class="invoice-title-name">
+			          			'.$company_info['company_name'].'
+								</h1>
+							<h6 class="invoice-title-address">
+			          '.$company_info['address'].'
+					</h6>
+					<div class="display-flex">
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+					Phone No:'.$company_info['phone'].'
+					</h6>
+					<h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
+			          Email:'.$company_info['email'].'
+					</h6>
+					</div>
+			      </div>
+			      <!-- /.col -->
+			    </div>
+				<!-- info row -->
+				<div class="invoice-border">
+			    <div class="row invoice-info" style="margin-right: -8px;">
+			      
+				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top" style="font-size: 12px;">
+				  <div class="padding-10">
+					<b>Sold To:<br> M/s. </b> '.$party_data ['party_name'].'<br>'.$party_data ['address'].'<br><br>
+					<b>GST No.:</b> '.$party_data ['gst_number'].'<br>
+					</div>
+					<div class="invoice-boxes padding-10">
+					<div class="col-sm-6 invoice-col padding-0">
+					<b>Order/Challan No.:</b> '.$order_data['order_no'].' </div>
+					<div class="col-sm-6 invoice-col padding-0">
+					<b>Date.:</b> '.$order_date.' </div><br>
+
+			      </div>
+
+			      </div>
+				  <!-- /.col -->
+				  <div class="col-sm-6 invoice-col table-bordered-invoice invoice-top">
+				  <div class="padding-5" style="text-align: center;background: lightgray;">
+					<b>'.ucfirst($order_data['mode_of_payment']).' Memo</b><br>
+					</div>
+					<div class="invoice-boxes padding-5">
+					<b>Invoice No.: '.$order_data['invoice_no'].'</b>
+
+				  </div>
+				  <div class="invoice-boxes padding-5" style="font-size: 12px;">
+					<b>Date.:</b> '.$invoice_date.'
+
+				  </div>
+				  <div class="invoice-boxes padding-5" style="font-size: 12px;">
+					<b>Dispatch Through.:</b> '.$order_data['dispatched_through'].'
+				  </div>
+				  
+				  <div class="invoice-boxes padding-5" style="font-size: 12px;">
+					<div class="col-sm-6 invoice-col padding-0">
+					<b>GR No.</b> '.$order_data['gr_rr_no'].' </div>
+
+			      </div>
+
+			      </div>
+				  <!-- /.col -->
+			    </div>
+			    <!-- /.row -->	
+					</td></tr>
+				</thead>
+				<tbody>
+					<tr><td>
+					<div class="col-xs-12 table-responsive table-invoice">
+			        <table class="table table-bordered-invoice" style="font-size: 10px;">
+			          <thead>
+					  <tr>
+						<th>S.N.</th>
+						<th>Code</th>
+			            <th>Description</th>
+						<th>Make</th>
+			            <th>Qty</th>
+						<th>Unit</th>
+						<th>Rate</th>
+						<th>Disc. %</th>
+						<th>GST</th>
+			            <th>Amount</th>
+			          </tr>
+			          </thead>
+			          <tbody>'; 
+					  $total = 0;
+					  $less_discount=0;
+					  $tax_per_item=0;
+					  $total_with_gst=0;
+					//   $tax_array;
+					  $unique_tax=array();
+					  
+			          foreach ($orders_items as $k => $v) {
+						
+						  $product_data = $this->model_products->getProductData($v['item_id']); 
+						  $amount = $v['qty']*$v['rate'];
+						  $total = $total + $amount; 
+						 
+						  $index = $k + 1;
+
+						  $discount_amount = $amount - ($amount * $v['discount'])/100;
+						  $less_discount=$less_discount+($amount * $v['discount'])/100;
+						  
+						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
+
+						 if($v['tax_id']){
+							
+							if(!in_array($v['tax_id'],$unique_tax)){
+							  array_push($unique_tax,$v['tax_id']);
+							  $tax_array[$tax_data['sTax_Description']]=0;
+							}
+  
+							$tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;
+						  }else{
+							  $tax_data['sValue']=0;
+						  }
+							
+			          	
+						  $html .= '<tr>
+							<td>'.$index.'</td>
+							<td>'.$product_data['Item_Code'].'</td>
+							<td>'.$product_data['Item_Name'].'</td>
+							<td>'.$product_data['Item_Make'].'</td>
+							<td>'.$v['qty'].'</td>
+							<td>'.$v['unit'].'</td>
+							<td>'.$v['rate'].'</td>
+							<td>'.$v['discount'].'</td>
+							<td>'.$tax_data['sValue'].'</td>
+				            <td>'.$discount_amount.'</td>
+			          	</tr>';
+					  }
+
+					// $tax_value = $order_data['tax_value'];
+					$gross_total = $total - $order_data['total_discount'];
+					// $total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
+					$final_total = $gross_total + $freight_other_charge;
+					$rounded_total_amount = round($final_total);
+					$round_off =  ($rounded_total_amount - $total_with_gst);
+					$round_off = round($round_off, 2);
+
+			          $html .= '</tbody>
+			        </table>
+			      </div>
+			      <!-- /.col -->
+			    </div>
+				</tr></td>
+				<tr><td>
+			    <!-- /.row -->
+
+			<div class="row" style="overflow: hidden; ">
+			<div class="col-xs-8">';
+			$gst_total_amount=0;
+			
+			if(!empty($unique_tax))
+			{$html .='
+			<div class="table-responsive" >
+			  <table class="table table-bordered" style="font-size: 10px;" >
+			  <thead>
+			  <tr>
+					<th>Amount</th>
+					<th>CGST%</th>
+					<th>CGST</th>
+					<th>SGST%</th>
+					<th>SGST</th>
+				</tr>
+				</thead>
+				<tbody>';
+
+				$total_amount_gst=0;
+				$cgst_total=0;
+				
+				for($i = 0; $i < sizeof($unique_tax); $i++) {
+
+					$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 
+					$cgst_percent=$tax_data['sValue']/2;
+					$cgst=$tax_array[$tax_data['sTax_Description']]*$cgst_percent/100;
+					$cgst=number_format($cgst, 2, '.', '');
+					$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
+					$cgst_total=$cgst_total+$cgst;
+
+					if($cgst>0){
+					$html .= '<tr>
+					  <td>'.$tax_array[$tax_data['sTax_Description']].'</td>
+					  <td>'.$cgst_percent.'</td>
+					  <td>'.$cgst.'</td>
+					  <td>'.$cgst_percent.'</td>
+					  <td>'.$cgst.'</td>
+					</tr>';}
+				}
+
+				$gst_total_amount=$cgst_total+$cgst_total;
+
+				$total_with_gst=$final_total+$cgst_total+$cgst_total;
+
+				$rounded_total_amount = round($total_with_gst);
+				$round_off =  ($rounded_total_amount - $total_with_gst);
+				$round_off = round($round_off, 2);
+				// $amount_in_words=getIndianCurrency(floatval($rounded_total_amount));
+
+				$html .= '<tr>
+					  <td><b>'.$total_amount_gst.'</b></td>
+					  <td></td>
+					  <td><b>'.$cgst_total.'</b></td>
+					  <td></td>
+					  <td><b>'.$cgst_total.'</b></td>
+					</tr>';
+	
+				  $html .='
+				  
+				  </tbody>
+			  </table>
+			</div>';}
+			$html .='<div>
+			<h5><b>'.strtoupper(getIndianCurrency(floatval($rounded_total_amount))).'</b></h5>
+			</div>
+		  </div>
+			 <div class="col-xs-4" style="font-size: 10px;">
+
+			        <div class="table-responsive" >
+					  <table class="table table-bordered " style="font-size: 10px;" >
+					  <tbody>
+			            <tr>
+			              <th style="width:50%">Total:</th>
+			              <td>'.$total.'</td>
+						</tr>
+						<tr>
+			              <th style="width:50%">Less Discount:</th>
+			              <td>'.$less_discount.'</td>
+						</tr>
+						<tr>
+			              <th style="width:50%">Net Amount:</th>
+			              <td>'.$gross_total.'</td>
+						</tr>
+						<tr>
+			              <th style="width:50%">GST Amount:</th>
+			              <td>'.$gst_total_amount.'</td>
+						</tr>
+						<tr>
+						<th>Freight/Others</th>
+						<td>'.$order_data['other_charges'].'</td>
+					  </tr>
+					  <tr>
+						<th>Round off</th>
+						<td>'.$round_off.'</td>
+					  </tr>
+					  <tr>
+					  <th><b style="font-size: 12px;">Total Amount:</b></th>
+					  <td><b style="font-size: 12px;">'.$rounded_total_amount.'</b></td>
+					</tr>
+					<!-- /.<tr>
+			              <th>Paid Status:</th>
+			              <td>'.$paid_status.'</td>
+						</tr> -->
+						</tbody>
+			          </table>
+			        </div>
+				  </div>
+			      <!-- /.col -->
+			    </div>
+					</td></tr>
+				</tbody>
+				<tfoot>
+					<tr><td>
+					<div style=" border-top: 2px solid;padding: 10px;">
+				<div class="row">
+				
+				<div>
+				<div>
+				<b>GST R.No. :'.$company_info['gst_no'].'</b><br></div>
+				<div class="row" style="page-break-inside: avoid">
+				<div class="col-xs-2" >
+				<b>Our Bank Details :</b></div>';
+				foreach ($bank_details as $k => $v) {
+					
+					$html .= '<div class="col-xs-4">  <b>'.$v['bank_name'].',</b> '.$v['bank_address'].'<br>
+					<b>A/c No.: '.$v['acc_no'].'</b> <br>					
+					<b>IFSC Code: '.$v['ifsc'].'</b></div>';
+				}
+				$html.='
+				</div>';
+				
+				if($footer_items){
+				$html.='
+				<div >
+				  <b>Terms & Conditions</b><br>
+
+				';}
+				foreach ($footer_items as $k => $v) {
+					
+					$index = $k + 1;
+					$html .= '  <b>'.$index.'.</b> '.$v['description'].'<br>';
+				}
+					
+					$html.='</div>
+					
+			      </div>
+			      <!-- /.col -->
+			      
+			      <div class="row">
+				  <div class="col-xs-6"><br><br>
+					<b>Receiver\'s Signature</b><br></div>
+				  <div class="col-xs-6" style="text-align:right"><b>For '.$company_info['company_name'].'</b>
+				  <br><br><br>
+				  <b>Authorised Signatory</b><br></div>
+
+			      </div>
+				  <!-- /.col -->
+				  
+			    </div>
+			    <!-- /.row -->	
+				</div>
+					</td></tr>
+				</tfoot>
+			</table>
+
 		</body>
 	</html>';
 
