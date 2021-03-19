@@ -440,6 +440,7 @@ var removed_row_count_terms =0;
     
     // Add new row in the table 
     $("#add_row").unbind('click').bind('click', function() {
+      $("#add_row").attr("disabled", true);
       var table = $("#product_info_table");
       var count_table_tbody_tr = $("#product_info_table tbody tr").length;
       var row_id = count_table_tbody_tr + 1 +Number(removed_rows_count);
@@ -510,9 +511,11 @@ html += '</select>'+
 
               if(count_table_tbody_tr >= 1) {
               $("#product_info_table tbody tr:last").after(html);  
+              $("#add_row").attr("disabled", false);
             }
             else {
               $("#product_info_table tbody").html(html);
+              $("#add_row").attr("disabled", false);
             }
 
             $(".tax").select2()
