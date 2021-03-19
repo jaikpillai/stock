@@ -521,7 +521,7 @@ class Orders extends Admin_Controller
 							<td>'.$v['rate'].'</td>
 							<td>'.$v['discount'].'</td>
 							<td>'.$tax_data['sValue'].'</td>
-				            <td>'.$discount_amount.'</td>
+				            <td>'.$discount_amount.'</td> 
 			          	</tr>';
 					  }
 
@@ -540,7 +540,7 @@ class Orders extends Admin_Controller
 			    </div>
 			    <!-- /.row -->
 
-			<div class="row" style="overflow: hidden; ">
+			<div class="row" style="overflow: hidden; margin-top: 2px">
 			<div class="col-xs-8">';
 			$gst_total_amount=0;
 			
