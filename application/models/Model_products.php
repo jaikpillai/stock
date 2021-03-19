@@ -21,7 +21,6 @@ class Model_products extends CI_Model
 		return $query->result_array();
 	}
 
-	
 
 	public function getActiveProductData()
 	{
