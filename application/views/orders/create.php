@@ -206,9 +206,7 @@
                         <!-- <td>
                         <select class="form-control select_group product" data-row-id="row_1" name="code[]" id="code_1" style="width:100%;" onchange="getProductDataFromCode(1)" required>
                             <option value=""></option>
-                            <?php foreach ($products as $k => $v): ?>
-                              <option value="<?php echo $v['Item_Code'] ?>" data-code-id="<?php echo $v['Item_ID'] ?>"><?php echo $v['Item_Code'] ?></option>
-                            <?php endforeach ?>
+                           
                           </select>
                         </td> -->
                         <td>
