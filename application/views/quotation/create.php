@@ -499,15 +499,15 @@ $(".tax").select2()
                  
                   '<select class="form-control select_group tax" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;">'+
 
-'<option value=""></option>';
-$.each(response, function(index, value) {
-  html += '<option value="'+value.iTax_ID+'" data-tax-value="'+value.sValue+'">'+value.sTax_Description+'</option>';
+                    '<option value=""></option>';
+                    $.each(response, function(index, value) {
+                      html += '<option value="'+value.iTax_ID+'" data-tax-value="'+value.sValue+'">'+value.sTax_Description+'</option>';
 
-});
+                    });
 
-html += '</select>'+
-'</td>'+ 
-                     
+                    html += '</select>'+
+                    '</td>'+ 
+                                        
                   
 
                   // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control"><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
@@ -621,9 +621,10 @@ $('.product').select2({
    
     var row_id = $(this).attr('id').replace('product_','');
     getProductData(row_id);
-    if(!$('#make_'+row_id).val()){
-          $("#add_row").click();
-    }
+    console.log(row_id);
+    // if(!$('#make_'+row_id).val()){
+    //       $("#add_row").click();
+    // }
     
 
 
@@ -711,7 +712,8 @@ processResults: function(data, page) {
           $("#unit_"+row_id).val(response.sUnit);
           $("#unit_value_"+row_id).val(response.sUnit);
 
-          // $("#gst_"+row_id).val(response.Tax);
+          console.log("dfhtrh"+response.iTax_ID);
+          $("#gst_"+row_id).val(response.iTax_ID).trigger('change');
           // $("#gst_value_"+row_id).val(response.Tax);
 
           // $("#rate_"+row_id).val(response.Price);

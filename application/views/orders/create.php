@@ -796,9 +796,9 @@ var removed_row_count_terms=0;
         var row_id = $(this).attr('id').replace('product_','');
         // console.log($('#make_'+row_id).val());
         getProductData(row_id);
-        if(!$('#make_'+row_id).val()){
-          $("#add_row").click();
-        }
+        // if(!$('#make_'+row_id).val()){
+        //   $("#add_row").click();
+        // }
         
 
 

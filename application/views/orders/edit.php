@@ -936,9 +936,9 @@ $('.product').select2({
         var row_id = $(this).attr('id').replace('product_','');
     getProductData(row_id);
 
-    if(!$('#make_'+row_id).val()){
-          $("#add_row").click();
-    }
+    // if(!$('#make_'+row_id).val()){
+    //       $("#add_row").click();
+    // }
 
   }).on('select', function (e) {
       console.log("select");
