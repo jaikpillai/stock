@@ -344,7 +344,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary">Create Quotation</button>
+                <button type="submit" class="btn btn-primary">Save Quotation</button>
                 <a href="<?php echo base_url('quotation/') ?>" class="btn btn-warning">Back</a>
               </div>
             </form>

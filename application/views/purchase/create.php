@@ -267,7 +267,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <button type="submit" class="btn btn-primary removeProduct" >Create Purchase</button>
+                <button type="submit" class="btn btn-primary removeProduct" >Save Purchase</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
               </div>
             </form>
