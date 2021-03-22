@@ -1041,7 +1041,8 @@ class Orders extends Admin_Controller
 					  }
 
 					// $tax_value = $order_data['tax_value'];
-					$gross_total = $total - $order_data['total_discount'];
+					// $gross_total = $total - $order_data['total_discount'];
+					$gross_total = $total - $less_discount;
 					// $total_after_tax = $gross_total + ($gross_total * $tax_value)/100;
 					$final_total = $gross_total + $freight_other_charge;
 					$rounded_total_amount = round($final_total);
