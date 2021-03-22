@@ -923,7 +923,7 @@ class Quotation extends Admin_Controller
 						  
 						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
 
-						  
+
 						 if($v['tax_id']){
 							
 							if(!in_array($v['tax_id'],$unique_tax)){
@@ -936,6 +936,8 @@ class Quotation extends Admin_Controller
 							  $tax_data['sValue']=0;
 						  }
 							
+
+						  $rate_new=round($v['rate']);
 			          	
 						  $html .= '<tr>
 							<td>'.$index.'</td>
@@ -944,7 +946,7 @@ class Quotation extends Admin_Controller
 							<td>'.$product_data['Item_Make'].'</td>
 							<td>'.$v['qty'].'</td>
 							<td>'.$v['unit'].'</td>
-							<td>'.round($v['rate']).'</td>
+							<td>'.$rate_new.'</td>
 							<td>'.$v['discount'].'</td>
 							<td>'.$tax_data['sValue'].'</td>
 				            <td>'.$discount_amount.'</td>
