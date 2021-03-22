@@ -923,6 +923,7 @@ class Quotation extends Admin_Controller
 						  
 						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
 
+						  
 						 if($v['tax_id']){
 							
 							if(!in_array($v['tax_id'],$unique_tax)){
