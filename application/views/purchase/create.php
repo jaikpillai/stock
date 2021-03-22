@@ -448,11 +448,12 @@ $('.product').select2({
             minimumInputLength: 1
       }
   }).on('change', function (e) {
-    var str = $("#s2id_search_code .select2-choice span").text();
     
-    console.log();
     var row_id = $(this).attr('id').replace('product_','');
     getProductData(row_id);
+    if(!$('#make_'+row_id).val()){
+        $("#add_row").click();
+    }
     
 
 

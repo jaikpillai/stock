@@ -421,7 +421,7 @@ var removed_row_count_terms =0;
             // console.log(reponse.x);
             var html = '<tr id="terms_'+row_id+'">'+
             '<td>'+
-                  '<select class="form-control terms" terms-row-id="'+row_id+'" id="terms_'+row_id+'" name="terms[]" style="width:100%;" onchange="getProductData('+row_id+')">'+
+                  '<select class="form-control terms" terms-row-id="'+row_id+'" id="terms_'+row_id+'" name="terms[]" style="width:100%;">'+
 
                       '<option value=""></option>';
                       $.each(response, function(index, value) {
@@ -935,6 +935,11 @@ $('.product').select2({
   }).on('change', function (e) {
         var row_id = $(this).attr('id').replace('product_','');
     getProductData(row_id);
+
+    if(!$('#make_'+row_id).val()){
+          $("#add_row").click();
+    }
+
   }).on('select', function (e) {
       console.log("select");
     });

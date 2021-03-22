@@ -694,7 +694,8 @@ var removed_row_count_terms=0;
             $(".tax").select2()
             .on('change', function (e) {
               var row_id = $(this).attr('id').replace('gst_','');
-              getTotal(row_id)
+              getTotal(row_id);
+            
             }).on('select', function (e) {
                 var row_id = $(this).attr('id').replace('gst_','');
                 getTotal(row_id)
@@ -790,11 +791,14 @@ var removed_row_count_terms=0;
                 minimumInputLength: 1
           }
       }).on('change', function (e) {
-        var str = $("#s2id_search_code .select2-choice span").text();
-        
-        console.log();
+              
+        // console.log();
         var row_id = $(this).attr('id').replace('product_','');
+        // console.log($('#make_'+row_id).val());
         getProductData(row_id);
+        if(!$('#make_'+row_id).val()){
+          $("#add_row").click();
+        }
         
 
 
