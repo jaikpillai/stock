@@ -913,7 +913,7 @@ class Quotation extends Admin_Controller
 			          foreach ($orders_items as $k => $v) {
 						
 						  $product_data = $this->model_products->getProductData($v['item_id']); 
-						  $amount = $v['qty']*round($v['rate']);
+						  $amount = $v['qty']*$v['rate'];
 						  $total = $total + $amount; 
 						 
 						  $index = $k + 1;
@@ -922,7 +922,6 @@ class Quotation extends Admin_Controller
 						  $less_discount=$less_discount+($amount * $v['discount'])/100;
 						  
 						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
-
 
 						 if($v['tax_id']){
 							
@@ -936,8 +935,6 @@ class Quotation extends Admin_Controller
 							  $tax_data['sValue']=0;
 						  }
 							
-
-						  $rate_new=round($v['rate']);
 			          	
 						  $html .= '<tr>
 							<td>'.$index.'</td>
@@ -946,7 +943,7 @@ class Quotation extends Admin_Controller
 							<td>'.$product_data['Item_Make'].'</td>
 							<td>'.$v['qty'].'</td>
 							<td>'.$v['unit'].'</td>
-							<td>'.$rate_new.'</td>
+							<td>'.round($v['rate']).'</td>
 							<td>'.$v['discount'].'</td>
 							<td>'.$tax_data['sValue'].'</td>
 				            <td>'.$discount_amount.'</td>
