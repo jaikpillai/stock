@@ -919,6 +919,7 @@ class Quotation extends Admin_Controller
 						  $index = $k + 1;
 
 						  $discount_amount = $amount - ($amount * $v['discount'])/100;
+						  $discount_amount=round($discount_amount);
 						  $less_discount=$less_discount+($amount * $v['discount'])/100;
 						  
 						  $tax_data=$this->model_tax->getTaxData($v['tax_id']); 
