@@ -510,7 +510,7 @@ var removed_row_count_terms =0;
 
                   '<td>'+ 
                  
-                 '<select class="form-control select_group tax" data-row-id="'+row_id+'" name="gst[]" id="gst_'+row_id+'"  style="width:100%;" '+
+                 '<select class="form-control select_group tax" data-row-id="'+row_id+'" id="gst_'+row_id+'" name="gst[]" style="width:100%;">'+
 
                      '<option value=""></option>';
                      $.each(response, function(index, value) {
