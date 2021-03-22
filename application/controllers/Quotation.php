@@ -996,10 +996,12 @@ class Quotation extends Admin_Controller
 					$cgst_percent=$tax_data['sValue']/2;
 					$cgst=$tax_array[$tax_data['sTax_Description']]*$cgst_percent/100;
 					$cgst=number_format($cgst, 2, '.', '');
-					$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
 					$cgst_total=$cgst_total+$cgst;
 
 					if($cgst>0){
+
+						$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
+
 					$html .= '<tr>
 					  <td>'.$tax_array[$tax_data['sTax_Description']].'</td>
 					  <td>'.$cgst_percent.'</td>
