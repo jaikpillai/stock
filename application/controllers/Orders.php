@@ -1003,7 +1003,7 @@ class Orders extends Admin_Controller
 			          foreach ($orders_items as $k => $v) {
 						
 						  $product_data = $this->model_products->getProductData($v['item_id']); 
-						  $amount = $v['qty']*$v['rate'];
+						  $amount = $v['qty']*round($v['rate']);
 						  $total = $total + $amount; 
 						 
 						  $index = $k + 1;
@@ -1033,7 +1033,7 @@ class Orders extends Admin_Controller
 							<td>'.$product_data['Item_Make'].'</td>
 							<td>'.$v['qty'].'</td>
 							<td>'.$v['unit'].'</td>
-							<td>'.$v['rate'].'</td>
+							<td>'.round($v['rate']).'</td>
 							<td>'.$v['discount'].'</td>
 							<td>'.$tax_data['sValue'].'</td>
 				            <td>'.$discount_amount.'</td> 
