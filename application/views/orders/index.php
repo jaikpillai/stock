@@ -51,8 +51,8 @@
               <thead>
               <tr>
                 <th>Invoice no</th>
-                <th>Party Name</th>
-                <th>Party Address</th>
+                <th style="max-width:20%">Party Name</th>
+                <th style="max-width:20%">Party Address</th>
                 <th>Total Products</th>
                 <th>Total Amount</th>
                 <!-- <th>Paid status</th> -->
