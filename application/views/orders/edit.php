@@ -410,7 +410,7 @@
 
               <div class="box-footer">
 
-                <a  onclick="printOrder(<?php echo $order_data['invoice_master']['invoice_no'] ?>)" class="btn btn-default" >Print</a>
+                <a target="__blank" href = "<?php echo base_url('orders/invoice/'.$order_data['invoice_master']['invoice_no'].'') ?>"  class="btn btn-default" >Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="<?php echo base_url('orders/') ?>" class="btn btn-warning">Back</a>
               </div>

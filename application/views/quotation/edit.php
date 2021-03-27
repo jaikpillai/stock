@@ -398,7 +398,7 @@
               <!-- /.box-body -->
 
               <div class="box-footer">
-                <a  onclick="printOrder(<?php echo$quotation_data['quotation_master']['s_no'] ?>)" class="btn btn-default" >Print</a>
+                <a target="__blank" href="<?php echo base_url('quotation/quotation/'.$quotation_data['quotation_master']['s_no'].'') ?>"  class="btn btn-default" >Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="<?php echo base_url('quotation/') ?>" class="btn btn-warning">Back</a>
               </div>
