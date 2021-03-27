@@ -170,7 +170,7 @@ class Model_quotation extends CI_Model
 				
     			'quotation_no' =>  $this->input->post('quotation_no'),
 				'item_id' => $this->input->post('product')[$x],
-				'item_code' => $this->input->post('code_value')[$x],
+				'item_code' => $this->input->post('code')[$x],
 				'item_make' => $this->input->post('make_value')[$x],
 				'qty' => $this->input->post('qty')[$x],
 				'unit' => $this->input->post('unit_value')[$x],
