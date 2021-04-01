@@ -254,7 +254,7 @@
 
                           <td>
                             <div style="min-width:60px">
-                              <input type="number" name="qty[]" id="qty_<?php echo $x; ?>" value="<?php echo $val['qty'] ?>" class="form-control total_calculator_qty" required autocomplete="off">
+                              <input type="number" onkeydown="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" name="qty[]" id="qty_<?php echo $x; ?>" value="<?php echo $val['qty'] ?>" class="form-control total_calculator_qty" required autocomplete="off">
                             </div>
                           </td>
 

@@ -166,7 +166,7 @@
 
                       <td>
                         <!-- <input type="number" name="qty[]" id="qty_1" class="form-control" onchange="getTotal(1)" onkeyup="getTotal(1)"> -->
-                        <input type="number" name="qty[]" id="qty_1" class="form-control total_calculator_qty">
+                        <input type="number" onkeydown="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" name="qty[]" id="qty_1" class="form-control total_calculator_qty">
 
                       </td>
 

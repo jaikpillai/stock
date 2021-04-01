@@ -177,7 +177,7 @@
 
                       <td>
                         <div style="min-width:60px">
-                          <input type="number" id="qtySelect" min="0" class="form-control total_calculator_qty">
+                          <input type="number" onkeydown="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" id="qtySelect" min="0" class="form-control total_calculator_qty">
                         </div>
                       </td>
 

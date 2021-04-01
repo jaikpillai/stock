@@ -234,7 +234,7 @@
 
                       <td>
                         <div style="min-width:60px">
-                          <input type="number" id="qtySelect" min="0" class="form-control total_calculator_qty">
+                          <input type="number" onkeydown="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" min="1" step="1" id="qtySelect" min="0" class="form-control total_calculator_qty">
                         </div>
                       </td>
 
@@ -247,13 +247,13 @@
                       </td>
                       <td>
                         <div style="min-width:100px">
-                          <input type="number" id="rateSelect" class="form-control total_calculator_rate" autocomplete="off">
-                          <input type="hidden" id="rate_value_select" class="form-control" autocomplete="off">
+                          <input type="number" step="any" id="rateSelect" class="form-control total_calculator_rate" autocomplete="off">
+                          <input type="hidden" step="any" id="rate_value_select" class="form-control" autocomplete="off">
                         </div>
                       </td>
                       <td>
                         <div style="min-width:60px">
-                          <input type="number" id="discountSelect" min="0" max="100" class="form-control total_calculator_discount " autocomplete="off">
+                          <input type="number" step="any" id="discountSelect" min="0" max="100" class="form-control total_calculator_discount " autocomplete="off">
                         </div>
                       </td>
                       <td>
@@ -270,7 +270,7 @@
                         </td> -->
                       <td>
                         <div style="min-width:100px">
-                          <input type="number" id="amountSelect" class="form-control" disabled autocomplete="off">
+                          <input type="number" step="any" id="amountSelect" class="form-control" disabled autocomplete="off">
                           <input type="hidden" id="amount_value_select" class="form-control" autocomplete="off">
                         </div>
                       </td>
@@ -307,8 +307,8 @@
                 <div class="form-group">
                   <label for="gst_amount" class="col-sm-5 control-label">GST Amount</label>
                   <div class="col-sm-7">
-                    <input type="number" class="form-control" id="gst_amount" name="gst_amount" disabled autocomplete="off">
-                    <input type="hidden" class="form-control" id="gst_amount_value" name="gst_amount_value" autocomplete="off">
+                    <input type="number" step="any" class="form-control" id="gst_amount" name="gst_amount" disabled autocomplete="off">
+                    <input type="hidden" step="any" class="form-control" id="gst_amount_value" name="gst_amount_value" autocomplete="off">
                   </div>
                 </div>
 
@@ -316,8 +316,8 @@
                 <div class="form-group">
                   <label for="other_charge" class="col-sm-5 control-label">Freight/Others</label>
                   <div class="col-sm-7">
-                    <input type="number" class="form-control" id="other_charge" name="other_charge" autocomplete="off">
-                    <input type="hidden" class="form-control" id="other_charge_value" name="other_charge_value" autocomplete="off">
+                    <input type="number" step="any" class="form-control" id="other_charge" name="other_charge" autocomplete="off">
+                    <input type="hidden" step="any" class="form-control" id="other_charge_value" name="other_charge_value" autocomplete="off">
                   </div>
                 </div>
 
@@ -581,10 +581,10 @@
 
 
             '<td><div style="min-width:60px"><input type="text" value = "' + makeSelect + '" name="make[]" id="make_' + row_id + '" class="form-control" disabled><input type="hidden" name="make_value[]" value = "' + makeSelect + '" id="make_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:60px"><input type="number" value = "' + qtySelect + '" name="qty[]" id="qty_' + row_id + '" class="form-control total_calculator_qty " ></div></td>' +
+            '<td><div style="min-width:60px"><input type="number" step="1" value = "' + qtySelect + '" name="qty[]" id="qty_' + row_id + '" class="form-control total_calculator_qty " ></div></td>' +
             '<td><div style="min-width:60px"><input type="text" value = "' + unitSelect + '" name="unit[]" id="unit_' + row_id + '" class="form-control" disabled><input type="hidden" name="unit_value[]" value = "' + unitSelect + '" id="unit_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:80px"><input type="number" value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rateSelect + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:60px"><input type="number" value = "' + discountSelect + '" name="discount[]"  id="discount_' + row_id + '" class="form-control total_calculator_discount " ><input type="hidden" value = "' + discountSelect + '" name="discount_value[]" id="discount_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:80px"><input type="number" step="any"  value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rateSelect + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:60px"><input type="number" step="any" value = "' + discountSelect + '" name="discount[]"  id="discount_' + row_id + '" class="form-control total_calculator_discount " ><input type="hidden" value = "' + discountSelect + '" name="discount_value[]" id="discount_value_' + row_id + '" class="form-control"></div></td>' +
 
 
             '<td>' +

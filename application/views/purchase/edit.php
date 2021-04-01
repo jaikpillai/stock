@@ -165,7 +165,7 @@
                           <input type="hidden" name="make_value[]" id="make_value_<?php echo $x; ?>" value="<?php echo $val['item_make'] ?>" class="form-control" autocomplete="off">
                         </td>
                         <!-- <td><input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control" required onkeyup="getTotal(<?php echo $x; ?>)" value="<?php echo $val['qty'] ?>" autocomplete="off"></td> -->
-                        <td><input type="number" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control total_calculator_qty" required value="<?php echo $val['qty'] ?>" autocomplete="off"></td>
+                        <td><input type="number" onkeydown="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control total_calculator_qty" required value="<?php echo $val['qty'] ?>" autocomplete="off"></td>
                         <td>
                           <input type="text" name="unit[]" id="unit_<?php echo $x; ?>" class="form-control" value="<?php echo $val['unit'] ?>" disabled autocomplete="off">
                           <input type="hidden" name="unit_value[]" id="unit_value_<?php echo $x; ?>" value="<?php echo $val['unit'] ?>" class="form-control" autocomplete="off">

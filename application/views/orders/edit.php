@@ -204,7 +204,7 @@
 
                       <td>
                         <div style="min-width:60px">
-                          <input type="number" id="qtySelect" min="0" class="form-control total_calculator_qty">
+                          <input type="number" onkeydown="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" id="qtySelect" min="0" class="form-control total_calculator_qty">
                         </div>
                       </td>
 
@@ -279,7 +279,7 @@
 
                           <td>
                             <div style="min-width:60px">
-                              <input type="text" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control total_calculator_qty" required value="<?php echo $val['qty'] ?>" autocomplete="off">
+                              <input type="number" onkeydown="if(event.key==='.'){event.preventDefault();}" oninput="event.target.value = event.target.value.replace(/[^0-9]*/g,'');" name="qty[]" id="qty_<?php echo $x; ?>" class="form-control total_calculator_qty" required value="<?php echo $val['qty'] ?>" autocomplete="off">
                             </div>
                           </td>
 
@@ -291,13 +291,13 @@
                           </td>
                           <td>
                             <div style="min-width:100px">
-                              <input type="text" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control total_calculator_rate" value="<?php echo $val['rate'] ?>" autocomplete="off">
+                              <input type="number" step="any" name="rate[]" id="rate_<?php echo $x; ?>" class="form-control total_calculator_rate" value="<?php echo $val['rate'] ?>" autocomplete="off">
                               <input type="hidden" name="rate_value[]" id="rate_value_<?php echo $x; ?>" class="form-control" value="<?php echo $val['rate'] ?>" autocomplete="off">
                             </div>
                           </td>
                           <td>
                             <div style="min-width:60px">
-                              <input type="number" name="discount[]" id="discount_<?php echo $x; ?>" class="form-control total_calculator_discount" value="<?php echo $val['discount'] ?>" autocomplete="off">
+                              <input type="number" step="any" name="discount[]" id="discount_<?php echo $x; ?>" class="form-control total_calculator_discount" value="<?php echo $val['discount'] ?>" autocomplete="off">
                             </div>
                           </td>
                           <td>
@@ -606,7 +606,7 @@
 
 
             '<td><div style="min-width:60px"><input type="text" value = "' + makeSelect + '" name="make[]" id="make_' + row_id + '" class="form-control" disabled><input type="hidden" name="make_value[]" value = "' + makeSelect + '" id="make_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:60px"><input type="number" value = "' + qtySelect + '" name="qty[]" id="qty_' + row_id + '" class="form-control total_calculator_qty " ></div></td>' +
+            '<td><div style="min-width:60px"><input type="number" value = "' + qtySelect + '" name="qty[]" id="qty_' + row_id + '" class="form-control total_calculator_qty" ></div></td>' +
             '<td><div style="min-width:60px"><input type="text" value = "' + unitSelect + '" name="unit[]" id="unit_' + row_id + '" class="form-control" disabled><input type="hidden" name="unit_value[]" value = "' + unitSelect + '" id="unit_value_' + row_id + '" class="form-control"></div></td>' +
             '<td><div style="min-width:80px"><input type="number" value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rateSelect + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
             '<td><div style="min-width:60px"><input type="number" value = "' + discountSelect + '" name="discount[]"  id="discount_' + row_id + '" class="form-control total_calculator_discount " ><input type="hidden" value = "' + discountSelect + '" name="discount_value[]" id="discount_value_' + row_id + '" class="form-control"></div></td>' +
