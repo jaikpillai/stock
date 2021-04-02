@@ -50,7 +50,7 @@ class Products extends Admin_Controller
         foreach ($data as $key => $value) {
 
 
-            $amount = $value['Price'];
+            // $amount = $value['Price'];
             // moneyFormatIndia($amount);
             // setlocale(LC_MONETARY, 'en_IN');
             // $price = money_format('%!i', $amount);

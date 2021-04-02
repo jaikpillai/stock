@@ -505,7 +505,7 @@ class Model_orders extends CI_Model
 
 
 		if ($selected_financial_year) {
-			$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id = $selected_financial_year";
+			$sql = "SELECT * FROM invoice_master WHERE `status` = 1 AND financial_year_id = $selected_financial_year";
 			$query = $this->db->query($sql, array(1));
 			return $query->num_rows();
 		} else {
@@ -521,7 +521,7 @@ class Model_orders extends CI_Model
 
 				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
 
-					$sql = "SELECT * FROM invoice_master WHERE is_payment_received = 1 AND `status` = 1 AND financial_year_id = $financial_year_id ";
+					$sql = "SELECT * FROM invoice_master WHERE `status` = 1 AND financial_year_id = $financial_year_id ";
 					$query = $this->db->query($sql, array(1));
 					return $query->num_rows();
 				}
