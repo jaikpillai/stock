@@ -8,6 +8,7 @@ class Model_orders extends CI_Model
 	}
 
 	/* get the orders data */
+	var $selected_financial_year;
 	public function getOrdersData($id = null)
 	{
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
@@ -35,6 +36,7 @@ class Model_orders extends CI_Model
 
 
 				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+					$selected_financial_year = $financial_year_id;
 
 					$sql = "SELECT * FROM invoice_master WHERE `status` = 1 AND financial_year_id =	$financial_year_id ORDER BY invoice_no DESC";
 					$query = $this->db->query($sql, array(1));
@@ -51,13 +53,38 @@ class Model_orders extends CI_Model
 	{
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
+
+
+
 		if (!$order_id) {
 			return false;
 		}
-		$sql = "SELECT * FROM invoice_item JOIN item_master WHERE invoice_item.invoice_no=? AND item_master.Item_ID=invoice_item.item_id AND financial_year_id=$selected_financial_year AND invoice_item.status=1";
-		// $sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
-		$query = $this->db->query($sql, array($order_id));
-		return $query->result_array();
+		if ($selected_financial_year) {
+			$sql = "SELECT * FROM invoice_item JOIN item_master WHERE invoice_item.invoice_no=? AND item_master.Item_ID=invoice_item.item_id AND financial_year_id=$selected_financial_year AND invoice_item.status=1";
+			// $sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
+			$query = $this->db->query($sql, array($order_id));
+			return $query->result_array();
+		} else {
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+				$financial_year_id = $v['key_value'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+					$selected_financial_year = $financial_year_id;
+
+					$sql = "SELECT * FROM invoice_item JOIN item_master WHERE invoice_item.invoice_no=? AND item_master.Item_ID=invoice_item.item_id AND financial_year_id=$financial_year_id AND invoice_item.status=1";
+					// $sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
+					$query = $this->db->query($sql, array($order_id));
+					return $query->result_array();
+				}
+			}
+		}
 	}
 
 	public function getFooter($order_id = null)
@@ -253,10 +280,32 @@ class Model_orders extends CI_Model
 	{
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
+
 		if ($order_id) {
-			$sql = "SELECT * FROM invoice_item WHERE invoice_no = ? AND financial_year_id=$selected_financial_year AND `status`=1";
-			$query = $this->db->query($sql, array($order_id));
-			return $query->num_rows();
+			if ($selected_financial_year) {
+				$sql = "SELECT * FROM invoice_item WHERE invoice_no = ? AND financial_year_id=$selected_financial_year AND `status`=1";
+				$query = $this->db->query($sql, array($order_id));
+				return $query->num_rows();
+			} else {
+				$financial_years = $this->model_financialyear->getFinancialYear();
+				$current_date = date("Y-m-d");
+
+				foreach ($financial_years as $k => $v) {
+					$start_date = $v['start_date'];
+					$end_date = $v['end_date'];
+					$financial_year_id = $v['key_value'];
+
+
+
+					if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+						$selected_financial_year = $financial_year_id;
+
+						$sql = "SELECT * FROM invoice_item WHERE invoice_no = ? AND financial_year_id=$selected_financial_year AND `status`=1";
+						$query = $this->db->query($sql, array($order_id));
+						return $query->num_rows();
+					}
+				}
+			}
 		}
 	}
 

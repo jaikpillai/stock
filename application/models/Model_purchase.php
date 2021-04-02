@@ -54,9 +54,30 @@ class Model_purchase extends CI_Model
 			return false;
 		}
 
-		$sql = "SELECT * FROM purchase_item JOIN item_master WHERE purchase_item.purchase_no = ? AND item_master.Item_ID=purchase_item.item_id AND financial_year_id=$selected_financial_year AND purchase_item.status=1";
-		$query = $this->db->query($sql, array($order_id));
-		return $query->result_array();
+		if ($selected_financial_year) {
+			$sql = "SELECT * FROM purchase_item JOIN item_master WHERE purchase_item.purchase_no = ? AND item_master.Item_ID=purchase_item.item_id AND financial_year_id=$selected_financial_year AND purchase_item.status=1";
+			$query = $this->db->query($sql, array($order_id));
+			return $query->result_array();
+		} else {
+			$financial_years = $this->model_financialyear->getFinancialYear();
+			$current_date = date("Y-m-d");
+
+			foreach ($financial_years as $k => $v) {
+				$start_date = $v['start_date'];
+				$end_date = $v['end_date'];
+				$financial_year_id = $financial_year_id = $v['key_value'];
+
+
+
+				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+					$selected_financial_year = $financial_year_id;
+
+					$sql = "SELECT * FROM purchase_item JOIN item_master WHERE purchase_item.purchase_no = ? AND item_master.Item_ID=purchase_item.item_id AND financial_year_id=$selected_financial_year AND purchase_item.status=1";
+					$query = $this->db->query($sql, array($order_id));
+					return $query->result_array();
+				}
+			}
+		}
 	}
 
 	public function getFooter($order_id = null)
@@ -231,9 +252,30 @@ class Model_purchase extends CI_Model
 
 
 		if ($purchase_no) {
-			$sql = "SELECT * FROM purchase_item WHERE purchase_no = ? AND financial_year_id=$selected_financial_year AND `status`=1";
-			$query = $this->db->query($sql, array($purchase_no));
-			return $query->num_rows();
+			if ($selected_financial_year) {
+				$sql = "SELECT * FROM purchase_item WHERE purchase_no = ? AND financial_year_id=$selected_financial_year AND `status`=1";
+				$query = $this->db->query($sql, array($purchase_no));
+				return $query->num_rows();
+			} else {
+				$financial_years = $this->model_financialyear->getFinancialYear();
+				$current_date = date("Y-m-d");
+
+				foreach ($financial_years as $k => $v) {
+					$start_date = $v['start_date'];
+					$end_date = $v['end_date'];
+					$financial_year_id = $v['key_value'];
+
+
+
+					if (($current_date >= $start_date) && ($current_date <= $end_date)) {
+						$selected_financial_year = $financial_year_id;
+
+						$sql = "SELECT * FROM purchase_item WHERE purchase_no = ? AND financial_year_id=$selected_financial_year AND `status`=1";
+						$query = $this->db->query($sql, array($purchase_no));
+						return $query->num_rows();
+					}
+				}
+			}
 		}
 	}
 
