@@ -190,13 +190,13 @@
                       </td>
                       <td>
                         <div style="min-width:100px">
-                          <input type="number" id="rateSelect" class="form-control total_calculator_rate" autocomplete="off">
+                          <input type="text" id="rateSelect" class="form-control total_calculator_rate" autocomplete="off">
                           <input type="hidden" id="rate_value_select" class="form-control" autocomplete="off">
                         </div>
                       </td>
                       <td>
                         <div style="min-width:60px">
-                          <input type="number" id="discountSelect" min="0" max="100" class="form-control total_calculator_discount " autocomplete="off">
+                          <input type="text" id="discountSelect" class="form-control total_calculator_discount " autocomplete="off">
                         </div>
                       </td>
                       <td>
@@ -461,6 +461,8 @@
       var qtySelect = $("#qtySelect").val();
       var unitSelect = $("#unitSelect").val();
       var rateSelect = $("#rateSelect").val();
+      var rate_value_select = $("#rate_value_select").val();
+
       var discountSelect = $("#discountSelect").val();
       var gstSelect = $("#gstSelect").val();
       var amountSelect = $("#amountSelect").val();
@@ -511,8 +513,8 @@
             '<td><div style="min-width:60px"><input type="text" value = "' + makeSelect + '" name="make[]" id="make_' + row_id + '" class="form-control" disabled><input type="hidden" name="make_value[]" value = "' + makeSelect + '" id="make_value_' + row_id + '" class="form-control"></div></td>' +
             '<td><div style="min-width:60px"><input type="number" value = "' + qtySelect + '" name="qty[]" id="qty_' + row_id + '" class="form-control total_calculator_qty " ></div></td>' +
             '<td><div style="min-width:60px"><input type="text" value = "' + unitSelect + '" name="unit[]" id="unit_' + row_id + '" class="form-control" disabled><input type="hidden" name="unit_value[]" value = "' + unitSelect + '" id="unit_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:80px"><input type="number" value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rateSelect + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:60px"><input type="number" value = "' + discountSelect + '" name="discount[]"  id="discount_' + row_id + '" class="form-control total_calculator_discount " ><input type="hidden" value = "' + discountSelect + '" name="discount_value[]" id="discount_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:80px"><input type="text"  value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rate_value_select + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:60px"><input type="text" value = "' + discountSelect + '" name="discount[]"  id="discount_' + row_id + '" class="form-control total_calculator_discount " ><input type="hidden" value = "' + discountSelect + '" name="discount_value[]" id="discount_value_' + row_id + '" class="form-control"></div></td>' +
 
 
             '<td>' +
@@ -582,6 +584,8 @@
     $("#qtySelect").val("");
     $("#unitSelect").val("");
     $("#rateSelect").val("");
+    $("#rate_value_select").val("");
+
     $("#discountSelect").val("");
     $("#gstSelect").val("").change();
     $("#amountSelect").val("");
@@ -959,8 +963,20 @@
         success: function(response) {
           console.log(response)
           // setting the rate value into the rate input field
-
           $("#rateSelect").val(response.Price);
+          $("#rate_value_select").val(response.Price);
+          // setting the rate value into the rate input field
+          var variation = $("#variation").val();
+          var total = Number(response.Price) * 1;
+
+          if (variation) {
+            var rate_new_select = Number($("#rate_value_select").val()) + Number(variation) * Number($("#rate_value_select").val()) / 100;
+            $("#rateSelect").val(rate_new_select);
+            var total = Number(response.Price) * 1;
+
+            var total = Number(rate_new_select) * 1;
+
+          }
           // $("#rate_value_"+row_id).val(response.Price);
 
           $("#codeSelect").val(response.Item_Code);
@@ -1000,7 +1016,6 @@
           // var tax = $("#gst_"+row_id).val();
 
 
-          var total = Number(response.Price) * 1;
 
 
           total = total.toFixed(2);
@@ -1035,6 +1050,11 @@
       }
 
     }
+    if (variation) {
+      var rate_new_select = Number($("#rate_value_select").val()) + Number(variation) * Number($("#rate_value_select").val()) / 100;
+      $("#rateSelect").val(rate_new_select);
+    }
+    getTotal();
   }
 
 
@@ -1090,11 +1110,25 @@
     getTotal(row_id);
   })
 
+
+  $(document).on('keydown', ".total_calculator_rate , .total_calculator_discount", function() {
+    // do stuff!
+    if (event.keyCode >= 65 && event.keyCode <= 90) {
+      event.preventDefault();
+    }
+  })
+
   $(document).on('keyup change', ".total_calculator_discount", function() {
     // do stuff!
     var row_id = $(this).attr('id').replace('discount_', '');
     if (row_id == "discountSelect") {
       row_id = null;
+
+    }
+    if ($(this).val() > 100) {
+      // event.preventDefault();
+      $(this).val(100)
+
 
     }
     getTotal(row_id);

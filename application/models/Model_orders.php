@@ -36,7 +36,7 @@ class Model_orders extends CI_Model
 
 				if (($current_date >= $start_date) && ($current_date <= $end_date)) {
 
-					$sql = "SELECT * FROM invoice_master WHERE `status` = 1 AND financial_year_id =	$financial_year_id ORDER BY invoice_no DESC"  ;
+					$sql = "SELECT * FROM invoice_master WHERE `status` = 1 AND financial_year_id =	$financial_year_id ORDER BY invoice_no DESC";
 					$query = $this->db->query($sql, array(1));
 					return $query->result_array();
 				}
@@ -47,11 +47,14 @@ class Model_orders extends CI_Model
 
 	// get the orders item data
 	public function getOrdersItemData($order_id = null)
+
 	{
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
 		if (!$order_id) {
 			return false;
 		}
-		$sql="SELECT * FROM invoice_item JOIN item_master WHERE invoice_item.invoice_no=? AND item_master.Item_ID=invoice_item.item_id";
+		$sql = "SELECT * FROM invoice_item JOIN item_master WHERE invoice_item.invoice_no=? AND item_master.Item_ID=invoice_item.item_id AND financial_year_id=$selected_financial_year AND invoice_item.status=1";
 		// $sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
 		$query = $this->db->query($sql, array($order_id));
 		return $query->result_array();
@@ -84,26 +87,24 @@ class Model_orders extends CI_Model
 		$user_id = $this->session->userdata('id');
 		$sql = "SELECT * FROM financial_year WHERE status = ?";
 
-	
 
 
 
-		
+
+
 		$financial_id = $this->getFinancialYearID();
 		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
 
 		$selected_financial_year = $this->session->userdata("selected_financial_year");
 
-		if($selected_financial_year){
+		if ($selected_financial_year) {
 
-	
-		
+
+
 			$financial_year_id = $selected_financial_year;
-	
-	}
-	else{
+		} else {
 
-	
+
 			$financial_years = $this->model_financialyear->getFinancialYear();
 			$current_date = date("Y-m-d");
 
@@ -117,10 +118,8 @@ class Model_orders extends CI_Model
 
 					$financial_year_id = $v['key_value'];
 				}
-			
+			}
 		}
-
-	}
 
 
 
@@ -193,17 +192,18 @@ class Model_orders extends CI_Model
 			$this->model_products->update($update_product, $this->input->post('product')[$x]);
 		}
 
-		if($this->input->post('terms')){
-		$count_terms = count($this->input->post('terms'));
-		for ($z = 0; $z < $count_terms; $z++) {
+		if ($this->input->post('terms')) {
+			$count_terms = count($this->input->post('terms'));
+			for ($z = 0; $z < $count_terms; $z++) {
 
-			$footer = array(
-				'invoice_id' => $invoice_no,
-				't_and_c' => $this->input->post('terms')[$z],
-			);
-			$this->db->insert('invoice_footer', $footer);
-	}}
-		
+				$footer = array(
+					'invoice_id' => $invoice_no,
+					't_and_c' => $this->input->post('terms')[$z],
+				);
+				$this->db->insert('invoice_footer', $footer);
+			}
+		}
+
 
 		return ($order_id) ? $order_id : false;
 	}
@@ -251,8 +251,10 @@ class Model_orders extends CI_Model
 
 	public function countOrderItem($order_id)
 	{
+		$selected_financial_year = $this->session->userdata("selected_financial_year");
+
 		if ($order_id) {
-			$sql = "SELECT * FROM invoice_item WHERE invoice_no = ?";
+			$sql = "SELECT * FROM invoice_item WHERE invoice_no = ? AND financial_year_id=$selected_financial_year AND `status`=1";
 			$query = $this->db->query($sql, array($order_id));
 			return $query->num_rows();
 		}
@@ -271,21 +273,19 @@ class Model_orders extends CI_Model
 
 
 
-		
+
 		$financial_id = $this->getFinancialYearID();
 		$tax = $this->model_tax->getTaxData($this->input->post('tax'));
 
 
-		if($selected_financial_year){
+		if ($selected_financial_year) {
 
-	
-		
+
+
 			$financial_year_id = $selected_financial_year;
-	
-	}
-	else{
+		} else {
 
-	
+
 			$financial_years = $this->model_financialyear->getFinancialYear();
 			$current_date = date("Y-m-d");
 
@@ -299,10 +299,8 @@ class Model_orders extends CI_Model
 
 					$financial_year_id = $v['key_value'];
 				}
-			
+			}
 		}
-
-	}
 
 
 
@@ -370,13 +368,16 @@ class Model_orders extends CI_Model
 			}
 
 			// now remove the order item data 
-			$this->db->where('invoice_no', $invoice_no);
-			$this->db->delete('invoice_item');
+
+			$query = "DELETE FROM invoice_item WHERE invoice_no= $invoice_no AND financial_year_id=$financial_year_id";
+			$this->db->query($query);
+			// $this->db->where('invoice_no', 'financial_year_id', $invoice_no, $financial_year_id);
+			// $this->db->delete('invoice_item');
 
 			// now decrease the product qty
 			$count_product = count($this->input->post('product'));
 			for ($x = 0; $x < $count_product; $x++) {
-			
+
 				$items = array(
 
 					'invoice_no' => $invoice_no,
@@ -400,8 +401,8 @@ class Model_orders extends CI_Model
 				);
 				$this->db->insert('invoice_item', $items);
 
-				
-				
+
+
 
 				// now decrease the stock from the product
 				$product_data = $this->model_products->getProductData($this->input->post('product')[$x]);
@@ -414,7 +415,7 @@ class Model_orders extends CI_Model
 			$this->db->where('invoice_id', $invoice_no);
 			$this->db->delete('invoice_footer');
 
-			if($this->input->post('terms')){
+			if ($this->input->post('terms')) {
 				$count_terms = count($this->input->post('terms'));
 				for ($z = 0; $z < $count_terms; $z++) {
 
@@ -423,7 +424,8 @@ class Model_orders extends CI_Model
 						't_and_c' => $this->input->post('terms')[$z],
 					);
 					$this->db->insert('invoice_footer', $footer);
-			}}
+				}
+			}
 
 			return true;
 		}

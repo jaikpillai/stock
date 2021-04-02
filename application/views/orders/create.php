@@ -247,13 +247,13 @@
                       </td>
                       <td>
                         <div style="min-width:100px">
-                          <input type="number" step="any" id="rateSelect" class="form-control total_calculator_rate" autocomplete="off">
+                          <input type="text" id="rateSelect" class="form-control total_calculator_rate" autocomplete="off">
                           <input type="hidden" step="any" id="rate_value_select" class="form-control" autocomplete="off">
                         </div>
                       </td>
                       <td>
                         <div style="min-width:60px">
-                          <input type="number" step="any" id="discountSelect" min="0" max="100" class="form-control total_calculator_discount " autocomplete="off">
+                          <input type="text" id="discountSelect" class="form-control total_calculator_discount " autocomplete="off">
                         </div>
                       </td>
                       <td>
@@ -583,8 +583,8 @@
             '<td><div style="min-width:60px"><input type="text" value = "' + makeSelect + '" name="make[]" id="make_' + row_id + '" class="form-control" disabled><input type="hidden" name="make_value[]" value = "' + makeSelect + '" id="make_value_' + row_id + '" class="form-control"></div></td>' +
             '<td><div style="min-width:60px"><input type="number" step="1" value = "' + qtySelect + '" name="qty[]" id="qty_' + row_id + '" class="form-control total_calculator_qty " ></div></td>' +
             '<td><div style="min-width:60px"><input type="text" value = "' + unitSelect + '" name="unit[]" id="unit_' + row_id + '" class="form-control" disabled><input type="hidden" name="unit_value[]" value = "' + unitSelect + '" id="unit_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:80px"><input type="number" step="any"  value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rateSelect + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
-            '<td><div style="min-width:60px"><input type="number" step="any" value = "' + discountSelect + '" name="discount[]"  id="discount_' + row_id + '" class="form-control total_calculator_discount " ><input type="hidden" value = "' + discountSelect + '" name="discount_value[]" id="discount_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:80px"><input type="text" step="any"  value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rateSelect + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:60px"><input type="text" step="any" value = "' + discountSelect + '" name="discount[]"  id="discount_' + row_id + '" class="form-control total_calculator_discount " ><input type="hidden" value = "' + discountSelect + '" name="discount_value[]" id="discount_value_' + row_id + '" class="form-control"></div></td>' +
 
 
             '<td>' +
@@ -1161,11 +1161,26 @@
       getTotal(row_id);
     })
 
+    $(document).on('keydown', ".total_calculator_rate , .total_calculator_discount", function() {
+      // do stuff!
+      if (event.keyCode >= 65 && event.keyCode <= 90) {
+        event.preventDefault();
+      }
+
+
+    })
+
     $(document).on('keyup change', ".total_calculator_discount", function() {
       // do stuff!
       var row_id = $(this).attr('id').replace('discount_', '');
       if (row_id == "discountSelect") {
         row_id = null;
+
+      }
+      if ($(this).val() > 100) {
+        // event.preventDefault();
+        $(this).val(100)
+
 
       }
       getTotal(row_id);

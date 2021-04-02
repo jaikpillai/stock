@@ -66,7 +66,7 @@ class Reports extends Admin_Controller
 		$this->data['products'] = $this->model_products->getProductData();
 		$this->data['item_make'] = $this->model_reports->getItemMake();
 		$this->data['customer'] = $this->model_party->getPartyData();
-		
+
 
 		$this->render_template('reports/index', $this->data);
 	}
@@ -104,7 +104,7 @@ class Reports extends Admin_Controller
 			$grand_total_discount = 0;
 			$grand_total_gst = array();
 			$grand_total_amount = 0;
-			$unique_tax=array();
+			$unique_tax = array();
 
 
 			setlocale(LC_MONETARY, "en_US");
@@ -124,7 +124,7 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.css') . '?v=<?=time();?">
 			  <style>@media print{@page {size: landscape}}</style>
 
 			</head>
@@ -155,43 +155,42 @@ class Reports extends Admin_Controller
 			      <div class="col-xs-12 table-responsive">
 			        <table class="table table-bordered"  style="font-size: 10px;" >
 					  <thead>';
-					  foreach ($invoice_data as $k => $v) {
-						$orders_items = $this->model_orders->getOrdersItemData($v['invoice_no']);
-						foreach ($orders_items as $k => $v) {
-							if($v['tax_id']>0)
-							{
-								$tax_data=$this->model_tax->getTaxData($v['tax_id']);
-								if(!in_array($v['tax_id'],$unique_tax)){
-								array_push($unique_tax,$v['tax_id']);
-								$grand_total_gst[$tax_data['sTax_Description']]=0;
-								$grand_gst_amount[$tax_data['sTax_Description']]=0;
+				foreach ($invoice_data as $k => $v) {
+					$orders_items = $this->model_orders->getOrdersItemData($v['invoice_no']);
+					foreach ($orders_items as $k => $v) {
+						if ($v['tax_id'] > 0) {
+							$tax_data = $this->model_tax->getTaxData($v['tax_id']);
+							if (!in_array($v['tax_id'], $unique_tax)) {
+								array_push($unique_tax, $v['tax_id']);
+								$grand_total_gst[$tax_data['sTax_Description']] = 0;
+								$grand_gst_amount[$tax_data['sTax_Description']] = 0;
 
-							
+
 								// $tax_array[$tax_data['sTax_Description']]=0;
-							  }
-						  }
+							}
 						}
-					  }
+					}
+				}
 
-					  $html .= '
+				$html .= '
 					  <tr>
 						<th>S.N.</th>
 						<th>Invoice No</th>
 						<th>Invoice Date</th>
 						<th>Customer</th>
 						<th>Amount</th>';
-						for($i = 0; $i < sizeof($unique_tax); $i++) {
-							$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 	
-							$html .= '<th>Amount '.$tax_data['sTax_Description'].'</th>
-							<th>'.$tax_data['sTax_Description'].'</th>';
-						}
-					// 	<th>Discount</th>
-					// 	<th>GST</th>
-						
-					// 	<th>Payment Received</th>
-			        
-			        //   </tr>
-					  $html .= ' </thead>
+				for ($i = 0; $i < sizeof($unique_tax); $i++) {
+					$tax_data = $this->model_tax->getTaxData($unique_tax[$i]);
+					$html .= '<th>Amount ' . $tax_data['sTax_Description'] . '</th>
+							<th>' . $tax_data['sTax_Description'] . '</th>';
+				}
+				// 	<th>Discount</th>
+				// 	<th>GST</th>
+
+				// 	<th>Payment Received</th>
+
+				//   </tr>
+				$html .= ' </thead>
 			          <tbody>';
 
 				foreach ($invoice_data as $k => $v) {
@@ -202,7 +201,7 @@ class Reports extends Admin_Controller
 
 
 
-					  $party_data = $this->model_party->getPartyData($v['party_id']); 
+					$party_data = $this->model_party->getPartyData($v['party_id']);
 					//   $amount = $v['qty']*$v['rate'];
 					//   $total = $total + $amount; 
 					$index = $k + 1;
@@ -211,23 +210,24 @@ class Reports extends Admin_Controller
 
 					//   $discount_amount = $amount - ($amount * $v['discount'])/100;
 
-					
-					$unique_tax_temp=array();
-					$tax_array=array();
-					
+
+					$unique_tax_temp = array();
+					$tax_array = array();
+
 
 					$orders_items_details = $this->model_orders->getOrdersItemData($v['invoice_no']);
-						foreach ($orders_items_details as $t => $f) {
-							if($f['tax_id']>0)
-							{$tax_data=$this->model_tax->getTaxData($f['tax_id']); 
-							if(!in_array($f['tax_id'],$unique_tax_temp)){
-								array_push($unique_tax_temp,$f['tax_id']);
-								$tax_array[$tax_data['sTax_Description']]=0;
-						  }
-						  $amount = $f['qty']*$f['rate'];
-						  $discount_amount = $amount - ($amount * $f['discount'])/100;
+					foreach ($orders_items_details as $t => $f) {
+						if ($f['tax_id'] > 0) {
+							$tax_data = $this->model_tax->getTaxData($f['tax_id']);
+							if (!in_array($f['tax_id'], $unique_tax_temp)) {
+								array_push($unique_tax_temp, $f['tax_id']);
+								$tax_array[$tax_data['sTax_Description']] = 0;
+							}
+							$amount = $f['qty'] * $f['rate'];
+							$discount_amount = $amount - ($amount * $f['discount']) / 100;
 
-						  $tax_array[$tax_data['sTax_Description']]=$tax_array[$tax_data['sTax_Description']]+$discount_amount;}
+							$tax_array[$tax_data['sTax_Description']] = $tax_array[$tax_data['sTax_Description']] + $discount_amount;
+						}
 					}
 
 					$html .= '<tr>
@@ -236,32 +236,32 @@ class Reports extends Admin_Controller
 							<td>' . date('d-m-Y', strtotime($v['invoice_date'])) . '</td>
 							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $v['total_amount'] . '</td>';
-							
-						$total_amount_gst=0;
-						  for($i = 0; $i < sizeof($unique_tax); $i++) {
-							if(in_array($unique_tax[$i],$unique_tax_temp)){
-							for($j = 0; $j < sizeof($unique_tax_temp); $j++) {
-								if($unique_tax[$i]==$unique_tax_temp[$j]){
-									$cgst_total=0;
-								$tax_data=$this->model_tax->getTaxData($unique_tax_temp[$j]); 
-								$cgst_percent=$tax_data['sValue'];
-								$cgst=$tax_array[$tax_data['sTax_Description']]*$cgst_percent/100;
-								$cgst=number_format($cgst, 2, '.', '');
-								$total_amount_gst=$total_amount_gst+$tax_array[$tax_data['sTax_Description']];
-								$cgst_total=$cgst_total+$cgst;
-								$grand_total_gst[$tax_data['sTax_Description']]=$grand_total_gst[$tax_data['sTax_Description']]+$cgst_total;
-								$grand_gst_amount[$tax_data['sTax_Description']] = $grand_gst_amount[$tax_data['sTax_Description']] + $tax_array[$tax_data['sTax_Description']];
-								$html .= '<td>'.$tax_array[$tax_data['sTax_Description']].'</td>
-								<td>'.$cgst_total.'</td>
+
+					$total_amount_gst = 0;
+					for ($i = 0; $i < sizeof($unique_tax); $i++) {
+						if (in_array($unique_tax[$i], $unique_tax_temp)) {
+							for ($j = 0; $j < sizeof($unique_tax_temp); $j++) {
+								if ($unique_tax[$i] == $unique_tax_temp[$j]) {
+									$cgst_total = 0;
+									$tax_data = $this->model_tax->getTaxData($unique_tax_temp[$j]);
+									$cgst_percent = $tax_data['sValue'];
+									$cgst = $tax_array[$tax_data['sTax_Description']] * $cgst_percent / 100;
+									$cgst = number_format($cgst, 2, '.', '');
+									$total_amount_gst = $total_amount_gst + $tax_array[$tax_data['sTax_Description']];
+									$cgst_total = $cgst_total + $cgst;
+									$grand_total_gst[$tax_data['sTax_Description']] = $grand_total_gst[$tax_data['sTax_Description']] + $cgst_total;
+									$grand_gst_amount[$tax_data['sTax_Description']] = $grand_gst_amount[$tax_data['sTax_Description']] + $tax_array[$tax_data['sTax_Description']];
+									$html .= '<td>' . $tax_array[$tax_data['sTax_Description']] . '</td>
+								<td>' . $cgst_total . '</td>
 								';
+								}
 							}
-						}
-						}else{
+						} else {
 							$html .= '<td>0</td>
 							<td>0</td>';
 						}
-						}	
-						$html .= ' </tr>';
+					}
+					$html .= ' </tr>';
 				}
 
 				$html .= '<tr style="border-style:inset hidden">
@@ -269,18 +269,18 @@ class Reports extends Admin_Controller
 							<td></td>
 							<td></td>
 							<td></td>
-							<td><b>' . $grand_total_amount. '</b></td>';
-							
-							for($i = 0; $i < sizeof($unique_tax); $i++) {
+							<td><b>' . $grand_total_amount . '</b></td>';
 
-								$tax_data=$this->model_tax->getTaxData($unique_tax[$i]); 
-								$html .= '<td>'.$grand_gst_amount[$tax_data['sTax_Description']] .'</td>
-								<td>'.$grand_total_gst[$tax_data['sTax_Description']].'</td>
+				for ($i = 0; $i < sizeof($unique_tax); $i++) {
+
+					$tax_data = $this->model_tax->getTaxData($unique_tax[$i]);
+					$html .= '<td>' . $grand_gst_amount[$tax_data['sTax_Description']] . '</td>
+								<td>' . $grand_total_gst[$tax_data['sTax_Description']] . '</td>
 								';
-							}
-							
+				}
 
-							$html .= '	</tr>
+
+				$html .= '	</tr>
 							</tbody>
 			        </table>
 			      </div>
@@ -301,7 +301,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' .date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -338,7 +338,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' .date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -409,7 +409,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Stock Ledger Report from. ' .date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Stock Ledger Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -417,7 +417,7 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.css') . '?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
@@ -427,22 +427,22 @@ class Reports extends Admin_Controller
 				<div class="row">
 				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
-					'.$company_info['company_name'].'
+					' . $company_info['company_name'] . '
 				  </h1>
 				  <h6 class="invoice-title-address">
-					'.$company_info['address'].'
+					' . $company_info['address'] . '
 				  </h6>
 				  <div class="display-flex" >
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-				  Phone No:'.$company_info['phone'].'
+				  Phone No:' . $company_info['phone'] . '
 				  </h6>
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-					Email:'.$company_info['email'].'
+					Email:' . $company_info['email'] . '
 				  </h6>
 				  </div>
 				  <br>
 					  <h4 class="invoice-title-address">' . $product_data['Item_Code'] . ' - ' . $product_data['Item_Name'] . '</h4>
-					  <h5 class="invoice-title-address"> Sold from ' .date('d-m-Y', strtotime( $date_from)) . ' to ' .date('d-m-Y', strtotime( $date_to)) . '</h5>
+					  <h5 class="invoice-title-address"> Sold from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</h5>
 				</div>
 			    
 			      <!-- /.col -->
@@ -502,7 +502,7 @@ class Reports extends Admin_Controller
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['invoice_no'] . '</td>
-							<td>' . date('d-m-Y', strtotime($v['invoice_date'] )). '</td>
+							<td>' . date('d-m-Y', strtotime($v['invoice_date'])) . '</td>
 							<td>' . $party_data['party_name'] . '</td>
 							<td>' . $v['qty'] . '</td>
 
@@ -532,7 +532,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' .date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -545,7 +545,7 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
 			<div class="jumbotron my-auto">
-			<p><strong> ' . $product_data['Item_Name'] . '</strong> <br>was not sold between ' .date('d-m-Y', strtotime( $date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
+			<p><strong> ' . $product_data['Item_Name'] . '</strong> <br>was not sold between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 			<form action="' . base_url("reports") . '">
 			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 		</form>
@@ -602,7 +602,9 @@ class Reports extends Admin_Controller
 
 		$date_from = $this->input->post('date_from_quotation');
 		$date_to = $this->input->post('date_to_quotation');
-		$party=$this->input->post('quotation_partyid');
+		$party = $this->input->post('quotation_partyid');
+		$total = 0;
+		$total_gst = 0;
 
 
 
@@ -610,9 +612,9 @@ class Reports extends Admin_Controller
 
 		if ($date_from && $date_to) {
 
-			$quotation_data = $this->model_reports->getQuotationListing($date_from, $date_to ,$party);
+			$quotation_data = $this->model_reports->getQuotationListing($date_from, $date_to, $party);
 			$company_info = $this->model_company->getCompanyData(1);
-			$party_data = $this->model_party->getPartyData($party); 
+			$party_data = $this->model_party->getPartyData($party);
 			$grand_total_discount = 0;
 			$grand_total_gst = 0;
 			$grand_total_amount = 0;
@@ -628,7 +630,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Quotation Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -636,7 +638,7 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.css') . '?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
@@ -646,17 +648,17 @@ class Reports extends Admin_Controller
 				<div class="row">
 				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
-					'.$company_info['company_name'].'
+					' . $company_info['company_name'] . '
 				  </h1>
 				  <h6 class="invoice-title-address">
-					'.$company_info['address'].'
+					' . $company_info['address'] . '
 				  </h6>
 				  <div class="display-flex" >
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-				  Phone No:'.$company_info['phone'].'
+				  Phone No:' . $company_info['phone'] . '
 				  </h6>
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-					Email:'.$company_info['email'].'
+					Email:' . $company_info['email'] . '
 				  </h6>
 				  </div>
 				  <h4 class="invoice-title-address">' . $party_data['party_name'] . '</h4>
@@ -710,8 +712,10 @@ class Reports extends Admin_Controller
 
 
 
-					//   $amount = $v['qty']*$v['rate'];
-					//   $total = $total + $amount; 
+					// $amount = $v['qty'] * $v['rate'];
+
+
+
 					$index = $k + 1;
 
 					//   $freight_other_charge = $order_data['other_charges'];
@@ -725,12 +729,23 @@ class Reports extends Admin_Controller
 							<td>' . $v['quotation_no'] . '</td>
 							<td>' . date('d-m-Y', strtotime($v['quotation_date'])) . '</td>
 							<td>' . $total_products . '</td>
-							<td>' . $v['total_discount'] . '</td>
-							<td>' . $v['total_gst'] . '</td>
-							<td>' . $v['total_amount'] . '</td>
+							<td>' . round($v['total_discount'], 2) . '</td>
+							<td>' . round($v['total_gst'], 2) . '</td>
+							<td>' . round($v['total_amount'], 2) . '</td>
 					
 			          	</tr>';
 				}
+
+				$html .= '<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><b>' . round($grand_total_discount, 2) . '</b></td>
+							<td><b>' . round($grand_total_gst, 2) . '</b></td>
+							<td><b>' . round($grand_total_amount, 2) . '</b></td>
+					
+			          	</tr>';
 
 
 
@@ -780,7 +795,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' .date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -793,7 +808,7 @@ class Reports extends Admin_Controller
 
 			<div class="container h-100 d-flex justify-content-center">
     				<div class="jumbotron my-auto">
-					<p> No Quotations found between ' . date('d-m-Y', strtotime($date_from )). ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
+					<p> No Quotations found between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 					<form action="' . base_url("reports") . '">
 					<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
@@ -821,7 +836,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . date('d-m-Y', strtotime( $date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -856,7 +871,7 @@ class Reports extends Admin_Controller
 
 		$date_from = $this->input->post('date_from_purchase');
 		$date_to = $this->input->post('date_to_purchase');
-		$party=$this->input->post('purchase_partyid');
+		$party = $this->input->post('purchase_partyid');
 
 
 
@@ -864,9 +879,9 @@ class Reports extends Admin_Controller
 
 		if ($date_from && $date_to) {
 
-			$purchase_data = $this->model_reports->getPurchaseListing($date_from, $date_to ,$party);
+			$purchase_data = $this->model_reports->getPurchaseListing($date_from, $date_to, $party);
 			$company_info = $this->model_company->getCompanyData(1);
-			$party_data = $this->model_party->getPartyData($party); 
+			$party_data = $this->model_party->getPartyData($party);
 			$grand_total_discount = 0;
 			$grand_total_gst = 0;
 			$grand_total_amount = 0;
@@ -882,7 +897,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>From ' . date('d-m-Y', strtotime( $date_from )) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>From ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -890,7 +905,7 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.css') . '?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
@@ -901,17 +916,17 @@ class Reports extends Admin_Controller
 				
 				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
-					'.$company_info['company_name'].'
+					' . $company_info['company_name'] . '
 				  </h1>
 				  <h6 class="invoice-title-address">
-					'.$company_info['address'].'
+					' . $company_info['address'] . '
 				  </h6>
 				  <div class="display-flex" >
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-				  Phone No:'.$company_info['phone'].'
+				  Phone No:' . $company_info['phone'] . '
 				  </h6>
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-					Email:'.$company_info['email'].'
+					Email:' . $company_info['email'] . '
 				  </h6>
 				  </div>
 				  <h4 class="invoice-title-address">' . $party_data['party_name'] . '</h4>
@@ -954,11 +969,11 @@ class Reports extends Admin_Controller
 					$grand_total_gst = $v['total_gst'] + $grand_total_gst;
 					$grand_total_amount = $v['total_amount'] + $grand_total_amount;
 					$total_products = $this->model_purchase->countPurchaseItem($v['purchase_no']);
-					$purchase_item_data=$this->model_purchase->getPurchaseItemData($v['purchase_no']);
+					$purchase_item_data = $this->model_purchase->getPurchaseItemData($v['purchase_no']);
 
-					$total_purchase_amount=0;
+					$total_purchase_amount = 0;
 					foreach ($purchase_item_data as $f => $t) {
-						$total_purchase_amount=$total_purchase_amount+$t['rate'];
+						$total_purchase_amount = $total_purchase_amount + $t['rate'];
 					}
 
 					//   $product_data = $this->model_products->getProductData($v['item_id']); 
@@ -975,7 +990,7 @@ class Reports extends Admin_Controller
 					$html .= '<tr>
 							<td>' . $index . '</td>
 							<td>' . $v['purchase_no'] . '</td>
-							<td>' . date('d-m-Y', strtotime( $v['purchase_date'])) . '</td>
+							<td>' . date('d-m-Y', strtotime($v['purchase_date'])) . '</td>
 							<td>' . $total_products . '</td>
 							<td>' . $total_purchase_amount . '</td>
 					
@@ -1006,7 +1021,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from ' . date('d-m-Y', strtotime( $date_from )). ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
+			  <title>Invoice Report from ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1019,7 +1034,7 @@ class Reports extends Admin_Controller
 
 			<div class="container h-100 d-flex justify-content-center">
     				<div class="jumbotron my-auto">
-					<p> No Purchase Orders found between ' .date('d-m-Y', strtotime( $date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
+					<p> No Purchase Orders found between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 					<form action="' . base_url("reports") . '">
 					<button id="closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 				</form>
@@ -1089,9 +1104,9 @@ class Reports extends Admin_Controller
 		$date_from = date("d-m-Y", strtotime($date_From));
 		$date_To = $this->input->post('date_to_customer');
 		$date_to = date("d-m-Y", strtotime($date_To));
-	
+
 		$party_id = $this->input->post('partyid');
-		$grand_total=0;
+		$grand_total = 0;
 
 		$data = array(
 			$date_from,
@@ -1105,7 +1120,7 @@ class Reports extends Admin_Controller
 			$item_data = $this->model_reports->getPartyInvoiceList($party_id, $date_From, $date_To);
 			$company_info = $this->model_company->getCompanyData(1);
 			// $product_data = $this->model_products->getProductData($item_id);
-			$party_data=$this->model_party->getPartyData($party_id);
+			$party_data = $this->model_party->getPartyData($party_id);
 
 
 			setlocale(LC_MONETARY, "en_US");
@@ -1125,7 +1140,7 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.css') . '?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
@@ -1135,17 +1150,17 @@ class Reports extends Admin_Controller
 				<div class="row">
 				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
-					'.$company_info['company_name'].'
+					' . $company_info['company_name'] . '
 				  </h1>
 				  <h6 class="invoice-title-address">
-					'.$company_info['address'].'
+					' . $company_info['address'] . '
 				  </h6>
 				  <div class="display-flex" >
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-				  Phone No:'.$company_info['phone'].'
+				  Phone No:' . $company_info['phone'] . '
 				  </h6>
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-					Email:'.$company_info['email'].'
+					Email:' . $company_info['email'] . '
 				  </h6>
 				  </div>
 				  <h4 class="invoice-title-address">' . $party_data['party_name'] . '</h4>
@@ -1185,7 +1200,7 @@ class Reports extends Admin_Controller
 
 					// $total_qty_sold = $total_qty_sold + 1;
 
-					$grand_total=$grand_total+$v['total_amount'];
+					$grand_total = $grand_total + $v['total_amount'];
 
 					//   $product_data = $this->model_products->getProductData($v['item_id']); 
 					//   $amount = $v['qty']*$v['rate'];
@@ -1245,7 +1260,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from )). ' to ' .date('d-m-Y', strtotime( $date_to )). '</title>
+			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1258,7 +1273,7 @@ class Reports extends Admin_Controller
 			
 			<div class="container h-100 d-flex justify-content-center">
 			<div class="jumbotron my-auto">
-			<p><strong> ' . $party_data['party_name'] . '</strong> <br>have no invoices between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to )). ' </p>
+			<p><strong> ' . $party_data['party_name'] . '</strong> <br>have no invoices between ' . date('d-m-Y', strtotime($date_from)) . ' and ' . date('d-m-Y', strtotime($date_to)) . ' </p>
 			<form action="' . base_url("reports") . '">
 			<button id = "closeBtn" class = "btn btn-primary" type="submit" value="Go Back">Go Back</button>
 		</form>
@@ -1281,7 +1296,7 @@ class Reports extends Admin_Controller
 			<head>
 			  <meta charset="utf-8">
 			  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from )). ' to ' .date('d-m-Y', strtotime( $date_to )). '</title>
+			  <title>Invoice Report from. ' . date('d-m-Y', strtotime($date_from)) . ' to ' . date('d-m-Y', strtotime($date_to)) . '</title>
 			  <!-- Tell the browser to be responsive to screen width -->
 			  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 			  <!-- Bootstrap 3.3.7 -->
@@ -1315,8 +1330,8 @@ class Reports extends Admin_Controller
 
 		$variation = $this->input->post('variation');
 		$itemMake = $this->input->post('itemMake');
-	
-		$price=0;
+
+		$price = 0;
 
 		// $data = array(
 		// 	$date_from,
@@ -1350,7 +1365,7 @@ class Reports extends Admin_Controller
 			  <!-- Font Awesome -->
 			  <link rel="stylesheet" href="' . base_url('assets/bower_components/font-awesome/css/font-awesome.min.css') . '">
 			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.min.css') . '">
-			  <link rel="stylesheet" href="'.base_url('assets/dist/css/AdminLTE.css').'?v=<?=time();?">
+			  <link rel="stylesheet" href="' . base_url('assets/dist/css/AdminLTE.css') . '?v=<?=time();?">
 			</head>
 			<body onload="window.print();">
 			
@@ -1360,17 +1375,17 @@ class Reports extends Admin_Controller
 			  <div class="row">
 				<div class="col-xs-12 "  style="font-size: 15px;">
 				  <h1 class="invoice-title-name">
-					'.$company_info['company_name'].'
+					' . $company_info['company_name'] . '
 				  </h1>
 				  <h6 class="invoice-title-address">
-					'.$company_info['address'].'
+					' . $company_info['address'] . '
 				  </h6>
 				  <div class="display-flex" >
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-				  Phone No:'.$company_info['phone'].'
+				  Phone No:' . $company_info['phone'] . '
 				  </h6>
 				  <h6 class="invoice-title-address" style="padding: 10px; padding-top: 0px;">
-					Email:'.$company_info['email'].'
+					Email:' . $company_info['email'] . '
 				  </h6>
 				  </div>
 				  <br>
@@ -1408,8 +1423,8 @@ class Reports extends Admin_Controller
 
 					// $total_qty_sold = $total_qty_sold + 1;
 
-					$price=$v['Price']+($v['Price']*$variation)/100;
-					$price=round($price);
+					$price = $v['Price'] + ($v['Price'] * $variation) / 100;
+					$price = round($price);
 
 					//   $product_data = $this->model_products->getProductData($v['item_id']); 
 					//   $amount = $v['qty']*$v['rate'];
