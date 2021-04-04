@@ -1013,6 +1013,11 @@ class Orders extends Admin_Controller
 					$tax_array[$tax_data['sTax_Description']] = $tax_array[$tax_data['sTax_Description']] + $discount_amount;
 				} else {
 					$tax_data['sValue'] = 0;
+					array_push($unique_tax, 0);
+					$tax_data['sTax_Description'] = "Zero";
+					$tax_array[$tax_data['sTax_Description']] = 0;
+
+					$tax_array[$tax_data['sTax_Description']] = $tax_array[$tax_data['sTax_Description']] + $discount_amount;
 				}
 
 
@@ -1073,6 +1078,10 @@ class Orders extends Admin_Controller
 				for ($i = 0; $i < sizeof($unique_tax); $i++) {
 
 					$tax_data = $this->model_tax->getTaxData($unique_tax[$i]);
+					if ($unique_tax[$i] == 0) {
+						$tax_data['sValue'] = 0;
+						$tax_data['sTax_Description'] = "Zero";
+					}
 					$cgst_percent = $tax_data['sValue'] / 2;
 					$cgst = $tax_array[$tax_data['sTax_Description']] * $cgst_percent / 100;
 					$cgst = number_format($cgst, 2, '.', '');

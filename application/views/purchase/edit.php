@@ -256,7 +256,7 @@
 
               <div class="box-footer">
 
-                <a onclick="printOrder(<?php echo $purchase_data['purchase_master']['s_no'] ?>)" class="btn btn-default">Print</a>
+                <a target="_blank" href="<?php echo base_url('purchase/printDiv/' . $purchase_data['purchase_master']['s_no'] . '/' . $purchase_data['purchase_master']['purchase_no'] . '') ?>" class="btn btn-default">Print</a>
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="<?php echo base_url('purchase/') ?>" class="btn btn-warning">Back</a>
               </div>
