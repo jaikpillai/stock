@@ -539,7 +539,7 @@
 
             // '<td><input type="text" name="gst[]" id="gst_'+row_id+'" class="form-control"><input type="hidden" name="gst_value[]" id="gst_value_'+row_id+'" class="form-control"></td>'+
 
-            '<td><div style="min-width:100px"><input type="text" name="amount[]" value = ' + amountSelect + ' id="amount_' + row_id + '" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:100px"><input type="text" name="amount[]" value = "' + amountSelect + '" id="amount_' + row_id + '" class="form-control" disabled><input type="hidden" name="amount_value[]" id="amount_value_' + row_id + '" class="form-control"></div></td>' +
             '<td><button id="removeProduct_' + row_id + '" type="button" class="btn btn-danger removeProduct" ><i class="fa fa-close"></i></button></td>' +
             '</tr>';
 
