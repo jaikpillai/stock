@@ -112,6 +112,10 @@
                 <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone" value="<?php echo $company_data['phone'] ?>" autocomplete="off">
               </div>
               <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email" value="<?php echo $company_data['email'] ?>" autocomplete="off">
+              </div>
+              <div class="form-group">
                 <label for="country">Country</label>
                 <input type="text" class="form-control" id="country" name="country" placeholder="Enter country" value="<?php echo $company_data['country'] ?>" autocomplete="off">
               </div>

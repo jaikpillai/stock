@@ -237,13 +237,16 @@ class Products extends Admin_Controller
             $tax_data = $this->model_tax->getTaxFromID($this->input->post('tax'));
             $unit_data = $this->model_unit->getUnitFromID($this->input->post('unit'));
 
-
+            echo ($this->input->post('item_id'));
             $data = array(
                 'Item_ID' => $this->input->post('item_id'),
+                // 'Item_ID' => 17147,
+
                 'Category_ID' => $this->input->post('category'),
                 'Company_ID' => $this->input->post('store'),
                 'Item_Name' => $this->input->post('product_name'),
                 'Item_Make' => $this->input->post('make'),
+                'Hsn_Code' => $this->input->post('item_hsn'),
                 'sUnit' => $unit_data['sUnit'],
                 'Price' => $this->input->post('list_price'),
                 'Item_Code' => $this->input->post('item_code'),
@@ -400,6 +403,7 @@ class Products extends Admin_Controller
                 'Company_ID' => $this->input->post('store'),
                 'Item_Name' => $this->input->post('product_name'),
                 'Item_Make' => $this->input->post('make'),
+                'Hsn_Code' => $this->input->post('item_hsn'),
                 'sUnit' => $this->input->post('unit'),
                 'Price' => $this->input->post('list_price'),
                 'Item_Code' => $this->input->post('item_code'),

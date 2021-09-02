@@ -967,13 +967,14 @@ class Orders extends Admin_Controller
 				<tbody>
 					<tr><td>
 					<div class="col-xs-12 table-responsive table-invoice page">
-			        <table class="table table-bordered-invoice" style="font-size: 10px;display: table;width:100%">
+			        <table class="table table-bordered-invoice" style="font-size: 12px;display: table;width:100%">
 			          <thead>
 					  <tr>
 						<th>S.N.</th>
 						<th>Code</th>
 			            <th>Description</th>
 						<th>Make</th>
+						<th>HSN</th>
 			            <th>Qty</th>
 						<th>Unit</th>
 						<th>Rate</th>
@@ -992,7 +993,15 @@ class Orders extends Admin_Controller
 
 			foreach ($orders_items as $k => $v) {
 
+
+
 				$product_data = $this->model_products->getProductData($v['item_id']);
+
+				if (!$product_data["Hsn_Code"]) {
+					$product_data['Hsn_Code'] = "-";
+				}
+
+
 				$amount = $v['qty'] * $v['rate'];
 				$total = $total + $amount;
 
@@ -1012,10 +1021,15 @@ class Orders extends Admin_Controller
 
 					$tax_array[$tax_data['sTax_Description']] = $tax_array[$tax_data['sTax_Description']] + $discount_amount;
 				} else {
-					$tax_data['sValue'] = 0;
-					array_push($unique_tax, 0);
-					$tax_data['sTax_Description'] = "Zero";
-					$tax_array[$tax_data['sTax_Description']] = 0;
+					if (!in_array($v['tax_id'], $unique_tax)) {
+						$tax_data['sValue'] = 0;
+						array_push($unique_tax, 0);
+						$tax_data['sTax_Description'] = "Zero";
+						$tax_array[$tax_data['sTax_Description']] = 0;
+						// array_push($unique_tax, $v['tax_id']);
+						// $tax_array[$tax_data['sTax_Description']] = 0;
+					}
+
 
 					$tax_array[$tax_data['sTax_Description']] = $tax_array[$tax_data['sTax_Description']] + $discount_amount;
 				}
@@ -1026,6 +1040,7 @@ class Orders extends Admin_Controller
 							<td>' . $product_data['Item_Code'] . '</td>
 							<td>' . $product_data['Item_Name'] . '</td>
 							<td>' . $product_data['Item_Make'] . '</td>
+							<td>' . $product_data['Hsn_Code'] . '</td>
 							<td>' . $v['qty'] . '</td>
 							<td>' . $v['unit'] . '</td>
 							<td>' . $v['rate'] . '</td>
@@ -1060,7 +1075,7 @@ class Orders extends Admin_Controller
 			if (!empty($unique_tax)) {
 				$html .= '
 			<div class="table-responsive" >
-			  <table class="table table-bordered" style="font-size: 10px;" >
+			  <table class="table table-bordered" style="font-size: 12px;" >
 			  <thead>
 			  <tr>
 					<th>Amount</th>
@@ -1127,10 +1142,10 @@ class Orders extends Admin_Controller
 			<h5><b>' . strtoupper(getIndianCurrency(floatval($rounded_total_amount))) . '</b></h5>
 			</div>
 		  </div>
-			 <div class="col-xs-4" style="font-size: 10px;padding-bottom:5px">
+			 <div class="col-xs-4" style="font-size: 12px;padding-bottom:5px">
 
 			        <div class="table-responsive" >
-					  <table class="table table-bordered " style="font-size: 10px;" >
+					  <table class="table table-bordered " style="font-size: 12px;" >
 					  <tbody>
 			            <tr>
 			              <th style="width:50%">Total:</th>
@@ -1172,7 +1187,7 @@ class Orders extends Admin_Controller
 
 				<tfoot class="page-footer" >
 					<tr><td style="padding:5px;border: 1px solid;">
-					<table style="border:0px;font-size:10px;width:100%;">
+					<table style="border:0px;font-size:12px;width:100%;">
 					<thead>
 						<tr>
 						<th>GST R. No: ' . $company_info['gst_no'] . '</th>
@@ -1191,9 +1206,9 @@ class Orders extends Admin_Controller
 						</tr>
 					</thead>
 					<tbody>
-					<table style="border:0px;font-size:10px;width:100%  ">
+					<table style="border:0px;font-size:12px;width:100%  ">
 					<tr>
-					<div style="font-size:10px;">
+					<div style="font-size:12px;">
 					<p><b>Terms & Conditions</b></p>
 						<p>1. Goods once sold will not be taken back.
 							<br>

@@ -155,6 +155,7 @@
                       <!-- <th style="width:10%">Code</th>            -->
                       <th style="width:20%">Item Name</th>
                       <th style="width:10%">Make</th>
+                      <th style="width:10%">HSN</th>
                       <th style="width:5%">Qty</th>
                       <th style="width:10%">Unit</th>
                       <th style="width:10%">Rate</th>
@@ -201,6 +202,10 @@
                       <input type="number" name="qty[]" id="qty_1" class="form-control"  autocomplete="off">
                       <input type="hidden" name="qty_value[]" id="qty_value_1" class="form-control" autocomplete="off">
                     </td> -->
+                      <td>
+                        <input type="text" name="hsnSelect" id="hsnSelect" class="form-control" disabled autocomplete="off">
+                        <input type="hidden" name="hsn_value_select" id="hsn_value_select" class="form-control" autocomplete="off">
+                      </td>
 
                       <td>
                         <div style="min-width:60px">
@@ -214,6 +219,7 @@
                           <input type="text" id="unitSelect" class="form-control  " disabled autocomplete="off">
                           <input type="hidden" id="unit_value_select" class="form-control" autocomplete="off">
                         </div>
+
                       </td>
                       <td>
                         <div style="min-width:100px">
@@ -274,6 +280,14 @@
                             <div style="min-width:60px">
                               <input type="text" name="make[]" id="make_<?php echo $x; ?>" value="<?php echo $val['item_make'] ?>" class="form-control" disabled autocomplete="off">
                               <input type="hidden" name="make_value[]" id="make_value_<?php echo $x; ?>" value="<?php echo $val['item_make'] ?>" class="form-control" autocomplete="off">
+                            </div>
+                          </td>
+
+
+                          <td>
+                            <div style="min-width:60px">
+                              <input type="text" name="hsn[]" id="hsn_<?php echo $x; ?>" value="<?php echo $val['hsn_code'] ?>" class="form-control" disabled autocomplete="off">
+                              <input type="hidden" name="hsn_value[]" id="hsn_value_<?php echo $x; ?>" value="<?php echo $val['hsn_code'] ?>" class="form-control" autocomplete="off">
                             </div>
                           </td>
 
@@ -546,6 +560,7 @@
       var productSelect = $("#productSelect").val();
       var productName = $("#productSelect :selected").text();
       var makeSelect = $("#makeSelect").val();
+      var hsnSelect = $("#hsnSelect").val();
       var qtySelect = $("#qtySelect").val();
       var unitSelect = $("#unitSelect").val();
       var rateSelect = $("#rateSelect").val();
@@ -606,6 +621,7 @@
 
 
             '<td><div style="min-width:60px"><input type="text" value = "' + makeSelect + '" name="make[]" id="make_' + row_id + '" class="form-control" disabled><input type="hidden" name="make_value[]" value = "' + makeSelect + '" id="make_value_' + row_id + '" class="form-control"></div></td>' +
+            '<td><div style="min-width:60px"><input type="text" value = "' + hsnSelect + '" name="hsn[]" id="hsn_' + row_id + '" class="form-control" disabled><input type="hidden" name="hsn_value[]" value = "' + hsnSelect + '" id="hsn_value_' + row_id + '" class="form-control"></div></td>' +
             '<td><div style="min-width:60px"><input type="number" value = "' + qtySelect + '" name="qty[]" id="qty_' + row_id + '" class="form-control total_calculator_qty" ></div></td>' +
             '<td><div style="min-width:60px"><input type="text" value = "' + unitSelect + '" name="unit[]" id="unit_' + row_id + '" class="form-control" disabled><input type="hidden" name="unit_value[]" value = "' + unitSelect + '" id="unit_value_' + row_id + '" class="form-control"></div></td>' +
             '<td><div style="min-width:80px"><input type="text" value = "' + rateSelect + '" name="rate[]" id="rate_' + row_id + '" class="form-control total_calculator_rate " ><input type="hidden" value = "' + rateSelect + '" name="rate_value[]" id="rate_value_' + row_id + '" class="form-control"></div></td>' +
@@ -687,6 +703,7 @@
     $("#productSelect").val("");
     $("#productSelect :selected").text("");
     $("#makeSelect").val("");
+    $("#hsnSelect").val("");
     $("#qtySelect").val("");
     $("#unitSelect").val("");
     $("#rateSelect").val("");
@@ -807,6 +824,9 @@
           $("#make_" + row_id).val(response.Item_Make);
           $("#make_value_" + row_id).val(response.Item_Make);
 
+          $("#hsn_" + row_id).val(response.Hsn_Code);
+          $("#hsn_value_" + row_id).val(response.Hsn_Code);
+
           $("#unit_" + row_id).val(response.sUnit);
           $("#unit_value_" + row_id).val(response.sUnit);
 
@@ -879,6 +899,8 @@
 
           $("#makeSelect").val(response.Item_Make);
           // $("#make_value_"+row_id).val(response.Item_Make);
+
+          $("#hsnSelect").val(response.Hsn_Code);
 
           $("#unitSelect").val(response.sUnit);
           // $("#unit_value_"+row_id).val(response.sUnit);

@@ -59,7 +59,9 @@
 
               <div class="form-group">
                 <label for="item_id">Item ID</label>
-                <input type="text" class="form-control" id="item_id" name="item_id" value="<?php echo $product_data['Item_ID']; ?>" placeholder="" autocomplete="off" disabled />
+                <input type="text" class="form-control" id="item_id_display" name="item_id_display" value="<?php echo $product_data['Item_ID']; ?>" placeholder="" autocomplete="off" disabled />
+                <input type="hidden" class="form-control" id="item_id" name="item_id" value="<?php echo $product_data['Item_ID']; ?>" placeholder="" autocomplete="off" />
+
               </div>
 
               <div class="form-group">
@@ -94,6 +96,11 @@
               <div class="form-group">
                 <label for="item_code">Item Code</label>
                 <input type="text" class="form-control" id="item_code" name="item_code" value="<?php echo $product_data['Item_Code']; ?>" placeholder="Enter Item Code" autocomplete="off" />
+              </div>
+
+              <div class="form-group">
+                <label for="item_hsn">HSN</label>
+                <input type="text" class="form-control" maxlength="8" id="item_hsn" name="item_hsn" value="<?php echo $product_data['Hsn_Code']; ?>" placeholder="Enter HSN" autocomplete="off" />
               </div>
 
               <div class="form-group">
