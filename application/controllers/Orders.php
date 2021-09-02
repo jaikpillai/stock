@@ -765,10 +765,7 @@ class Orders extends Admin_Controller
 		   		} 
 
 			
-				.page-footer, .page-footer-space {
-				height: 1000px;
-
-				}
+			
 
 				.margin-0{
 				margin: 0px;
