@@ -99,7 +99,7 @@
 
               <div class="form-group">
                 <label for="item_hsn">HSN</label>
-                <input type="text" class="form-control" maxlength="8" id="item_hsn" name="item_hsn" placeholder="Enter HSN" autocomplete="off" />
+                <input type="text" class="form-control" maxlength="12" id="item_hsn" name="item_hsn" placeholder="Enter HSN" autocomplete="off" />
               </div>
 
               <div class="form-group">
